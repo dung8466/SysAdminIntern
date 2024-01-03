@@ -14,9 +14,9 @@
 
 		pwd [options]
 
-options:
-+ -L: bao gồm cả symlinks
-+ -P: không bao gồm symlinks
+	options:
+	+ -L: bao gồm cả symlinks
+	+ -P: không bao gồm symlinks
 
 3. Lịch sử lệnh
 
@@ -219,9 +219,43 @@ Lệnh `uptime` trả về kết quả `load average: 0,74, 0,77, 0,64` - các t
 		SIGINT 	2			Interrupt from keyboard 
 		SIGKILL	9			Kill signal
 		SIGTERM	15			Termination signal 
-		SIGSTOP	17,19,23		Stop process
+		SIGSTOP	17,19,23	Stop process
+		
+### Quản lý packages
+
+1. Cài đặt phần mềm:
+
+		sudo apt install {package}
+
+2. Gỡ phần mềm:
+	
+		sudo apt remove {package} -y
+
+	sau khi gỡ bỏ package thì nên sử dụng `sudo apt update`.
+
+3. Cập nhật thông tin package:
+
+		sudo apt update
+
+	câu lệnh sử dụng khi cần cập nhật danh sách package trong kho repositories.
+
+4. Cập nhật phiên bản package:
+
+		sudo apt upgrade
+
+	câu lệnh sẽ cập nhật phiên bản của các package có sẵn trong máy thông qua thông tin về package cập nhật từ `sudo apt update`.
+5. Danh sách package đã cài:
+
+		sudo apt list --installed
+
+	từ đây nếu muốn xem đã cài package nào chưa `sudo apt list --installed | grep {package}`
 		
 
+### StartUp Script
+
+
+
+		
 
 	
 
