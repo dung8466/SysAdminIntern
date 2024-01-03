@@ -219,7 +219,7 @@ Lệnh `uptime` trả về kết quả `load average: 0,74, 0,77, 0,64` - các t
 		SIGINT 	2			Interrupt from keyboard 
 		SIGKILL	9			Kill signal
 		SIGTERM	15			Termination signal 
-		SIGSTOP	17,19,23	Stop process
+		SIGSTOP	17,19,23		Stop process
 		
 ### Quản lý packages
 
