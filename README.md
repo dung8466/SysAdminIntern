@@ -255,38 +255,38 @@ Lệnh `uptime` trả về kết quả `load average: 0,74, 0,77, 0,64` - các t
 
 1. Tạo file service:
 
-Có thể tạo file với đuôi .service tại `/etc/systemd/system` 
+	Có thể tạo file với đuôi .service tại `/etc/systemd/system` 
 
-Cấu trúc file cơ bản
+	Cấu trúc file cơ bản
 	
 
-	[Unit]
-	Description=My custom startup script
+		[Unit]
+		Description=My custom startup script
+	
+		[Service]
+		ExecStart=/bin/bash path/to/bash_script 
+	
+		[Install]
+		WantedBy=multi-user.target
 
-	[Service]
-	ExecStart=/bin/bash path/to/bash_script 
-
-	[Install]
-	WantedBy=multi-user.target
-
-Để có thể chạy khi hệ thống khởi động `sudo systemctl enable custom.service`
+	Để có thể chạy khi hệ thống khởi động `sudo systemctl enable custom.service`
 
 2.  Sử dụng cron:
 
-Có thể thếm vào crontab file với câu lệnh `crontab -e` đoạn code khởi tạo cùng hệ thống
+	Có thể thếm vào crontab file với câu lệnh `crontab -e` đoạn code khởi tạo cùng hệ thống
 
 		@reboot sh path/to/file
 
-Tuy vậy, không phải phiên bản nào của cron cũng hỗ trợ `@reboot`.
+	Tuy vậy, không phải phiên bản nào của cron cũng hỗ trợ `@reboot`.
 
 3. Sử dụng rc.local;
 
-Có thể thêm vào file `/etc/rc.d/rc.local` đoạn code chạy file (vì file rc.local sẽ chạy lúc hệ thống khởi động)
+	Có thể thêm vào file `/etc/rc.d/rc.local` đoạn code chạy file (vì file rc.local sẽ chạy lúc hệ thống khởi động)
 
 		sh path/to/file
 
-Cần đảm bảo file rc.local có thể chạy được `chmod +x /etc/rc.d/rc.local`
+	Cần đảm bảo file rc.local có thể chạy được `chmod +x /etc/rc.d/rc.local`
 
 4. Sử dụng init.d:
 
-Có thể thêm file bash script vào `/etc/init.d` và sử dụng `sudo update-rc.d <service name> defaults [priority]`
+	Có thể thêm file bash script vào `/etc/init.d` và sử dụng `sudo update-rc.d <service name> defaults [priority]`
