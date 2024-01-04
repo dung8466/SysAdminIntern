@@ -290,3 +290,280 @@ Lệnh `uptime` trả về kết quả `load average: 0,74, 0,77, 0,64` - các t
 4. Sử dụng init.d:
 
 	Có thể thêm file bash script vào `/etc/init.d` và sử dụng `sudo update-rc.d <service name> defaults [priority]`
+
+### Quản lý hệ thống 
+
+#### Quản lý filesystems
+
+Dùng để quản lý dữ liệu đọc và lưu của hệ thống.
+	
+Các filesystems thông thường: ext{2,3,4}, ntfs, vfat, proc,...
+
+Hệ thống thư mục trong linux:
+
+| Thư mục     |      Chức năng |
+|-------------|:--------------------------:|
+| /bin |  chứa các câu lệnh như ls, cp,..., các file có thể thực thi |
+| /boot |    chứa các file để khởi tạo hệ thống |
+| /dev | chứa các file thiết bị, được tạo trong thời gian khởi động hoặc khi cắm |
+| /etc | chứa các file config hệ thống như tên người dùng, mật khẩu,... |
+| /home | chứa các file của người dùng |
+| /lib | thư viện chứa code mà ứng dụng dùng  |
+| /media | các thiết bị ngoại vi như usb,... được mount vào đây |
+| /mnt | là điểm mount bằng các câu lệnh tạm thời |
+| /opt | được dành cho các gói package phần mềm bổ sung |
+| /proc | chứa các file hệ thống ảo hiện thông tin về CPU, kernel,... |
+| /root | chứa thư mục của superuser |
+| /sbin | chứa các công cụ tiện ích như là init,... thường cần để tải, xóa, tái định dạng,... các lệnh này cần chạy bằng `sudo` |
+| /usr | chứa các file khởi chạy, thư viện, tài nguyên cần chia sẻ bởi ứng dụng và services. |
+| /srv | chứa dữ liệu liên quan đến server | 
+| /sys | thư mục ảo chứa các thông tin liên quan đến thiết bị kết nối tới máy tính |
+| /tmp | chứa các file tạm thời (thường tạo bởi các ứng dụng đang chạy) |
+| /var | chứa các thư mục như `/log`(các file log của hệ thống), `/mail`(mail nhận được), `/spool`(hàng chờ), `/src`(src chưa được compile) và `/tmp`(tmp file được lưu sau khi tắt máy) |
+
+1. Sửa lỗi filesystems: sử dụng [fsck](https://manned.org/fsck)
+
+	các filesystems cần kiểm tra và sửa nên unmount trước khi chạy câu lệnh.
+
+		fsck [option] path/to/filesystems|device|label|UUID
+
+	nếu không có `option` thì sẽ chỉ trả về tình trạng của filesystems
+	`option -r`: để người dùng tự chọn cách sửa 
+	`option -a`: tự động sửa 
+
++ Tạo filesystems: sử dụng [mkfs](https://manned.org/mkfs)
+
+		mkfs [options] [-t type] [fs-option] device [size]
+
+	không có `-t type` thì mặc định sử dụng `ext2`
+	trả về 0 thành công và 1 nếu thất bại.
+
+2. Mount/Unmount filesystems: sử dụng [mount](https://manned.org/mount.8) và [umount](https://manned.org/umount.8)
+
++ mount: đăng ký filesystem của thiết bị vào 1 điểm chỉ định trên cây thư mục. Thông tin các thiết bị thường được mount tới đâu được lưu trữ tại `/ect/fstab`
+
+	Các lệnh mount cơ bản:
+		
+	+ mount thiết bị vào 1 thư mục
+	
+			mount -t filesystem_type path/to/device_file path/to/target_directory
+	+ mount thư mục vào thư mục khác
+
+			mount --bind path/to/old_dir path/to/new_dir
+
+	+ mount filesystem đã có trong `/etc/fstab`
+
+			mount /my_drive
+
++ umount: bỏ liên kết filesystem đã mount khỏi cây thư mục.
+
+	Các lệnh umount cơ bản:
+	
+	+ umount sử dụng đường dẫn tới thiết bị
+
+			umount path/to/device_file
+
+	+ umount sử dụng đường dẫn tới địa chỉ mount
+
+			umount path/to/mounted_directory
+
+	Để tự động mount filesystems thì cần thêm các thông tin cần thiết vào `/ect/fstab`:
+
+		UUID=<uuid of device> <mount point> <file system type> <mount option> <dump> <pass>
+
+
+	+ UUID: thông qua `blkid path/to/device`
+	+ mount option: quyền truy cập của người dùng
+	+ dump: thông thường là `0`
+	+ pass: thứ tự được kiểm tra lúc reboot, thường là `2`, `1` nếu là root và `0` nếu swap
+
+
+#### Quản lý files
+
+1. Các lệnh cơ bản:
+
+	+ [ls](https://www.gnu.org/software/coreutils/ls):
+		liệt kê nội dung thư mục
+			`ls [option]... [path/to/folder]`
+	+ [cp](https://www.gnu.org/software/coreutils/cp):
+		copy file hoặc thư mục 
+		`cp [option]... path/to/file|path/to/directory path/to/target_file|path/to/target_directory`
+	+ [mv](https://www.gnu.org/software/coreutils/mv):
+		di chuyển file hoặc thư mục 
+		`mv [option]... file|directory... target_file|target_directory`
+	+ [rm](https://www.gnu.org/software/coreutils/rm):
+		xóa file hoặc thư mục
+		`rm [option]... [file]...`
+
+		 (`rmdir` chỉ xóa thư mục rỗng)
+		
+	+ [touch](https://manned.org/man/freebsd-13.1/touch):
+		tạo file và thay đổi thời gian sửa đổi/truy cập
+		tạo file:`touch path/to/file1 path/to/file2 ...`
+	+ [ln](https://www.gnu.org/software/coreutils/ln):
+		tạo liên kết tới file và thư mục(có thể là symlink hoặc hard link)
+		+ symlink: trỏ tới một file hoặc thư mục
+		+ hard link: như một tên khác cho file, file hoặc thư mục được link có cùng inode(chứa toàn bộ thông tin về file)
+		
+		```
+		ln [option]... path/to/file|path/to/directory path/to/symlink|path/to/hardlink
+		```
+
+2. Tìm kiếm file
+
++ [find](https://manned.org/find): Có thể tìm kiếm file dựa trên tên, đuôi, size, quyền của file, thời gian tạo,...
+
+	ví dụ:
+	+ tìm kiếm file được chỉnh sửa trong vòng 10 ngày
+		`find / -mtime 10`
+
+	+ tìm kiếm file có dung lượng trong khoảng 50M đến 100M
+	`find / -size +50M -size -100M`
+
+	
++ [locate](https://manned.org/locate): Tìm kiếm dựa trên file database tại ``/var/cache/locate/locatedb``, trước khi tìm kiếm cần `sudo updatedb`
+
+	`locate [option]... pattern...`
+
+	ví dụ: 
+	+ tìm kiếm file có đuôi `.ini`, giới hạn 3 kết quả
+		`locate "*.ini" -l 3`
+
+	+ tìm kiếm các file vẫn còn trên máy có tên `test` ở mục `home`
+		`locate -i -e "test" | grep "/home"`
++ [whereis](https://manned.org/whereis): Tìm kiếm tệp nhị phân, nguồn và hướng dẫn cho một câu lệnh
+
+	ví dụ:
+	+ tìm kiếm tệp nhị phân cho `gcc` tại thư mục `/usr/lib` và hướng dẫn tại `/usr/share`
+	` whereis -bm -B /usr/lib -M /usr/share -f gcc`
++ [which](https://manned.org/which): Tìm kiếm đường dẫn đầy đủ của các lệnh
+
+		which [-a] command... 
+
+	`-a` sẽ in ra toàn bộ các kết quả chứa câu lệnh.
+
+3. Quản lý quyền truy cập, sở hữu
+
++ [chown](https://www.gnu.org/software/coreutils/manual/html_node/chown-invocation.html#chown-invocation): quản lý quyền của người dùng và nhóm 
+	
+		chown [option]... {new_owner | --reference=ref_file} file…
+
+	nếu sử dụng `new_owner` thì chỉ định người sở hữu mới và/hoặc nhóm bằng `[owner] [ : [group] ]`
++ [chgrp](https://www.gnu.org/software/coreutils/manual/html_node/chgrp-invocation.html#chgrp-invocation): quản lý quyền của nhóm
+
+		chgrp [option]… {group | --reference=ref_file} file…
+	
+	`group` có thể là tên hoặc id(bắt đầu với `+`) của nhóm.
++ [chmod](https://www.gnu.org/software/coreutils/manual/html_node/chmod-invocation.html#chmod-invocation): quản lý quyền truy cập của file
+
+		chmod [option]… {mode | --reference=ref_file} file…
+
+	mode:
+		
+	+ chữ: `augo` `-+=` `rwx` 
+
+		ví dụ: cho mọi người đọc file, bỏ quyền viết file với tất cả ngoại trừ chủ sở hữu
+		`sudo chmod a+r,go-w file`
+	+ số: `[special mode bit]{file's owner}{other in group}{other not in group}`, `4:r,2:w,1:x`
+
+4. Quản lý thuộc tính
+
+		chattr [ -RVf ] [ -v version ] [ mode ] files...
+
+	Mục đích chính là khiến file thay đổi bởi người dùng (kể cả superuser) cho đến khi thuộc tính được sửa lại.
+	ví dụ:
+	+ Khiến 1 file không thể thay đổi, xóa
+
+			sudo chattr +i file
+
+		thì `sudo rm -f file` cũng sẽ trả về lỗi `Operation not permitted`
+
+#### Quản lý người dùng và nhóm
+
+1. Người dùng
+
++ Thêm người dùng:
+
+		useradd | adduser {user_name}
+
+	--> tạo ra thư mục home, các file bash, mail spool tại /var/spool/mail, nhóm mới tên với user_name.
+
++ Xóa người dùng
+
+		userdel | deluser [option] {user_name}
+
+	--> nếu không có option sẽ chỉ xóa người dùng, không xóa file, thư mục.
+
++ Thay đổi người dùng
+
+		usermod [option] {user}
+
+	Các option thường sử dụng:
+	+ Đặt ngày hết hạn cho tài khoản: `--expiredate`
+	+ Thêm nhóm: `-aG`
+	+ Thay đổi địa chỉ thư mục home: `-d`
+	+ Khóa/mở khóa mật khẩu: `-L/-u`
+
+2. Nhóm
+
++ Thêm nhóm
+
+		groupadd [options] {group_name}
+
+
++ Xóa nhóm
+
+		groupdel [options] {group_name}
+		
++ Thay đổi nhóm
+
+		groupmod [options] {group_name}
+
+#### Quản lý disk
+
+1. Kiểm tra disk
+
++ [df](https://www.gnu.org/software/coreutils/manual/html_node/df-invocation.html#df-invocation):
+
+	Báo cáo tổng quan về dung lượng tổng, đã sử dụng, còn lại của các filesystems.
+
+		df [option]... [file]...
+
++ [du](https://www.gnu.org/software/coreutils/manual/html_node/du-invocation.html#du-invocation):
+
+	Báo cáo dung lượng cần cho file hoặc các file trong thư mục.
+
+		du [option]... [file]...
+
+
+--> Điểm khác biệt của 2 câu lệnh là `df` sẽ chỉ quan tâm đến mounted filesystems chứa file/thư mục, không đi vào chi tiết và `du` chỉ  trả về dung lượng mỗi file chiếm.
+2. Phân vùng disk
+
+Liệt kê các disk:
+
+		fdisk -l
+
+Bắt đầu việc phân vùng:
+
+		fdisk [options] {device}
+		
+hoặc: 
+
+		cfdisk [options] {device} -- TUI
+3. RAID
+
++ Khái niệm:
++ Cấu trúc:
++ Nguyên lý hoạt động:
+
+
+#### Quản lý log file
+
+Trong phần [thư mục](#quản-lý-filesystems), các log file được lưu tại `/var/log` và các thư mục con trong đó.
+#### Quản lý công việc tương lai
+
+		
+
+
+
+
