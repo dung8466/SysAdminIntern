@@ -715,6 +715,33 @@ Thực thi nhiều lệnh bằng `at`:
 	at {-t time hoặc now + time minutes}
 	-->  command --> ... --> CRTL d
 
+## Network
+
+### IP
+
+Thông tin về IP `ip -c a`
+
+1. IP tĩnh
+
+	Thiết lập IP tĩnh cho Ubuntu: chỉnh sửa file tại `/etc/netplan/`(nếu không có file có thể tạo)
+	Nội dung file cơ bản:
+	```
+	network:
+		version: 2
+		renderer: NetworkManager
+		ethernets:
+			ens33:
+				dhcp4: false
+				addresses: [192.168.109.100/24]
+	```
+	Trong đó:
+	+ `version: 2`: định nghĩa mạng bản 2
+	+ `renderer`: công cụ kiểm soát mạng
+	+ `ethernets`: mạng có dây, các thiết bị khác như `modems`,`wifis`,`bridges`
+	+ `ens33`: tên thiết bị mạng có trong `ip -c a`
+	+ `dhcp4`: vì đang thiết lập IP tĩnh, không muốn tự động cấp IP cho mạng nên để giá trị `false`
+	+ `addresses`: IP tĩnh muốn thiết lập
+2. IP động
 
 
 
