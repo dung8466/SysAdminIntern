@@ -1,6 +1,6 @@
 # SysAdminIntern
 
-## Làm việc với shell
+## Linux
 
 ### Các lệnh cơ bản
 
@@ -536,31 +536,187 @@ Hệ thống thư mục trong linux:
 		du [option]... [file]...
 
 
---> Điểm khác biệt của 2 câu lệnh là `df` sẽ chỉ quan tâm đến mounted filesystems chứa file/thư mục, không đi vào chi tiết và `du` chỉ  trả về dung lượng mỗi file chiếm.
+	--> Điểm khác biệt của 2 câu lệnh là `df` sẽ chỉ quan tâm đến mounted filesystems chứa file/thư mục, không đi vào chi tiết và `du` chỉ  trả về dung lượng mỗi file chiếm.
 2. Phân vùng disk
 
-Liệt kê các disk:
+	Liệt kê các disk:
 
-		fdisk -l
+			fdisk -l
 
-Bắt đầu việc phân vùng:
+	Bắt đầu việc phân vùng:
 
-		fdisk [options] {device}
+			fdisk [options] {device}
 		
-hoặc: 
+	hoặc: 
 
-		cfdisk [options] {device} -- TUI
+			cfdisk [options] {device} 	--TUI
 3. RAID
 
 + Khái niệm:
-+ Cấu trúc:
-+ Nguyên lý hoạt động:
 
+	Là lưu cùng 1 dữ liệu vào nhiều đĩa ổ cứng, cho phép các hoạt động đọc-ghi dữ liệu đồng thời, tăng hiệu năng, tăng MTBF(trung bình thời gian bị lỗi của phần cứng).
++ Cấu trúc và nguyên lý hoạt động: RAID được chia làm nhiều loại RAID 0,1,2,3,4,5,6,1+0,0+1,....
+	+ RAID 0(Tối thiểu 2 ổ cứng): Không có dữ liệu trùng lặp, chia dữ liệu thành nhiều phần và mỗi phần lưu vào 1 ổ. Tốc độ đọc và ghi tăng nhưng mức độ đảm bảo dữ liệu không thay đổi so với 1 ổ. 
+	+ RAID 1(Tối thiểu 2 ổ cứng): Các ổ đều chứa dữ liệu giống nhau. Tốc độ đọc tăng nhưng tốc độ ghi không đổi, dữ liệu được đảm bảo so với 1 ổ.	
+	+ RAID 5(Tối thiểu 3 ổ): Dữ liệu chia ra làm nhiều phần và các phần đều được lưu trữ vào từng ổ ngoại trừ ổ cuối cùng lưu trữ bản sao backup của dữ liệu trên(dữ liệu backup này sẽ được lưu vào các ổ khác nhau, lần lượt từng ổ). Dữ liệu được đảm bảo nếu mất đi 1 ổ, tốc độ đọc-ghi tăng so với 1 ổ nhưng không bằng RAID 0.
+Ví dụ: Có 3 ổ cứng, dữ liệu A được chia làm A1, A2 lưu vào ổ 1 và ổ 2, ổ 3 sẽ lưu backup của A. Dữ liệu B được chia làm B1, B2 lưu vào ổ 2 và ổ 3, ổ 1 lưu backup của B.
+
++ Quản lý RAID sử dụng [mdadm](https://manned.org/mdadm):
+
+		mdadm [mode] <raiddevice> [options] <component-devices>
+
+	Các lệnh cơ bản:
+	+ Tạo array:
+	
+			sudo mdadm --create /dev/md/MyRAID --level raid_level --raid-devices number_of_disks /dev/sdXN
+
+	+ Dừng array:
+
+			sudo mdadm --stop /dev/md0
+
+	+ Đánh dấu ổ lỗi:
+
+			sudo mdadm --fail /dev/md0 /dev/sdXN
+
+	+ Xóa ổ:
+
+			sudo mdadm --remove /dev/md0 /dev/sdXN
+
+	+ Thêm ổ vào array:
+
+			sudo mdadm --assemble /dev/md0 /dev/sdXN
+
+	+ Xóa RAID metadata:
+
+			sudo mdadm --zero-superblock /dev/sdXN
 
 #### Quản lý log file
 
 Trong phần [thư mục](#quản-lý-filesystems), các log file được lưu tại `/var/log` và các thư mục con trong đó.
-#### Quản lý công việc tương lai
+
+`/var/log/syslog` chứa dữ liệu hoạt động của toàn hệ thống trong `Debian, Ubuntu,...`.
+`/var/log/auth.log`: những vấn đề liên quan đến bảo mật.
+`/var/log/kern.log`: những sự kiện, lỗi, cảnh báo về kernel...
+
+`Rotate Log`: quá trình giới hạn các file log về kích thước, thời gian,... thì sẽ đổi tên file log và tạo ra 1 file log mới trùng tên với file log ban đầu, tiếp tục ghi log vào file mới tạo.
+
+Để thực hiện `Rotate Log`, sử dụng `logrotate`
+Cấu hình `logrotate` tại `/etc/logrotate.conf`: 
+
+```
+# see "man logrotate" for details
+# global options do not affect preceding include directives
+# rotate log files weekly
+weekly
+
+# use the adm group by default, since this is the owning group
+# of /var/log/syslog.
+su root adm
+
+# keep 4 weeks worth of backlogs
+rotate 4
+
+# create new (empty) log files after rotating old ones
+create
+
+# use date as a suffix of the rotated file
+#dateext
+
+# uncomment this if you want your log files compressed
+#compress
+
+# packages drop log rotation information into this directory
+include /etc/logrotate.d
+
+# system-specific logs may also be configured here.
+```
+
+Cấu hình từng log file cụ thể tại `/etc/logrotate.d/`, ví dụ `/etc/logrotate.d/rsyslog`
+```
+/var/log/syslog
+/var/log/mail.info
+/var/log/mail.warn
+/var/log/mail.err
+/var/log/mail.log
+/var/log/daemon.log
+/var/log/kern.log
+/var/log/auth.log
+/var/log/user.log
+/var/log/lpr.log
+/var/log/cron.log
+/var/log/debug
+/var/log/messages
+{
+        rotate 4
+        weekly
+        missingok
+        notifempty
+        compress
+        delaycompress
+        sharedscripts
+        postrotate
+                /usr/lib/rsyslog/rsyslog-rotate
+        endscript
+}
+```
+---> toàn bộ các file `/var/log/syslog`, `/var/log/mail.info`,... sẽ có cùng cấu hình với các thông số:
++ `create {permission} {owner} {group}`: tạo file log với `{permission}` cho chủ sở hữu và nhóm.
++ `rotate 4`: giữ 4 file log
++ `weekly`: chạy rotate hàng tuần
++ `missingok`: nếu file log không tồn tại sẽ tự động chuyển đến cấu hình log file khác mà không thông báo lỗi
++ `notifempty`: không rotate nếu file trống
++ `compress`: nén file sau khi rotate(mậc định sử dụng `gzip`, `compresscmd {zip_method}` nếu muốn sử dụng phương pháp khác)
++ `delaycompress`: không nén file ngay, file được nén vào lần rotate lần sau
++ `sharescripts`: các scripts được thêm vào cấu hình sẽ chỉ chạy 1 lần thay vì chạy cho mỗi file
++ `postrotate ... endscript`: các scripts chạy sau khi rotate và trước khi nén, muốn chạy sau khi nén thì sử dụng `lastaction`
++ Ngoài ra còn 1 số thông số như:
+	+ `copy`: tạo bản sao mà không thay đổi bản gốc
+	+ `dateext`: thêm thông số ngày,tháng, năm vào tên file gốc thay vì chỉ thêm số ( sử dụng thêm `dateformat` để điều chỉnh cách thể hiện ngày, tháng, năm thêm vào)
+	+ `mail`: các file log hết hạn, trước khi xóa sẽ được gửi đến địa chỉ mail
+	+ `size`: log file sẽ rotate khi nó lớn hơn số bytes cài đặt...
+
+Có thể test các cấu hình các log file sử dụng `sudo logrotate /etc/logrotate.conf --debug`
+
+#### Quản lý công việc 
+
+Trong phần [StartUp Script](#startup-script), các file script có thể tự khởi chạy sử dụng `@reboot` trong `cron`. Ngoài ra, có thể lập trình thời gian chạy khác cho file script. Thêm đoạn code vào `crontab -e`
+
+		{minute} {hour} {day of month} {month} {day of week} /bin/sh path/to/command
+
+với các giá trị `minute, hour, day of month, month, day of week`, ngoài các giá trị cụ thể, còn có:
+		
++ `*`: tất cả các giá trị
++ `,`: 2 hoặc nhiều lần thực thi lệnh
++ `-`: khoảng thời gian thực thi lệnh
++ `/`: khoảng thời gian cụ thể
++ `L`: ngày cuối cùng của tuần trong tháng
++ `W`: ngày gần nhất trong tuần
++ `#`: ngày của tuần
+
+Ví dụ:
+
++ Thực thi lệnh 2 lần 1 ngày vào lúc 6h và 18h:
+	
+		0 6,18 * * * /bin/sh path/to/file
++ Thực thi lệnh mỗi 6h:
+	
+		0 */6 * * * /bin/sh path/to/file
+
++ Thực thi lệnh hàng quý ngày mồng 1 lúc 8h:
+
+		* 8 1 */3 * /bin/sh path/to/file
+
+Nếu chỉ muốn chạy lệnh 1 lần trong 1 thời gian biết trước, có thể sử dụng `at`: lệnh `at` sẽ gửi mail lại cho người cài đặt về kết quả output và lỗi.
+
+	echo {command} | at {-t time hoặc now + time minutes}
+
+Thực thi nhiều lệnh bằng `at`:
+
+	at {-t time hoặc now + time minutes}
+	-->  command --> ... --> CRTL d
+
+
+
 
 		
 
