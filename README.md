@@ -732,7 +732,14 @@ Thông tin về IP `ip -c a`
 		ethernets:
 			ens33:
 				dhcp4: false
-				addresses: [192.168.109.100/24]
+				addresses: 
+					- 192.168.109.100/24
+				routes:
+					- to: default
+						via: 192.168.109.28
+				nameservers:
+					addresses:
+						- 8.8.8.8
 	```
 	Trong đó:
 	+ `version: 2`: định nghĩa mạng bản 2
@@ -741,9 +748,23 @@ Thông tin về IP `ip -c a`
 	+ `ens33`: tên thiết bị mạng có trong `ip -c a`
 	+ `dhcp4`: vì đang thiết lập IP tĩnh, không muốn tự động cấp IP cho mạng nên để giá trị `false`
 	+ `addresses`: IP tĩnh muốn thiết lập
+	+ `routes`: danh sách các địa chỉ ( `- to`) và cách để đến các địa chỉ này (`via`)
+	+ `nameservers`: DNS server
 2. IP động
 
+	Chỉnh sửa file tại `/etc/netplan/` với nội dung
 
+	```
+	network:
+			version: 2
+			renderer: NetworkManager
+			ethernets:
+				ens33:
+					dhcp4: true
+					dhcp6: true
+	```
+
+	
 
 		
 
