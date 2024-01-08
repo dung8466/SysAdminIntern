@@ -550,6 +550,30 @@ Hệ thống thư mục trong linux:
 	hoặc: 
 
 			cfdisk [options] {device} 	--TUI
+
++ LAB:
+	Thêm 1 ổ 60G với tên `/dev/sda`
+	Ổ cứng 60G chia thành 10G,20G,30G
+	--> sử dụng `fdisk /dev/sda`
+	Ổ 10G format ext4, mount `/mnt/data1`
+	--> `sudo mkfs.ext4 /dev/sda1`
+	--> `sudo mount /dev/sda1 /mnt/data1`
+	Ổ 20G format xfs, mount `/mnt/data2`
+	--> `sudo apt install xfsprogs`
+	--> `sudo mkfs.xfs /dev/sda2`
+	--> `sudo mount /dev/sda2 /mnt/data2`
+	Ổ 30G format ext3, mount `/mnt/data3`
+	--> `sudo mkfs.ext3 /dev/sda3`
+	--> `sudo mount /dev/sda3 /mnt/data3`
+	Có thể kiểm tra đã tạo và mount đúng chưa sử dụng `lsblk`
+	Tìm kiếm UUID sử dụng `sudo blkid`
+	Tự động mount bằng cách thêm vào file `/etc/fstab`(theo cú pháp tại [Quản lý Filesystems](#quản-lý-filesystems))
+	```
+	UUID=d10afb5c-80b0-4636-a6c0-a41e8ddfbb47      	/data1  ext4    defaults 	0	2
+	UUID=5867dd50-59f1-4c62-b1e1-3552ff8b42c1       /data2  xfs     defaults	0	2
+	UUID=54ae99a0-8b6f-4d57-91d9-910394825c9c       /data3  ext3    defaults	0	2
+	```
+	Sử dụng `sudo mount -a` hoặc khởi động lại hệ thống và kiểm tra.
 3. RAID
 
 + Khái niệm:
@@ -590,6 +614,8 @@ Ví dụ: Có 3 ổ cứng, dữ liệu A được chia làm A1, A2 lưu vào �
 
 			sudo mdadm --zero-superblock /dev/sdXN
 
++ LAB:
+	
 #### Quản lý log file
 
 Trong phần [thư mục](#quản-lý-filesystems), các log file được lưu tại `/var/log` và các thư mục con trong đó.
@@ -764,9 +790,6 @@ Thông tin về IP `ip -c a`
 					dhcp6: true
 	```
 
-	
-
-		
 
 
 
