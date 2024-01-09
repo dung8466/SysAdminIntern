@@ -789,8 +789,98 @@ Thông tin về IP `ip -c a`
 					dhcp4: true
 					dhcp6: true
 	```
+Sử dụng IP tĩnh cho các server và thiết bị mạng (các thiết bị cần được truy cập bằng các thiết bị, hệ thống khác --> dễ tìm kiếm) 
+Các máy tính, điện thoại cá nhân,... nên sử dụng IP động(dễ dàng gán các địa chỉ IP từ các địa chỉ IP khả dụng)
+### DNS
+1. Lý thuyết
 
++ DNS (Domain name system): hệ thống phân giải tên miền, từ tên miền có thể trả về địa chỉ IP tương ứng và ngược lại.
++ Cơ chế hoạt động:
+	+ 
+	
+2. LAB:
++ Cấu hình DNS server
+	Cấu hình DNS nghe IPv4: Sửa đổi file `/etc/default/named`
 
+		OPTIONS="-u bind -4"
 
+	Cấu hình Forward Zone (tên miền sang ip) và Reverse Zone (ip sang tên miền)  tại `/etc/bind/named.conf.local`
+
+		zone "toilamlap.com" IN { 
+			type master;
+			file "/etc/bind/forward.toilamlap.com"; 
+			allow-update {none; };
+		}; 
+		
+		zone "89.45.103.in-addr.arpa" IN { --địa chỉ ngược lại của 3 số đầu ip
+			type master;
+			file "/etc/bind/reverse.toilamlap.com";
+			allow-update {none; };
+		};
+
+	Tạo các file`forward.toilamlap.com` và `reverse.toilamlap.com` bằng các file mẫu
+
+		sudo cp /etc/bind/db.local /etc/bind/forward.toilamlap.com
+
+		sudo cp /etc/bind/db.127 /etc/bind/reverse.toilamlap.toilamlap.com
+
+	Cấu hình file `forward.toilamlap.com`
+
+		$TTL	604800
+		@		IN			SOA	toilamlap.com.	root.toilamlap.com. (
+									11					; Serial --tăng mỗi lần thay đổi
+								604800				    ; Refresh
+								 86400                  ; Retry
+							   2419200			        ; Expire
+							    604800 )			    ; Negative Cache TTL
+		@		IN			NS	toilamlap.com.
+				IN			A	103.45.89.45
+		
+	Cấu hình file `reverse.toilamlap.com`
+
+		$TTL	604800
+		@		IN			SOA	toilamlap.com.	root.toilamlap.com. (
+									21					; Serial --tăng mỗi lần thay đổi
+								604800				    ; Refresh
+								 86400                  ; Retry
+							   2419200			        ; Expire
+							    604800 )			    ; Negative Cache TTL
+		@		IN			NS	toilamlap.com.
+				IN			A	103.45.89.45
+		45		IN			PTR	toilamlap.com.
+
+	Kiểm tra `config` đã hợp lệ chưa 
+
+		sudo named-checkconf /etc/bind/named.conf.local
+		
+		sudo named-checkzone toilamlap.com /etc/bind/forward.toilamlap.com
+		-- zone toilamlap.com/IN: loaded serial 11
+		-- OK
+		sudo named-checkzone toilamlap.com /etc/bind/reverse.toilamlap.com	
+		-- zone toilamlap.com/IN: loaded serial 21
+		-- OK
+		
++ Cấu hình client
+	Khi chưa trỏ client vào DNS server
+
+		dig toilamlap.com 
+		-- com.	5	IN	SOA	a.gtld-servers.net.	nstld.verisign-grs.com.	17044772599	1800	900	604800	86400
+
+	Trỏ client vào DNS server tại `/etc/resolv.conf`
+
+		search toilamlap.com
+		nameserver 192.168.109.130 --ip của dns server
+
+	Sau khi trỏ
+
+		dig toilamlap.com
+		-- toilamlap.com.	6453	IN	A	103.45.89.45
+		-- ;;SERVER: 192.168.109.130#53(192.168.109.130) (UDP)
+
+		dig -x 103.45.89.45
+		-- 45.89.45.103.in-addr.arpa.	6468	IN	PTR	toilamlap.com.
+		-- ;;SERVER: 192.168.109.130#53(192.168.109.130) (UDP)
+
+	DNS server chạy port mặc định 53 UDP
 
 
