@@ -796,8 +796,55 @@ Các máy tính, điện thoại cá nhân,... nên sử dụng IP động(dễ 
 
 + DNS (Domain name system): hệ thống phân giải tên miền, từ tên miền có thể trả về địa chỉ IP tương ứng và ngược lại.
 + Cơ chế hoạt động:
-	+ 
+	+ Người dùng nhập tên miền hoặc địa chỉ trang web muốn truy cập
+	+ Trình duyệt gửi tin, truy vấn DNS đệ quy để tìm IP hoặc địa chỉ mạng tương ứng
+	+ Nếu `recursor DNS server` không có kết quả, nó sẽ truy vấn tới các server khác theo trình tự: `root name server`, `Top-level domain name server` và `authoritative name server`
+	+ Ba loại server cùng làm việc và điều hướng cho đến khi nhận được thông tin DNS chứa IP cần truy vấn. Thông tin sau đó được gửi ngược lại `server DNS đệ quy` và trang web người dùng tìm kiếm được hiển thị. Công việc chính của `root name server` và `TLD name server` là định hướng, hiếm khi cung cấp thông tin
+	+ `recursor DNS server` lưu, hoặc tạm lưu vào bộ nhớ đệm thông tin domain và địa chỉ IP của nó để lần sau có thể trực tiếp xử lý truy vấn của domain, IP đó thay vì lại truy vấn vào các server khác	
+	+ Nếu yêu cầu truy vấn đã đến `authoritative name server` mà không có kết quả, sẽ trả lại thông báo lỗi
++ Các loại DNS server:
+	+ Recursor Server:	
+		Hoạt động như một thư viện, sẽ tìm kiếm thông tin về địa chỉ IP trong cơ sở dữ liệu của mình, nếu có thì trả về địa chỉ IP, nếu không sẽ truy vấn tới các server khác.
+	+ Root name Server:
+		Là server đầu tiên mà `Recursor Server` sẽ tìm kiếm nếu không có thông tin về địa chỉ IP. Là dịch vụ phân giải tên miền gốc, quản lý tất cả tên miền top-level, giúp định hướng truy vấn đến địa chỉ.
+	+ TLD name Server:
+		Lưu thông tin tên miền có phần mở rộng chung(.com, .net, .org,...), trả về địa chỉ của tên miền thấp hơn.
+	+ Authoritative name Server:
+		Lưu trữ toàn bộ thông tin về domain và subdomain, phân giải địa chỉ IP cần thiết cho `Recursor server` nếu có.
+	+ Local main server:
+		Duy trì và phát triển bởi tư nhân, lưu trữ domain và IP trả về truy vấn trực tiếp, không thông qua các server khác.
++ Các loại truy vấn DNS:
+	+ Truy vấn đệ quy:
+		Server trả về thông tin được yêu cầu(bằng cách gọi các server khác) hoặc báo lỗi nếu không tìm thấy
+	+ Truy vấn không đệ quy:
+		Server trả về trực tiếp thông tin dựa vào lưu trữ trước đó
+	+ Truy vấn lặp lại:
+		Nếu không có thông tin trùng với truy vấn, server trả về thông tin giới thiệu(gần với truy vấn nhất) đến server DNS mức thấp hơn. client sau đó sẽ thực hiện truy vấn tới địa chỉ được giới thiệu(tiếp tục cho đến khi lỗi hoặc hết thời gian)
++ Các bản ghi DNS thường sử dụng:
+
+	+ A:
+		Bản ghi lưu hostname với địa chỉ IPv4
+	+ AAAA:
+		tương tự `A` nhưng với địa chỉ IPv6
+	+ CNAME:
+		lưu tên hostname dưới tên khác, khi trả về client thì client sẽ truy vấn hostname với yêu cầu khác để biến bí danh thành `A hoặc AAAA`
+	+ MX:
+		lưu hostname của server SMTP email, dùng khi định hướng emails tới domain này bởi dịch vụ email
+	+ TXT:
+		lưu thông tin đọc được bởi người hoặc máy, dùng để xác minh, xác thực hoặc chuyển dữ liệu khác
+	+ NS:
+		lưu thông tin nameserver có nhiệm vụ cung cấp thông tin DNS cho domain
+	+ PTR:
+		ngược lại, cung cấp tên của hostname dựa vào địa chỉ IP
+	+ SRV:
+		tương tự `MX`, nhưng dùng cho các giao thức liên lạc khác để giúp với việc phát hiện
+	+ SOA:
+		Bản ghi quyền quản trị cho vùng tên domain, thể hiện `authorirarive name server` cho domain hiện tại, thông tin liên hệ, serial và thông tin về sự thay đổi của DNS
++ Để tìm địa chỉ IP cho domain:
 	
+		dig +short {domain-name}
+
+	ở đây để tìm địa chỉ IP của trang web `dantri.vn` sử dụng `dig +short dantri.vn` --> `42.113.206.28`
 2. LAB:
 + Cấu hình DNS server
 	Cấu hình DNS nghe IPv4: Sửa đổi file `/etc/default/named`
@@ -883,4 +930,52 @@ Các máy tính, điện thoại cá nhân,... nên sử dụng IP động(dễ 
 
 	DNS server chạy port mặc định 53 UDP
 
+### DHCP
+1. Lý thuyết
+2. LAB:
 
+	Cấu hình DHCP server tại `/etc/dhcp/dhcpd.conf`
+
+	```
+	default-lease-time 600;
+	max-lease-time 7200;
+	authoritative;
+
+	ddns-update-style none;
+	subnet 192.168.109.0 netmask 255.255.255.0 {
+		range 192.168.109.100 192.168.109.200;
+		option routers 192.168.109.254;
+		option domain-name-servers 192.168.109.135 192.168.109.136;
+	}
+	host dungnt-dns {
+	hardware ethernet 00:0c:29:8f:ff:3a;
+	fixed-address 192.168.109.10;
+	}
+	```
+	Trong đó:
+	+ `default-lease-time`: thời gian tối thiểu mà thiết bị gán 1 IP
+	+ `max-lease-time`: thời gian tối đa mà IP có thể gán cho thiết bị
+	+ `authoritative`: Server DHCP là server chính thức cho mạng cục bộ
+	+ `ddns-update-style`: Server liệu có thử cập nhật dns server khi xác nhận gán IP không
+	+ `subnet <192.168.109.0> netmask <255.255.255.0> `: địa chỉ mạng và định nghĩa mạng của server(sử dụng `ip -c a`)
+	+ `range <192.168.109.100> <192.168.109.200>`: dải IP mà Server sẽ gán cho thiết bị 
+	+ `option routers <192.168.109.254>`: server "khuyến khích" các thiết bị sử dụng làm default gateway
+	+ `option domain-name-servers <192.168.109.135> <192.168.109.136>`: dns server kèm theo với default gateway
+	+ `host <dungnt-dns>`: tên host của thiết bị muốn gán IP cố định
+	+ `hardware <ethernet> <00:0c:29:8f:ff:3a>`: phần cứng mạng của thiết bị(tên và địa chỉ IPv6)
+	+ `fixed-address 192.168.109.10`: địa chỉ IP muốn gán cố định
+
+	Gán DHCP Server cho 1 giao diện cụ thể tại `/etc/default/isc-dhcp-server`:
+	```
+	INTERFACESv4="ens33"
+	```
+	Khởi động lại DHCP server
+		
+		sudo systemctl restart isc-dhcp-server
+
+	Kiểm tra DHCP server
+		
+		sudo systemctl status isc-dhcp-server
+	hoặc
+		
+		journalctl _PID=<id của isc-dhcp-server>
