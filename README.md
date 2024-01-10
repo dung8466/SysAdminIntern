@@ -449,6 +449,9 @@ Hệ thống thư mục trong linux:
 		chown [option]... {new_owner | --reference=ref_file} file…
 
 	nếu sử dụng `new_owner` thì chỉ định người sở hữu mới và/hoặc nhóm bằng `[owner] [ : [group] ]`
+	Ví dụ: Cho nhóm `readers` sở hữu thư mục `/Reader`(bao gồm tất cả file và subfolder)
+
+		sudo chown -R :readers /Reader 
 + [chgrp](https://www.gnu.org/software/coreutils/manual/html_node/chgrp-invocation.html#chgrp-invocation): quản lý quyền của nhóm
 
 		chgrp [option]… {group | --reference=ref_file} file…
@@ -492,7 +495,7 @@ Hệ thống thư mục trong linux:
 
 		userdel | deluser [option] {user_name}
 
-	--> nếu không có option sẽ chỉ xóa người dùng, không xóa file, thư mục.
+	--> nếu không có option `-r` sẽ chỉ xóa người dùng, không xóa file, thư mục.
 
 + Thay đổi người dùng
 
@@ -504,6 +507,9 @@ Hệ thống thư mục trong linux:
 	+ Thay đổi địa chỉ thư mục home: `-d`
 	+ Khóa/mở khóa mật khẩu: `-L/-u`
 
+	Ví dụ: Thêm người dùng tên `bob` vào nhóm `dba_user`
+			
+			sudo usermod -aG dba_user bob
 2. Nhóm
 
 + Thêm nhóm
@@ -616,6 +622,14 @@ Ví dụ: Có 3 ổ cứng, dữ liệu A được chia làm A1, A2 lưu vào �
 
 + LAB:
 	
+	Cấu hình VM theo [hướng dẫn](https://gist.github.com/fevangelou/2f7aa0d9b5cb42d783302727665bf80a).
+	Kiểm tra cài đặt sử dụng `cat /proc/mdstat`
+
+		md0: active raid1 sda2[1] sdb2[0] -- boot partition
+		md1: active raid1 sda3[0] sdb3[1] -- root
+
+	
+
 #### Quản lý log file
 
 Trong phần [thư mục](#quản-lý-filesystems), các log file được lưu tại `/var/log` và các thư mục con trong đó.
@@ -822,24 +836,15 @@ Các máy tính, điện thoại cá nhân,... nên sử dụng IP động(dễ 
 		Nếu không có thông tin trùng với truy vấn, server trả về thông tin giới thiệu(gần với truy vấn nhất) đến server DNS mức thấp hơn. client sau đó sẽ thực hiện truy vấn tới địa chỉ được giới thiệu(tiếp tục cho đến khi lỗi hoặc hết thời gian)
 + Các bản ghi DNS thường sử dụng:
 
-	+ A:
-		Bản ghi lưu hostname với địa chỉ IPv4
-	+ AAAA:
-		tương tự `A` nhưng với địa chỉ IPv6
-	+ CNAME:
-		lưu tên hostname dưới tên khác, khi trả về client thì client sẽ truy vấn hostname với yêu cầu khác để biến bí danh thành `A hoặc AAAA`
-	+ MX:
-		lưu hostname của server SMTP email, dùng khi định hướng emails tới domain này bởi dịch vụ email
-	+ TXT:
-		lưu thông tin đọc được bởi người hoặc máy, dùng để xác minh, xác thực hoặc chuyển dữ liệu khác
-	+ NS:
-		lưu thông tin nameserver có nhiệm vụ cung cấp thông tin DNS cho domain
-	+ PTR:
-		ngược lại, cung cấp tên của hostname dựa vào địa chỉ IP
-	+ SRV:
-		tương tự `MX`, nhưng dùng cho các giao thức liên lạc khác để giúp với việc phát hiện
-	+ SOA:
-		Bản ghi quyền quản trị cho vùng tên domain, thể hiện `authorirarive name server` cho domain hiện tại, thông tin liên hệ, serial và thông tin về sự thay đổi của DNS
+	+ A: Bản ghi lưu hostname với địa chỉ IPv4
+	+ AAAA: tương tự `A` nhưng với địa chỉ IPv6
+	+ CNAME: lưu tên hostname dưới tên khác, khi trả về client thì client sẽ truy vấn hostname với yêu cầu khác để biến bí danh thành `A hoặc AAAA`
+	+ MX: lưu hostname của server SMTP email, dùng khi định hướng emails tới domain này bởi dịch vụ email
+	+ TXT: lưu thông tin đọc được bởi người hoặc máy, dùng để xác minh, xác thực hoặc chuyển dữ liệu khác
+	+ NS: lưu thông tin nameserver có nhiệm vụ cung cấp thông tin DNS cho domain
+	+ PTR: ngược lại, cung cấp tên của hostname dựa vào địa chỉ IP
+	+ SRV: tương tự `MX`, nhưng dùng cho các giao thức liên lạc khác để giúp với việc phát hiện
+	+ SOA: Bản ghi quyền quản trị cho vùng tên domain, thể hiện `authorirarive name server` cho domain hiện tại, thông tin liên hệ, serial và thông tin về sự thay đổi của DNS
 + Để tìm địa chỉ IP cho domain:
 	
 		dig +short {domain-name}
@@ -932,6 +937,17 @@ Các máy tính, điện thoại cá nhân,... nên sử dụng IP động(dễ 
 
 ### DHCP
 1. Lý thuyết
+
+	DHCP giao tiếp sử dụng giao thức UDP, dùng port 67 để nghe thông tin đến và port 68 để trả lời.
++ Nguyên lý hoạt động:
+	
+	+ Client tạo bản tin `DISCOVERY` để yêu cầu cung cấp IP gửi cho server
+	+ Client chưa biết địa chỉ chính xác của server sẽ cấp IP nên gửi bản tin dưới dạng boardcast
+	+ Server nhận bản tin `DISCOVERY` và kiểm tra địa chỉ IP nào phù hợp để cấp pháp
+	+ Server gửi bản tin `OFFER`(bao gồm thông tin về IP và các cấu hình khác mà client yêu cầu để truy cập mạng) dưới dạng boardcast
+	+ Client nhận và chọn `OFFER` đầu tiên nhận được. Nếu không nhận được `OFFER` trong 1 khoảng thời gian, client sẽ gửi lại bản tin `DISCOVERY`
+	+ Client gửi bản tin `REQUEST` dưới dạng boardcast, server nào nhận `OFFER` thì có nghĩa là client đồng ý nhận IP, server nào không nhận `OFFER` thì bỏ qua gói tin này
+	+ Server nhận `OFFER` kiểm tra IP còn sử dụng được hay không. Nếu còn thì ghi nhận thông tin và gửi lại gói tin `PACK`, nếu không gửi gói tin `PNAK` và quay lại bước 1
 2. LAB:
 
 	Cấu hình DHCP server tại `/etc/dhcp/dhcpd.conf`
@@ -979,3 +995,86 @@ Các máy tính, điện thoại cá nhân,... nên sử dụng IP động(dễ 
 	hoặc
 		
 		journalctl _PID=<id của isc-dhcp-server>
+
+### SSH
+
+Cho phép kết nối giữa máy chủ và máy khách một cách bảo mật, có thể bằng mật khẩu, key(1 cặp public và private key). 
+	
+Private key dùng để định danh người dùng, chỉ được lưu tại máy người dùng, không chia sẻ. 
+
+Public key dùng để xác thực người dùng, copy tới ssh host. Khi client muốn ssh sử dụng key, public key sẽ được kiểm tra với private key, nếu phù hợp sẽ cho kết nối.
+	
+SSH cung cấp giao diện chữ(terminal) để làm việc, các câu lệnh được gửi tới máy khách và thực hiện tại đó.
+	
+SSH tới host
+
+	ssh <user_name>@<IP | domain of host>
+
+nếu tên người client dùng trùng với tên người dùng tại host
+
+	ssh <IP | domian of host>
+
+Mặc định sẽ ssh sử dụng port 22, nếu muốn sử dụng port khác
+
+	ssh <user_name>@<IP | domain of host> -p <port_number>
+
+Copy `public key` tới host --> ssh không cần mật khẩu
+
+	ssh-copy-id <use_name>@<IP | domain of host>
+
+hoặc 
+
+	cat ~/.ssh/id_rsa.pub | ssh <user_name>@<IP | domain of host> "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys"
+
+Tạo key ssh
+
+	ssh-keygen 
+
+Mặc định sẽ tạo ra key RSA 2048 bit. Có thể tùy biến như loại xác thực, số byte, ....
+
+	ssh-keygen -t <authentication_type> -b <byte number> ...
+
+Trong lúc tạo key có thể cài thêm mật khẩu cho key để tăng bảo mật. Thay đổi mật khẩu này bằng
+
+	ssh-keygen -f <private_key> -p
+
+Khi private key có mật khẩu mà không muốn nhập lại mật khẩu đó mỗi lần ssh, sử dụng `ssh-add`
+
+	eval $(ssh-agent) -- khởi chạy agent trong nền
+	ssh-add		   -- thêm private key để agent quản lý
+		
+### rsync và scp 
+
+rsync trên cùng 1 máy
+
+	rsync [option]... source... dest
+
+rsync trên 2 máy khác nhau
+
++ Từ client đến server
+
+		rsync -azv source <user_name>@<IP | domain of host>:dest
+
++ Từ server đến client tại client
+
+		rsync -azve ssh <user_name>@<IP | domain of host>:source dest
+
+	Trong đó:
+	+ `-a`: tất cả symlink, thuộc tính, quyền,... đều được giữ nguyên
+	+ `-z`: nén các file trong lúc truyền
+	+ `-v`: hiện quá trình
+	+ `-e`: remote shell sử dụng, ở đây là ssh
+
+scp trên cùng 1 máy
+
+	scp [option]... source... dest
+
+scp trên 2 máy khác nhau
+
++ Từ client đến server
+
+		scp source... <user_name>@<IP | domain of host>:/dest
+
++ Giữa 2 server thông qua client
+
+		scp -3 <user_name1>@<IP | domain of host 1> <user_name2>@<IP | domain of host 2>
