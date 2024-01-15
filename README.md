@@ -675,15 +675,15 @@ Hệ thống thư mục trong linux:
 
 	Liệt kê các disk:
 
-			fdisk -l
+		fdisk -l
 
 	Bắt đầu việc phân vùng:
 
-			fdisk [options] {device}
+		fdisk [options] {device}
 		
 	hoặc: 
 
-			cfdisk [options] {device} 	--TUI
+		cfdisk [options] {device} 	--TUI
 
 3. <p id="lab-disk">LAB:</p>
 	Thêm 1 ổ 60G với tên `/dev/sda`
