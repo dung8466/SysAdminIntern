@@ -686,6 +686,7 @@ Hệ thống thư mục trong linux:
 		cfdisk [options] {device} 	--TUI
 
 3. <p id="lab-disk">LAB:</p>
+
 	Thêm 1 ổ 60G với tên `/dev/sda`
 	Ổ cứng 60G chia thành 10G,20G,30G
 	--> sử dụng `fdisk /dev/sda`
