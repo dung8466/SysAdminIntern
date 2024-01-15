@@ -327,37 +327,52 @@ Lệnh `uptime` trả về kết quả `load average: <0,74>, <0,77>, <0,64>` - 
 		SIGKILL	9			Kill signal
 		SIGTERM	15			Termination signal 
 		SIGSTOP	17,19,23		Stop process
-		
+
+  	Lệnh `kill` gửi tín hiệu TERMINATE tới tiến trình, cho phép nó `clean up`(giải phóng bộ nhớ, xử lý tiến trình con,...). Tiến trình có thể bỏ qua nếu đang trong lúc giải phóng bộ nhớ,....
+   	Lệnh `kill -9` buộc tiến trình dừng mà không đợi `clean up`
 ### Quản lý packages
 
 1. <p id="cài-đặt-phần-mềm">Cài đặt phần mềm:</p>
 
+	Sử dụng package manager:
+
 		sudo apt install {package}
 
-2. <p id="gỡ-bỏ-phần-mềm">Gỡ phần mềm:</p>
+	Sử dụng file deb:
+
+		sudo dpkg -i path/to/deb_file
+
+	Compile from source:
+
+		cd path/to/source
+		./configure -- Resolving Dependencies, nếu có
+   		make
+   		sudo make install -- nếu chưa install
+
+3. <p id="gỡ-bỏ-phần-mềm">Gỡ phần mềm:</p>
 	
 		sudo apt remove {package} -y
 
 	sau khi gỡ bỏ package thì nên sử dụng `sudo apt update`.
 
-3. <p id="cập-nhật-thông-tin-package">Cập nhật thông tin package:</p>
+4. <p id="cập-nhật-thông-tin-package">Cập nhật thông tin package:</p>
 
 		sudo apt update
 
 	câu lệnh sử dụng khi cần cập nhật danh sách package trong kho repositories.
 
-4. <p id="cập-nhật-phiên-bản-package">Cập nhật phiên bản package:</p>
+5. <p id="cập-nhật-phiên-bản-package">Cập nhật phiên bản package:</p>
 
 		sudo apt upgrade
 
 	câu lệnh sẽ cập nhật phiên bản của các package có sẵn trong máy thông qua thông tin về package cập nhật từ `sudo apt update`.
-5. <p id="danh-sách-package-đã-cài">Danh sách package đã cài:</p>
+6. <p id="danh-sách-package-đã-cài">Danh sách package đã cài:</p>
 
 		sudo apt list --installed
 
 	từ đây nếu muốn xem đã cài package nào chưa `sudo apt list --installed | grep {package}`
 		
-6. <p id="tìm-kiếm-package-muốn-cài"> Tìm kiếm package muốn cài:</p>
+7. <p id="tìm-kiếm-package-muốn-cài"> Tìm kiếm package muốn cài:</p>
 
 		sudo apt search <package_name>
 [back to top](#sysadminintern)
@@ -407,6 +422,8 @@ Lệnh `uptime` trả về kết quả `load average: <0,74>, <0,77>, <0,64>` - 
 #### Quản lý filesystems
 
 Dùng để quản lý dữ liệu đọc và lưu của hệ thống.
+Filesystem là cách quản lý dữ liệu trong partition theo 1 cách dễ quản lý.
+Partition cài đặt điểm bắt đầu, kết thúc của phân vùng trên ổ cứng.
 	
 Các filesystems thông thường: ext{2,3,4}, ntfs, vfat, proc,...
 
