@@ -287,7 +287,7 @@ Tìm kiếm ngược trong các trang sử dụng `?`, tìm kiếm xuôi sử d�
 + Lệnh `top`: tương tự như lệnh `ps` nhưng đưa thông tin liên tục thời gian thực cho đến khi báo dừng(`CRTL C`).
 + Lệnh `htop`: tương tự `top` nhưng nâng cấp giao diện, dễ đọc.
 + Lệnh `uptime`: cho biết `load-average` của hệ thống. `load-average` là trung bình số threads đang chạy hoặc trong hàng chờ để chạy.
-Lệnh `uptime` trả về kết quả `load average: 0,74, 0,77, 0,64` - các thông số lần lượt là trung bình trong 1 phút, 5 phút và trong 15 phút.
+Lệnh `uptime` trả về kết quả `load average: <0,74>, <0,77>, <0,64>` - các thông số lần lượt là trung bình trong 1 phút, 5 phút và trong 15 phút.
 
 + Các phương pháp lấy thông tin ram, cpu, id:
 	+ Sử dụng `ps`:
