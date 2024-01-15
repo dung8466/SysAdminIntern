@@ -235,11 +235,19 @@ Tìm kiếm ngược trong các trang sử dụng `?`, tìm kiếm xuôi sử d�
 
 	các output hợp lệ `012-322`, `1-2-3`,...
 
+	ví dụ: tìm kiếm 1 dòng sau các dòng chứa "Alice" ở file test
+
+		grep -A 1 "Alice" test
+
 + [sed](https://www.gnu.org/software/sed/manual/sed.html): lọc và xử lý chữ trong file hoặc kết quả của pipeline.
 
 		sed [option]... {script} [file]...
 
 	sử dụng `-i` nếu muốn thay đổi tại chỗ thay vì in ra màn hình.
+
+	ví dụ: Xóa từ dòng thứ 5 đến hết trong file test
+
+		sed -i '5,$d' test
 
 	ví dụ: Thay thế "h" bằng "l" trong toàn bộ file
 
