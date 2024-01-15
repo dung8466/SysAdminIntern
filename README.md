@@ -9,7 +9,7 @@
         <li><a href="#các-lệnh-cơ-bản">Các lệnh cơ bản</a>
         <ul>
         <li><a href="#thay-đổi-thư-mục"> Thay đổi thư mục</li>
-        <li><a href="#xem-thư-mục-đang-làm-việc"> Thay đổi thư mục đang làm việc</a></li>
+        <li><a href="#xem-thư-mục-đang-làm-việc"> Xem thư mục đang làm việc</a></li>
         <li><a href="#lịch-sử-lệnh">Lịch sử lệnh</a></li>
         <li><a href="#xử-lý-văn-bản">Xử lý văn bản</a></li>
         </ul>
