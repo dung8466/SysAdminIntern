@@ -702,7 +702,8 @@ Hệ thống thư mục trong linux:
 	Có thể kiểm tra đã tạo và mount đúng chưa sử dụng `lsblk`
 	Tìm kiếm UUID sử dụng `sudo blkid`
 	Tự động mount bằng cách thêm vào file `/etc/fstab`(theo cú pháp tại [Quản lý Filesystems](#quản-lý-filesystems))
-	```
+	
+ 	```
 	UUID=d10afb5c-80b0-4636-a6c0-a41e8ddfbb47      	/data1  ext4    defaults 	0	2
 	UUID=5867dd50-59f1-4c62-b1e1-3552ff8b42c1       /data2  xfs     defaults	0	2
 	UUID=54ae99a0-8b6f-4d57-91d9-910394825c9c       /data3  ext3    defaults	0	2
