@@ -556,6 +556,10 @@ Hệ thống thư mục trong linux:
 	+ tìm kiếm file có dung lượng trong khoảng 50M đến 100M
 	`find / -size +50M -size -100M`
 
+	+ tìm kiếm file tên `test` hoặc `Test`
+		`find -iname "test"`
+	+ tìm các thư mục rỗng
+		`find / -type d -empty`
 	
 + [locate](https://manned.org/locate): Tìm kiếm dựa trên file database tại ``/var/cache/locate/locatedb``, trước khi tìm kiếm cần `sudo updatedb`
 
@@ -588,6 +592,10 @@ Hệ thống thư mục trong linux:
 	Ví dụ: Cho nhóm `readers` sở hữu thư mục `/Reader`(bao gồm tất cả file và subfolder)
 
 		sudo chown -R :readers /Reader 
+
+	Nếu muốn cho cả nhóm `readers` và user `reader` sở hữu thư mục `/Reader`
+
+		sudo chown -R reader:readers /Reader
 + [chgrp](https://www.gnu.org/software/coreutils/manual/html_node/chgrp-invocation.html#chgrp-invocation): quản lý quyền của nhóm
 
 		chgrp [option]… {group | --reference=ref_file} file…
@@ -1331,3 +1339,4 @@ scp trên 2 máy khác nhau
 		scp -3 <user_name1>@<IP | domain of host 1> <user_name2>@<IP | domain of host 2>
 
 [back to top](#sysadminintern)
+
