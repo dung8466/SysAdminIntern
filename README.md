@@ -1,16 +1,122 @@
 # SysAdminIntern
 
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#linux">Linux</a>
+      <ul>
+        <li><a href="#các-lệnh-cơ-bản">Các lệnh cơ bản</a>
+        <ul>
+        <li><a href="#thay-đổi-thư-mục"> Thay đổi thư mục</li>
+        <li><a href="#xem-thư-mục-đang-làm-việc"> Thay đổi thư mục đang làm việc</a></li>
+        <li><a href="#lịch-sử-lệnh">Lịch sử lệnh</a></li>
+        <li><a href="#xử-lý-văn-bản">Xử lý văn bản</a></li>
+        </ul>
+</li>
+        <li><a href="#quản-lý-tiến-trình">Quản lý tiến trình</a>
+<ul>
+<li><a href="#thông-tin-tiến-trình">Thông tin tiến trình</a>
+<li><a href="#quản-lý-tiến-trình-kill">Quản lý tiến trình</a>
+</ul>
+<li><a href="#quản-lý-packages">Quản lý packages</a>
+	<ul>
+	<li><a href="#cài-đặt-phần-mềm">Cài đặt phần mềm</a></li>
+	<li><a href="#cập-nhật-thông-tin-package">Cập nhật thông tin package</a></li>
+	<li><a href="#cập-nhật-phiên-bản-package">Cập nhật phiên bản package</a></li>
+	<li><a href="#danh-sách-package-đã-cài">Danh sách package đã cài</a></li>
+	<li><a href="#tìm-kiếm-package-muốn-cài">Tìm kiếm package muốn cài</a></li>
+	</ul>
+</li>
+       <li><a href="#startup-script">StartUp Script</a>
+	<ul>
+	<li><a href="#tạo-file-service">Tạo file service</a></li>
+	<li><a href="#sử-dụng-cron">Sử dụng Cron</a></li>
+	<li><a href="#sử-dụng-rc.local">Sử dụng rc.local</a></li>
+	<li><a href="#sử-dụng-init.d">Sử dụng init.d</a></li>
+	</ul>
+</li> 
+       <li><a href="#quản-lý-hệ-thống">Quản lý hệ thống</a>
+	<ul>
+	<li><a href="#quản-lý-filesystems">Quản lý filesystems</a>
+	<ul>
+	<li><a href="#sửa-lỗi-filesystems">Sửa lỗi filesystems</a></li>
+	<li><a href="#tạo-filesystems">Tạo filesystems</a></li>
+	<li><a href="#mount-và-umount">Mount/Unmount filesystems</a></li>
+	</ul>
+</li>
+<li><a href ="#quản-lý-files">Quản lý files</a>
+<ul>
+<li><a href="#các-lệnh-cơ-bản-file">Các lệnh cơ bản</a></li>
+<li><a href="#tìm-kiếm-file">Tìm kiếm file</a></li>
+<li><a href="#quản-lý-quyền-truy-cập-sở-hữu">Quản lý quyền truy cập và sở hữu</a></li>
+<li><a href="#quản-lý-thuộc-tính">Quản lý thuộc tính</a></li>
+</ul>
+</li>
+<li><a href="#quản-lý-người-dùng-và-nhóm">Quản lý người dùng và nhóm</a>
+<ul>
+<li><a href="#người-dùng">Người dùng</a></li>
+<li><a href="#nhóm">Nhóm</a></li>
+</ul>
+</li>
+<li><a href="#quản-lý-disk">Quản lý disk</a>
+<ul>
+<li><a href="#kiểm-tra-disk">Kiểm tra disk</a></li>
+<li><a href="#phân-vùng-disk">Phân vùng disk</a></li>
+<li><a href ="#lab-disk">LAB</a></li>
+<li><a href ="#raid">RAID</a>
+	<ul>
+	<li><a href="#lab-raid">LAB</a></li>
+	</ul>
+</li>
+</ul>
+</li>
+<li><a href="#quản-lý-log-file">Quản lý log file</a></li>
+<li><a href="#quản-lý-công-việc">Quản lý công việc</a></li>
+	</ul>
+</li>
+   </ul>
+    </li>
+    <li>
+      <a href="#network">Network</a>
+      <ul>
+      <li><a href="#ip">IP</a>
+		<ul>
+		<li><a href="#ip-tĩnh">IP tĩnh</a></li>
+		<li><a href="#ip-động">IP động</a></li>
+		</ul>
+		</li>
+      <li><a href="#dns">DNS</a>
+	<ul>
+	<li><a href="#lý-thuyết-dns">Lý thuyết</a></li>
+	<li><a href="#lab-dns">LAB</a></li>
+	</ul>
+		</li>
+      <li><a href="#dhcp">DHCP</a>
+		<ul>
+		<li><a href="#lý-thuyết-dhcp">Lý thuyết</a></li>
+		<li><a href="#lab-dhcp">LAB</a></li>
+		</ul>
+		</li>
+      <li><a href="#ssh">SSH</a></li>
+      <li><a href="#rsync-và-scp ">rsync và scp </a></li>
+      </ul>
+  </li>
+  </ol>
+</details>
+
+
 ## Linux
 
 ### Các lệnh cơ bản
 
-1. Thay đổi thư mục:
+1. <p id="thay-đổi-thư-mục">Thay đổi thư mục:</p>
 	
 		cd [path]
 
 	`path` có thể là tương đối hoặc tuyệt đối 
 
-2. Xem thư mục đang làm việc
+2. <p id="xem-thư-mục-đang-làm-việc">Xem thư mục đang làm việc:</p>
 
 		pwd [options]
 
@@ -18,7 +124,7 @@
 	+ -L: bao gồm cả symlinks
 	+ -P: không bao gồm symlinks
 
-3. Lịch sử lệnh
+3. <p id="lịch-sử-lệnh">Lịch sử lệnh:</p>
 
 		history
 
@@ -31,7 +137,7 @@
 
 	Tìm các lệnh trong lịch sử dùng reverse-i search sử dụng `CTRL + r` -> câu lệnh -> `CTRL + r` để duyệt hoặc `CTRL + s` duyệt ngược lại.
 
-4. Xử lý văn bản
+4. <p id="xử-lý-văn-bản">Xử lý văn bản:</p>
 
 + [cat](https://www.gnu.org/software/coreutils/manual/html_node/cat-invocation.html#cat-invocation): nối các văn bản và cho đầu ra là nội dung các file.
 
@@ -170,9 +276,10 @@ Tìm kiếm ngược trong các trang sử dụng `?`, tìm kiếm xuôi sử d�
 
 			awk '$2 ~ /h[eo]/ {print $0}' file
 
+	[back to top](#sysadminintern)
 ### Quản lý tiến trình
 
-1.  Thông tin tiến trình
+1.  <p id="thông-tin-tiến-trình">Thông tin tiến trình:</p>
 
 + Lệnh `ps`: thông tin về các tiến trình đang chạy của người dùng hiện tại.
 	`ps aux` sẽ liệt kê toàn bộ tiến trình của toàn bộ người dùng(`a`), các tiến trình không kết nối với terminal nào(`x`) và nhiều thông tin hơn(`u`).
@@ -203,7 +310,7 @@ Lệnh `uptime` trả về kết quả `load average: 0,74, 0,77, 0,64` - các t
 
 		hoặc sử dụng `F6` trong khi chạy `htop` và lựa chọn theo yêu cầu.
 
-2. Quản lý tiến trình
+2. <p id="quản-lý-tiến-trình-kill">Quản lý tiến trình:</p>
 
 	Kết thúc tiến trình sử dụng `kill`:
 
@@ -223,37 +330,40 @@ Lệnh `uptime` trả về kết quả `load average: 0,74, 0,77, 0,64` - các t
 		
 ### Quản lý packages
 
-1. Cài đặt phần mềm:
+1. <p id="cài-đặt-phần-mềm">Cài đặt phần mềm:</p>
 
 		sudo apt install {package}
 
-2. Gỡ phần mềm:
+2. <p id="gỡ-bỏ-phần-mềm">Gỡ phần mềm:</p>
 	
 		sudo apt remove {package} -y
 
 	sau khi gỡ bỏ package thì nên sử dụng `sudo apt update`.
 
-3. Cập nhật thông tin package:
+3. <p id="cập-nhật-thông-tin-package">Cập nhật thông tin package:</p>
 
 		sudo apt update
 
 	câu lệnh sử dụng khi cần cập nhật danh sách package trong kho repositories.
 
-4. Cập nhật phiên bản package:
+4. <p id="cập-nhật-phiên-bản-package">Cập nhật phiên bản package:</p>
 
 		sudo apt upgrade
 
 	câu lệnh sẽ cập nhật phiên bản của các package có sẵn trong máy thông qua thông tin về package cập nhật từ `sudo apt update`.
-5. Danh sách package đã cài:
+5. <p id="danh-sách-package-đã-cài">Danh sách package đã cài:</p>
 
 		sudo apt list --installed
 
 	từ đây nếu muốn xem đã cài package nào chưa `sudo apt list --installed | grep {package}`
 		
+6. <p id="tìm-kiếm-package-muốn-cài"> Tìm kiếm package muốn cài:</p>
 
+		sudo apt search <package_name>
+[back to top](#sysadminintern)
 ### StartUp Script
 
-1. Tạo file service:
+1. <p id="tạo-file-service">Tạo file service:</p>
 
 	Có thể tạo file với đuôi .service tại `/etc/systemd/system` 
 
@@ -271,7 +381,7 @@ Lệnh `uptime` trả về kết quả `load average: 0,74, 0,77, 0,64` - các t
 
 	Để có thể chạy khi hệ thống khởi động `sudo systemctl enable custom.service`
 
-2.  Sử dụng cron:
+2.  <p id="sử-dụng-cron">Sử dụng cron:</p>
 
 	Có thể thếm vào crontab file với câu lệnh `crontab -e` đoạn code khởi tạo cùng hệ thống
 
@@ -279,7 +389,7 @@ Lệnh `uptime` trả về kết quả `load average: 0,74, 0,77, 0,64` - các t
 
 	Tuy vậy, không phải phiên bản nào của cron cũng hỗ trợ `@reboot`.
 
-3. Sử dụng rc.local;
+3. <p id="sử-dụng-rc.local">Sử dụng rc.local:</p>
 
 	Có thể thêm vào file `/etc/rc.d/rc.local` đoạn code chạy file (vì file rc.local sẽ chạy lúc hệ thống khởi động)
 
@@ -287,10 +397,11 @@ Lệnh `uptime` trả về kết quả `load average: 0,74, 0,77, 0,64` - các t
 
 	Cần đảm bảo file rc.local có thể chạy được `chmod +x /etc/rc.d/rc.local`
 
-4. Sử dụng init.d:
+4. <p id="sử-dụng-init.d">Sử dụng init.d:</p>
 
 	Có thể thêm file bash script vào `/etc/init.d` và sử dụng `sudo update-rc.d <service name> defaults [priority]`
 
+[back to top](#sysadminintern)
 ### Quản lý hệ thống 
 
 #### Quản lý filesystems
@@ -321,7 +432,7 @@ Hệ thống thư mục trong linux:
 | /tmp | chứa các file tạm thời (thường tạo bởi các ứng dụng đang chạy) |
 | /var | chứa các thư mục như `/log`(các file log của hệ thống), `/mail`(mail nhận được), `/spool`(hàng chờ), `/src`(src chưa được compile) và `/tmp`(tmp file được lưu sau khi tắt máy) |
 
-1. Sửa lỗi filesystems: sử dụng [fsck](https://manned.org/fsck)
+1. <p id="sửa-lỗi-filesystems">Sửa lỗi filesystems: sử dụng <a href="https://manned.org/fsck"> fsck</a></p>
 
 	các filesystems cần kiểm tra và sửa nên unmount trước khi chạy câu lệnh.
 
@@ -331,14 +442,14 @@ Hệ thống thư mục trong linux:
 	`option -r`: để người dùng tự chọn cách sửa 
 	`option -a`: tự động sửa 
 
-+ Tạo filesystems: sử dụng [mkfs](https://manned.org/mkfs)
+2. <p id="tạo-filesystems">Tạo filesystems: sử dụng <a href="https://manned.org/mkfs">mkfs</a></p>
 
 		mkfs [options] [-t type] [fs-option] device [size]
 
 	không có `-t type` thì mặc định sử dụng `ext2`
 	trả về 0 thành công và 1 nếu thất bại.
 
-2. Mount/Unmount filesystems: sử dụng [mount](https://manned.org/mount.8) và [umount](https://manned.org/umount.8)
+2. <p id="mount-và-umount">Mount/Unmount filesystems: sử dụng <a href="https://manned.org/mount.8">mount</a> và <a href="https://manned.org/umount.8">umount</a></p>
 
 + mount: đăng ký filesystem của thiết bị vào 1 điểm chỉ định trên cây thư mục. Thông tin các thiết bị thường được mount tới đâu được lưu trữ tại `/ect/fstab`
 
@@ -380,7 +491,7 @@ Hệ thống thư mục trong linux:
 
 #### Quản lý files
 
-1. Các lệnh cơ bản:
+1. <p id="các-lệnh-cơ-bản-file">Các lệnh cơ bản:</p>
 
 	+ [ls](https://www.gnu.org/software/coreutils/ls):
 		liệt kê nội dung thư mục
@@ -409,7 +520,7 @@ Hệ thống thư mục trong linux:
 		ln [option]... path/to/file|path/to/directory path/to/symlink|path/to/hardlink
 		```
 
-2. Tìm kiếm file
+2. <p id="tìm-kiếm-file">Tìm kiếm file:</p>
 
 + [find](https://manned.org/find): Có thể tìm kiếm file dựa trên tên, đuôi, size, quyền của file, thời gian tạo,...
 
@@ -442,7 +553,7 @@ Hệ thống thư mục trong linux:
 
 	`-a` sẽ in ra toàn bộ các kết quả chứa câu lệnh.
 
-3. Quản lý quyền truy cập, sở hữu
+3. <p id="quản-lý-quyền-truy-cập-sở-hữu">Quản lý quyền truy cập, sở hữu:</p>
 
 + [chown](https://www.gnu.org/software/coreutils/manual/html_node/chown-invocation.html#chown-invocation): quản lý quyền của người dùng và nhóm 
 	
@@ -469,7 +580,7 @@ Hệ thống thư mục trong linux:
 		`sudo chmod a+r,go-w file`
 	+ số: `[special mode bit]{file's owner}{other in group}{other not in group}`, `4:r,2:w,1:x`
 
-4. Quản lý thuộc tính
+4. <p id="quản-lý-thuộc-tính">Quản lý thuộc tính:</p>
 
 		chattr [ -RVf ] [ -v version ] [ mode ] files...
 
@@ -483,7 +594,7 @@ Hệ thống thư mục trong linux:
 
 #### Quản lý người dùng và nhóm
 
-1. Người dùng
+1. <p id="người-dùng">Người dùng:</p>
 
 + Thêm người dùng:
 
@@ -510,7 +621,7 @@ Hệ thống thư mục trong linux:
 	Ví dụ: Thêm người dùng tên `bob` vào nhóm `dba_user`
 			
 			sudo usermod -aG dba_user bob
-2. Nhóm
+2. <p id="nhóm">Nhóm:</p>
 
 + Thêm nhóm
 
@@ -527,7 +638,7 @@ Hệ thống thư mục trong linux:
 
 #### Quản lý disk
 
-1. Kiểm tra disk
+1. <p id="kiểm-tra-disk">Kiểm tra disk:</p>
 
 + [df](https://www.gnu.org/software/coreutils/manual/html_node/df-invocation.html#df-invocation):
 
@@ -543,7 +654,7 @@ Hệ thống thư mục trong linux:
 
 
 	--> Điểm khác biệt của 2 câu lệnh là `df` sẽ chỉ quan tâm đến mounted filesystems chứa file/thư mục, không đi vào chi tiết và `du` chỉ  trả về dung lượng mỗi file chiếm.
-2. Phân vùng disk
+2. <p id="phân-vùng-disk">Phân vùng disk:</p>
 
 	Liệt kê các disk:
 
@@ -557,7 +668,7 @@ Hệ thống thư mục trong linux:
 
 			cfdisk [options] {device} 	--TUI
 
-+ LAB:
+3. <p id="lab-disk">LAB:</p>
 	Thêm 1 ổ 60G với tên `/dev/sda`
 	Ổ cứng 60G chia thành 10G,20G,30G
 	--> sử dụng `fdisk /dev/sda`
@@ -580,7 +691,7 @@ Hệ thống thư mục trong linux:
 	UUID=54ae99a0-8b6f-4d57-91d9-910394825c9c       /data3  ext3    defaults	0	2
 	```
 	Sử dụng `sudo mount -a` hoặc khởi động lại hệ thống và kiểm tra.
-3. RAID
+3. <p id="raid">RAID:</p>
 
 + Khái niệm:
 
@@ -632,7 +743,7 @@ Ví dụ: Có 3 ổ cứng, dữ liệu A được chia làm A1, A2 lưu vào �
 	+ Kiểm tra thông tin chi tiết:
 
 			sudo mdadm --detail /dev/md0
-+ LAB:
++ <p id="lab-raid">LAB:</p>
 	
 	Cấu hình VM theo [hướng dẫn](https://gist.github.com/fevangelou/2f7aa0d9b5cb42d783302727665bf80a)(tạo toàn bộ partitions cần thiết unformatted trước khi cấu hình raid).
 	Kiểm tra cài đặt sử dụng `cat /proc/mdstat`
@@ -849,13 +960,14 @@ Thực thi nhiều lệnh bằng `at`:
 	at {-t time hoặc now + time minutes}
 	-->  command --> ... --> CRTL d
 
+[back to top](#sysadminintern)
 ## Network
 
 ### IP
 
 Thông tin về IP `ip -c a`
 
-1. IP tĩnh
+1. <p id="ip-tĩnh">IP tĩnh:</p>
 
 	Thiết lập IP tĩnh cho Ubuntu: chỉnh sửa file tại `/etc/netplan/`(nếu không có file có thể tạo)
 	Nội dung file cơ bản:
@@ -884,7 +996,7 @@ Thông tin về IP `ip -c a`
 	+ `addresses`: IP tĩnh muốn thiết lập
 	+ `routes`: danh sách các địa chỉ ( `- to`) và cách để đến các địa chỉ này (`via`)
 	+ `nameservers`: DNS server
-2. IP động
+2. <p id="ip-động">IP động:</p>
 
 	Chỉnh sửa file tại `/etc/netplan/` với nội dung
 
@@ -899,8 +1011,10 @@ Thông tin về IP `ip -c a`
 	```
 Sử dụng IP tĩnh cho các server và thiết bị mạng (các thiết bị cần được truy cập bằng các thiết bị, hệ thống khác --> dễ tìm kiếm) 
 Các máy tính, điện thoại cá nhân,... nên sử dụng IP động(dễ dàng gán các địa chỉ IP từ các địa chỉ IP khả dụng)
+
+[back to top](#sysadminintern)
 ### DNS
-1. Lý thuyết
+1. <p id="lý-thuyết-dns">Lý thuyết:</p>
 
 + DNS (Domain name system): hệ thống phân giải tên miền, từ tên miền có thể trả về địa chỉ IP tương ứng và ngược lại.
 + Cơ chế hoạt động:
@@ -944,7 +1058,7 @@ Các máy tính, điện thoại cá nhân,... nên sử dụng IP động(dễ 
 		dig +short {domain-name}
 
 	ở đây để tìm địa chỉ IP của trang web `dantri.vn` sử dụng `dig +short dantri.vn` --> `42.113.206.28`
-2. LAB:
+2. <p id="lab-dns">LAB:</p>
 + Cấu hình DNS server
 	Cấu hình DNS nghe IPv4: Sửa đổi file `/etc/default/named`
 
@@ -1029,8 +1143,9 @@ Các máy tính, điện thoại cá nhân,... nên sử dụng IP động(dễ 
 
 	DNS server chạy port mặc định 53 UDP
 
+[back to top](#sysadminintern)
 ### DHCP
-1. Lý thuyết
+1. <p id="lý-thuyết-dhcp">Lý thuyết:</p>
 
 	DHCP giao tiếp sử dụng giao thức UDP, dùng port 67 để nghe thông tin đến và port 68 để trả lời.
 + Nguyên lý hoạt động:
@@ -1042,7 +1157,7 @@ Các máy tính, điện thoại cá nhân,... nên sử dụng IP động(dễ 
 	+ Client nhận và chọn `OFFER` đầu tiên nhận được. Nếu không nhận được `OFFER` trong 1 khoảng thời gian, client sẽ gửi lại bản tin `DISCOVERY`
 	+ Client gửi bản tin `REQUEST` dưới dạng boardcast, server nào nhận `OFFER` thì có nghĩa là client đồng ý nhận IP, server nào không nhận `OFFER` thì bỏ qua gói tin này
 	+ Server nhận `OFFER` kiểm tra IP còn sử dụng được hay không. Nếu còn thì ghi nhận thông tin và gửi lại gói tin `PACK`, nếu không gửi gói tin `PNAK` và quay lại bước 1
-2. LAB:
+2. <p id="lab-dhcp">LAB:</p>
 
 	Cấu hình DHCP server tại `/etc/dhcp/dhcpd.conf`
 
@@ -1090,6 +1205,7 @@ Các máy tính, điện thoại cá nhân,... nên sử dụng IP động(dễ 
 		
 		journalctl _PID=<id của isc-dhcp-server>
 
+[back to top](#sysadminintern)
 ### SSH
 
 Cho phép kết nối giữa máy chủ và máy khách một cách bảo mật, có thể bằng mật khẩu, key(1 cặp public và private key). 
@@ -1137,6 +1253,7 @@ Khi private key có mật khẩu mà không muốn nhập lại mật khẩu đ�
 	eval $(ssh-agent) -- khởi chạy agent trong nền
 	ssh-add		   -- thêm private key để agent quản lý
 		
+[back to top](#sysadminintern)
 ### rsync và scp 
 
 rsync trên cùng 1 máy
@@ -1172,3 +1289,5 @@ scp trên 2 máy khác nhau
 + Giữa 2 server thông qua client
 
 		scp -3 <user_name1>@<IP | domain of host 1> <user_name2>@<IP | domain of host 2>
+
+[back to top](#sysadminintern)
