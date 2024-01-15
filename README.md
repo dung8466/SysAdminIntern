@@ -608,7 +608,7 @@ Ví dụ: Có 3 ổ cứng, dữ liệu A được chia làm A1, A2 lưu vào �
 
 			sudo mdadm --fail /dev/md0 /dev/sdXN
 
-	+ Xóa ổ:
+	+ Xóa ổ, phải đánh dấu ổ lỗi trước khi remove ổ:
 
 			sudo mdadm --remove /dev/md0 /dev/sdXN
 
@@ -616,19 +616,113 @@ Ví dụ: Có 3 ổ cứng, dữ liệu A được chia làm A1, A2 lưu vào �
 
 			sudo mdadm --assemble /dev/md0 /dev/sdXN
 
+		hoặc 
+
+			sudo mdadm -Gv /dev/md0 -l 1 -n 3 -a /dev/sdc3
+
+		Trong đó: 
+		+ `-l 1`: raid 1
+		+ `-n 3`: tổng số ổ(tính cả ổ cần thêm)
+		+ `-a`: thêm
+
 	+ Xóa RAID metadata:
 
 			sudo mdadm --zero-superblock /dev/sdXN
 
+	+ Kiểm tra thông tin chi tiết:
+
+			sudo mdadm --detail /dev/md0
 + LAB:
 	
-	Cấu hình VM theo [hướng dẫn](https://gist.github.com/fevangelou/2f7aa0d9b5cb42d783302727665bf80a).
+	Cấu hình VM theo [hướng dẫn](https://gist.github.com/fevangelou/2f7aa0d9b5cb42d783302727665bf80a)(tạo toàn bộ partitions cần thiết unformatted trước khi cấu hình raid).
 	Kiểm tra cài đặt sử dụng `cat /proc/mdstat`
 
 		md0: active raid1 sda2[1] sdb2[0] -- boot partition
 		md1: active raid1 sda3[0] sdb3[1] -- root
 
+	Cấu hình 2 ổ còn lại Raid 0:
+
+		sudo mdadm --create --verbose /dev/md2 --level=0 --raid-devices=2 /dev/sdc /dev/sdd
+
+	Mount vào /mnt/md2 để kiểm tra:
+
+		sudo mkfs.ext4 /dev/md2
+		sudo mkdir -p /mnt/md2
+		sudo mount /dev/md2 /mnt/md2
+		cd /mnt/md2
+
+	Kiểm tra sử dụng `sysbench`:
+
+		sudo sysbench fileio --file-total-size=15G --file-test-mode=rndrw prepare
+
+	`--file-total-size=15G`: file test có độ lớn 15G
+	`--file-test-mode=rndrw`: chế độ đọc viết ngẫu nhiên
+	--> `16106127360 bytes written in 14.81 seconds (1036.594 Mib/sec)`
+
+		sudo sysbench fileio --file-total-size=15G --file-test-mode=rndrw run
+
+	--> `File operations:
+				reads/s: 9588.64
+				writes/s: 6392.36
+				fsyncs/s: 20460.02
+			Throughput:
+				read, MiB/s: 149.82
+				written, MiB/s: 99.88`
+
+		sudo sysbench fileio --file-total-size=15G --file-test-mode=rndrw cleanup
+
+	--> Xóa các file đã tạo
+
+	Reset 2 ổ cứng:
 	
+		sudo umount /dev/md2
+		sudo mdadm --stop /dev/md2
+		sudo mdadm --zero-superblock /dev/sdc
+		sudo mdadm --zero-superblock /dev/sdd
+
+	Cấu hình 2 ổ RAID 1:
+	
+		sudo mdadm --create --verbose /dev/md2 --level=1 --raid-devices=2 /dev/sdc /dev/sdd
+
+	Mount vào /mnt/md2 để kiểm tra:
+
+		sudo mkfs.ext4 /dev/md2
+		sudo mkdir -p /mnt/md2
+		sudo mount /dev/md2 /mnt/md2
+		cd /mnt/md2
+	Sử dụng `sysbench` để kiểm tra:
+
+		sudo sysbench fileio --file-total-size=15G --file-test-mode=rndrw prepare
+	--> `16106127360 bytes written in 23.59 seconds (651.01 MiB/sec)`
+
+		sudo sysbench fileio --file-total-size=15G --file-test-mode=rndrw run
+	--> `File operations:
+				reads/s: 6781.03
+				writes/s: 4520.66
+				fsyncs/s: 14470.25
+			Thhroughput:
+				read, MiB/s: 105.95
+				witten, MiB/s: 70.64`
+
+
+	So sánh RAID 1 và RAID 0 tại 2 ổ `/dev/sdc` và `/dev/sdd` cho thấy:
+	RAID 0 trong quá trình: đọc 149.82 MiB/s, ghi 99.88 MiB/s
+	RAID 1 trong quá trình: đọc 105.95 MiB/s, ghi 70.64 MiB/s
+	--> Tốc độ đọc ghi của RAID 0 nhanh hơn RAID 1.
+			
+	Trong VM có 2 ổ hệ thống là `/dev/sda` và `/dev/sdb`. Thử loại bỏ `/dev/sdb` tại VM
+	--> Thời gian boot lâu nhưng hệ thống vẫn boot thành công.
+	Kiểm tra sử dụng `cat /proc/mdstat`:
+
+		md1: active raid1 sda3[0]
+		md0: active raid1 sda2[3]
+
+	Kiểm tra chi tiết sử dụng `sudo mdadm --detail /dev/md0`:
+	
+	|Number|Major|Minor|RaidDevice|State| |
+	|----------|------|--------|-------------|------|-|
+	|  -           | 8 | 0 | 0 | removed| |
+	|3 |8|2|1|active sync| /dev/sda2|
 
 #### Quản lý log file
 
