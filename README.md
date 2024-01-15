@@ -688,19 +688,24 @@ Hệ thống thư mục trong linux:
 3. <p id="lab-disk">LAB:</p>
 
 	Thêm 1 ổ 60G với tên `/dev/sda`
-	Ổ cứng 60G chia thành 10G,20G,30G
+	
+ 	Ổ cứng 60G chia thành 10G,20G,30G
 	--> sử dụng `fdisk /dev/sda`
-	Ổ 10G format ext4, mount `/mnt/data1`
+	
+ 	Ổ 10G format ext4, mount `/mnt/data1`
 	--> `sudo mkfs.ext4 /dev/sda1`
 	--> `sudo mount /dev/sda1 /mnt/data1`
-	Ổ 20G format xfs, mount `/mnt/data2`
+	
+ 	Ổ 20G format xfs, mount `/mnt/data2`
 	--> `sudo apt install xfsprogs`
 	--> `sudo mkfs.xfs /dev/sda2`
 	--> `sudo mount /dev/sda2 /mnt/data2`
-	Ổ 30G format ext3, mount `/mnt/data3`
+	
+ 	Ổ 30G format ext3, mount `/mnt/data3`
 	--> `sudo mkfs.ext3 /dev/sda3`
 	--> `sudo mount /dev/sda3 /mnt/data3`
-	Có thể kiểm tra đã tạo và mount đúng chưa sử dụng `lsblk`
+	
+ 	Có thể kiểm tra đã tạo và mount đúng chưa sử dụng `lsblk`
 	Tìm kiếm UUID sử dụng `sudo blkid`
 	Tự động mount bằng cách thêm vào file `/etc/fstab`(theo cú pháp tại [Quản lý Filesystems](#quản-lý-filesystems))
 	
