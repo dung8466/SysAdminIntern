@@ -181,6 +181,7 @@
 		uniq [options] [input [output]]
 
 	kết hợp pipe: `sort file | uniq -cd` --> cho lần lặp lại và dòng lặp lại.
+	`sort file | uniq -u` tìm kiếm dòng xuất hiện duy nhất trong file.
 
 + [nl](https://www.gnu.org/software/coreutils/nl): trả về số dòng có trong files
 
