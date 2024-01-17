@@ -167,6 +167,10 @@
 	hoặc
 		
 		sort file > temp && mv temp file
+
+  	Chỉ giữ lại những dòng không trùng lặp
+
+  		sort -u file
 	
 + [split](https://www.gnu.org/software/coreutils/split): chia file thành các file nhỏ
 
@@ -189,13 +193,21 @@
 
 	kết quả trả về có dạng `{number} {line}`
 
-+ [head](https://www.gnu.org/software/coreutils/head): trả về nửa đầu của files(mặc định là 10 dòng đầu)
++ [head](https://www.gnu.org/software/coreutils/head): trả về nửa đầu của files(mặc định là 10 dòng đầu nếu không dùng `-n`)
 
-		head [options] [file]...
+		head [-n {number}] [file]...
 
-+ [tail](https://www.gnu.org/software/coreutils/tail): trả về nửa sau của files(mặc định là 10 dòng cuối)
+  	Ví dụ có thể yêu cầu trả về 5 dòng đầu sử dụng
 
-		tail [options] [file]...
+  		head -n 5 {file}
+
++ [tail](https://www.gnu.org/software/coreutils/tail): trả về nửa sau của files(mặc định là 10 dòng cuối nếu không dùng `-n`)
+
+		tail [-n {number}] [file]...
+
+  	Tương tự như `head`, yêu cầu trả về 5 dòng cuối sử dụng
+
+  		tail -n 5 {file}
 
 + [less](https://greenwoodsoftware.com/less/): giống `more` nhưng có thể tiến 1 trang bằng `space` hoặc lùi 1 trang bằng `ESC + v`
 Tìm kiếm ngược trong các trang sử dụng `?`, tìm kiếm xuôi sử dụng `/`.
@@ -214,7 +226,16 @@ Tìm kiếm ngược trong các trang sử dụng `?`, tìm kiếm xuôi sử d�
 
 + [wc](https://www.gnu.org/software/coreutils/wc): in ra số từ, byte, số dòng, ký tự hoặc chiều dài dòng dài nhất.
 
-	wc [option]... [file]...
+		wc [option]... [file]...
+
+	Ví dụ đếm số dòng trong file
+
+		wc --lines {file}
+
+  	hoặc đếm độ dài của số dòng dài nhất trong file
+
+  		wc --max-line-length {file}
+  	
 
 + [grep](https://www.gnu.org/software/grep/manual/grep.html): trả về các dòng phù hợp với chuỗi/ký tự tìm kiếm.
 
@@ -228,7 +249,13 @@ Tìm kiếm ngược trong các trang sử dụng `?`, tìm kiếm xuôi sử d�
 	
 		grep [option...] -f PATTERN_FILE ... [file...]
 
-	thường sẽ sử dụng cùng [regex](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Cheatsheet) để tìm kiếm các chuỗi cụ thể.
+  	Mặc định sẽ tìm kiếm cả in hoa và in thường, muốn tìm kiếm riêng biệt sử dụng `-i` hoặc `-y`
+
+  	Ví dụ tìm kiếm "alice" mà không phải là "Alice"
+
+  		grep -i "alice" {file}
+
+	`grep` thường sẽ sử dụng cùng [regex](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Cheatsheet) để tìm kiếm các chuỗi cụ thể.
 	
 	ví dụ: tìm kiếm số điện thoại có "-" ở giữa
 
@@ -364,26 +391,34 @@ Lệnh `uptime` trả về kết quả `load average: <0,74>, <0,77>, <0,64>` - 
 
 	sau khi gỡ bỏ package thì nên sử dụng `sudo apt update`.
 
-4. <p id="cập-nhật-thông-tin-package">Cập nhật thông tin package:</p>
+	Để gỡ bỏ các package đã không còn cần tới, sử dụng
+
+		sudo apt autoremove
+
+5. <p id="cập-nhật-thông-tin-package">Cập nhật thông tin package:</p>
 
 		sudo apt update
 
 	câu lệnh sử dụng khi cần cập nhật danh sách package trong kho repositories.
 
-5. <p id="cập-nhật-phiên-bản-package">Cập nhật phiên bản package:</p>
+6. <p id="cập-nhật-phiên-bản-package">Cập nhật phiên bản package:</p>
 
 		sudo apt upgrade
 
 	câu lệnh sẽ cập nhật phiên bản của các package có sẵn trong máy thông qua thông tin về package cập nhật từ `sudo apt update`.
-6. <p id="danh-sách-package-đã-cài">Danh sách package đã cài:</p>
+7. <p id="danh-sách-package-đã-cài">Danh sách package đã cài:</p>
 
 		sudo apt list --installed
 
 	từ đây nếu muốn xem đã cài package nào chưa `sudo apt list --installed | grep {package}`
 		
-7. <p id="tìm-kiếm-package-muốn-cài"> Tìm kiếm package muốn cài:</p>
+8. <p id="tìm-kiếm-package-muốn-cài"> Tìm kiếm package muốn cài:</p>
 
 		sudo apt search <package_name>
+
+	hoặc
+
+		sudo apt-cache search <package_name>
 [back to top](#sysadminintern)
 ### StartUp Script
 
@@ -411,7 +446,7 @@ Lệnh `uptime` trả về kết quả `load average: <0,74>, <0,77>, <0,64>` - 
 
 		@reboot sh path/to/file
 
-	Tuy vậy, không phải phiên bản nào của cron cũng hỗ trợ `@reboot`.
+	Tuy nhiên, không phải phiên bản nào của cron cũng hỗ trợ `@reboot`.
 
 3. <p id="sử-dụng-rc.local">Sử dụng rc.local:</p>
 
@@ -423,7 +458,17 @@ Lệnh `uptime` trả về kết quả `load average: <0,74>, <0,77>, <0,64>` - 
 
 4. <p id="sử-dụng-init.d">Sử dụng init.d:</p>
 
-	Có thể thêm file bash script vào `/etc/init.d` và sử dụng `sudo update-rc.d <service name> defaults [priority]`
+	Có thể thêm file bash script vào `/etc/init.d`, ví dụ `/etc/init.d/myscript`
+
+	Cho phép script vừa tạo khởi chạy
+
+		sudo chmod +x /etc/init.d/myscript
+
+	Khởi tạo `daemon`
+	
+ 		sudo update-rc.d <myscript> defaults
+
+	
 
 [back to top](#sysadminintern)
 ### Quản lý hệ thống 
@@ -572,11 +617,22 @@ Hệ thống thư mục trong linux:
 
 	+ tìm kiếm các file vẫn còn trên máy có tên `test` ở mục `home`
 		`locate -i -e "test" | grep "/home"`
-+ [whereis](https://manned.org/whereis): Tìm kiếm tệp nhị phân, nguồn và hướng dẫn cho một câu lệnh
++ [whereis](https://manned.org/whereis): Tìm kiếm tệp nhị phân(`-b`), nguồn(`-s`) và hướng dẫn(`-m`) cho một câu lệnh
+
+		whereis [option]... [command]...
+	Mặc định(không có option) sẽ tìm kiếm toàn bộ về câu lệnh 
 
 	ví dụ:
-	+ tìm kiếm tệp nhị phân cho `gcc` tại thư mục `/usr/lib` và hướng dẫn tại `/usr/share`
-	` whereis -bm -B /usr/lib -M /usr/share -f gcc`
+
+  	+ tìm kiếm tệp nhị phân cho `gcc` tại thư mục `/usr/lib` và hướng dẫn tại `/usr/share`
+	
+ 			whereis -bm -B /usr/lib -M /usr/share -f gcc
+	+ tìm kiếm toàn bộ các tệp nhị phân khác thường(các lệnh có hơn nhiều hơn 1 tệp nhị phân)
+
+   			whereis -u *
+   	+ tìm kiếm tệp nhị phân của `gcc` và hường dẫn của `git`
+ 
+   	  		whereis -b gcc -m git
 + [which](https://manned.org/which): Tìm kiếm đường dẫn đầy đủ của các lệnh
 
 		which [-a] command... 
@@ -661,6 +717,9 @@ Hệ thống thư mục trong linux:
 
 		groupadd [options] {group_name}
 
+  	Tạo nhóm với id cho trước
+
+  		sudo groupadd --gid id group_name
 
 + Xóa nhóm
 
@@ -669,6 +728,14 @@ Hệ thống thư mục trong linux:
 + Thay đổi nhóm
 
 		groupmod [options] {group_name}
+
+  	Thay đổi tên nhóm
+
+  		sudo groupmod --new-name new_group group_name
+
+  	Thay đổi id nhóm
+
+  		sudo groupmod --gid new_id group_name
 
 #### Quản lý disk
 
@@ -709,6 +776,10 @@ Hệ thống thư mục trong linux:
  	Ổ cứng 60G chia thành 10G,20G,30G
 	
  	--> sử dụng `fdisk /dev/sda`
+
+ 	Tạo các folder `/mnt/data1`, `/mnt/data2` và `/mnt/data3` sẽ mount vào
+
+	--> `sudo mkdir -p /mnt/data1 /mnt/data2 /mnt/data3`
 	
  	Ổ 10G format ext4, mount `/mnt/data1`
 	
@@ -860,7 +931,7 @@ Ví dụ: Có 3 ổ cứng, dữ liệu A được chia làm A1, A2 lưu vào �
 				reads/s: 6781.03
 				writes/s: 4520.66
 				fsyncs/s: 14470.25
-			Thhroughput:
+			Throughput:
 				read, MiB/s: 105.95
 				witten, MiB/s: 70.64`
 
@@ -868,7 +939,7 @@ Ví dụ: Có 3 ổ cứng, dữ liệu A được chia làm A1, A2 lưu vào �
 	So sánh RAID 1 và RAID 0 tại 2 ổ `/dev/sdc` và `/dev/sdd` cho thấy:
 	RAID 0 trong quá trình: đọc 149.82 MiB/s, ghi 99.88 MiB/s
 	RAID 1 trong quá trình: đọc 105.95 MiB/s, ghi 70.64 MiB/s
-	--> Tốc độ đọc ghi của RAID 0 nhanh hơn RAID 1.
+	--> Tốc độ đọc, ghi của RAID 0 nhanh hơn RAID 1.
 			
 	Trong VM có 2 ổ hệ thống là `/dev/sda` và `/dev/sdb`. Thử loại bỏ `/dev/sdb` tại VM
 	--> Thời gian boot lâu nhưng hệ thống vẫn boot thành công.
@@ -1027,6 +1098,7 @@ Thông tin về IP `ip -c a`
 		ethernets:
 			ens33:
 				dhcp4: false
+ 				dhcp6: false
 				addresses: 
 					- 192.168.109.100/24
 				routes:
@@ -1037,15 +1109,23 @@ Thông tin về IP `ip -c a`
 						- 8.8.8.8
 	```
 	Trong đó:
-	+ `version: 2`: định nghĩa mạng bản 2
-	+ `renderer`: công cụ kiểm soát mạng
+	+ `version: 2`: định nghĩa mạng phiên bản 2
+	+ `renderer`: công cụ kiểm soát mạng, mặc định là `systemd-networkd`
 	+ `ethernets`: mạng có dây, các thiết bị khác như `modems`,`wifis`,`bridges`
 	+ `ens33`: tên thiết bị mạng có trong `ip -c a`
-	+ `dhcp4`: vì đang thiết lập IP tĩnh, không muốn tự động cấp IP cho mạng nên để giá trị `false`
+	+ `dhcp4`, `dhcp6`: vì đang thiết lập IP tĩnh, không muốn tự động cấp IP cho mạng nên để giá trị `false`
 	+ `addresses`: IP tĩnh muốn thiết lập
 	+ `routes`: danh sách các địa chỉ ( `- to`) và cách để đến các địa chỉ này (`via`)
 	+ `nameservers`: DNS server
-2. <p id="ip-động">IP động:</p>
+
+	Kiểm tra cấu hình đã đúng chưa
+
+		sudo netplan try
+
+	Nếu không có lỗi sẽ được hỏi có muốn sử dụng cấu hình luôn. Hoặc có thể tự sử dụng cấu hình
+
+		sudo netplan apply
+3. <p id="ip-động">IP động:</p>
 
 	Chỉnh sửa file tại `/etc/netplan/` với nội dung
 
@@ -1190,7 +1270,7 @@ Các máy tính, điện thoại cá nhân,... nên sử dụng IP động(dễ 
 		-- 45.89.45.103.in-addr.arpa.	6468	IN	PTR	toilamlap.com.
 		-- ;;SERVER: 192.168.109.130#53(192.168.109.130) (UDP)
 
-	DNS server chạy port mặc định 53 UDP
+	--> DNS server chạy port mặc định 53 UDP
 
 [back to top](#sysadminintern)
 ### DHCP
