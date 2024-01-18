@@ -153,7 +153,11 @@
 			
 	Ghi kết quả vào file:
 	
-		cat file1 > file2 hoặc cat file1 >> file2 nếu muốn ghi vào cuối file
+		cat file1 > file2 (ghi đè file hoặc tạo file nếu chưa tồn tại)
+
+  	hoặc
+
+  		cat file1 >> file2 (ghi vào cuối file hoặc tạo file nếu chưa tồn tại)
 
 + [tac](https://www.gnu.org/software/coreutils/tac): tương tự như `cat` nhưng in ngược lại (dòng cuối in đầu tiên)
 + [sort](https://www.gnu.org/software/coreutils/sort): sắp xếp các dòng trong các tập files.
