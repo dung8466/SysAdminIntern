@@ -1263,10 +1263,12 @@ Các máy tính, điện thoại cá nhân,... nên sử dụng IP động(dễ 
 		dig toilamlap.com 
 		-- com.	5	IN	SOA	a.gtld-servers.net.	nstld.verisign-grs.com.	17044772599	1800	900	604800	86400
 
-	Trỏ client vào DNS server tại `/etc/resolv.conf`
+	Trỏ client vào DNS server tại `/etc/resolv.conf`(tạm thời)
 
 		search toilamlap.com
 		nameserver 192.168.109.130 --ip của dns server
+
+  	Nếu muốn trỏ vào vĩnh viễn, cung cấp `addresses` cho `nameserver` như trên <a href="#ip-tĩnh">IP tĩnh</a>.
 
 	Sau khi trỏ
 
