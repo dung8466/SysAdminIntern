@@ -510,7 +510,9 @@ Hệ thống thư mục trong linux:
 		fsck [option] path/to/filesystems|device|label|UUID
 
 	nếu không có `option` thì sẽ chỉ trả về tình trạng của filesystems
+	
 	`option -r`: để người dùng tự chọn cách sửa 
+	
 	`option -a`: tự động sửa 
 
 2. <p id="tạo-filesystems">Tạo filesystems: sử dụng <a href="https://manned.org/mkfs">mkfs</a></p>
@@ -747,13 +749,15 @@ Hệ thống thư mục trong linux:
 
 		df [option]... [file]...
 
+	`df -h` sẽ hiển thị dung lượng ở dạng `M,G` dễ đọc
+
 + [du](https://www.gnu.org/software/coreutils/manual/html_node/du-invocation.html#du-invocation):
 
 	Báo cáo dung lượng cần cho file hoặc các file trong thư mục.
 
 		du [option]... [file]...
 
-
+	Tương tự, `du -h` sẽ hiện thị bộ nhớ file chiếm dưới dạng `K,M,G`.
 	--> Điểm khác biệt của 2 câu lệnh là `df` sẽ chỉ quan tâm đến mounted filesystems chứa file/thư mục, không đi vào chi tiết và `du` chỉ  trả về dung lượng mỗi file chiếm.
 2. <p id="phân-vùng-disk">Phân vùng disk:</p>
 
@@ -811,7 +815,7 @@ Hệ thống thư mục trong linux:
 	UUID=54ae99a0-8b6f-4d57-91d9-910394825c9c       /data3  ext3    defaults	0	2
 	```
 	Sử dụng `sudo mount -a` hoặc khởi động lại hệ thống và kiểm tra.
-3. <p id="raid">RAID:</p>
+4. <p id="raid">RAID:</p>
 
 + Khái niệm:
 
@@ -1420,4 +1424,5 @@ scp trên 2 máy khác nhau
 		scp -3 <user_name1>@<IP | domain of host 1> <user_name2>@<IP | domain of host 2>
 
 [back to top](#sysadminintern)
+
 
