@@ -1139,12 +1139,12 @@ Thông tin về IP `ip -c a`
 
 	```
 	network:
-			version: 2
-			renderer: NetworkManager
-			ethernets:
-				ens33:
-					dhcp4: true
-					dhcp6: true
+		version: 2
+		renderer: NetworkManager
+		ethernets:
+			ens33:
+				dhcp4: true
+				dhcp6: true
 	```
 Sử dụng IP tĩnh cho các server và thiết bị mạng (các thiết bị cần được truy cập bằng các thiết bị, hệ thống khác --> dễ tìm kiếm) 
 Các máy tính, điện thoại cá nhân,... nên sử dụng IP động(dễ dàng gán các địa chỉ IP từ các địa chỉ IP khả dụng)
