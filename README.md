@@ -1250,27 +1250,27 @@ Các máy tính, điện thoại cá nhân,... nên sử dụng IP động(dễ 
 	Cấu hình file `forward.toilamlap.com`
 
 		$TTL	604800
-		@		IN			SOA	toilamlap.com.	root.toilamlap.com. (
-									11					; Serial --tăng mỗi lần thay đổi
-								604800				    ; Refresh
-								 86400                  ; Retry
-							   2419200			        ; Expire
-							    604800 )			    ; Negative Cache TTL
-		@		IN			NS	toilamlap.com.
-				IN			A	103.45.89.45
+		@	IN	SOA	toilamlap.com.	root.toilamlap.com. (
+						   11	; Serial --tăng mỗi lần thay đổi
+						604800	; Refresh
+						86400   ; Retry
+						2419200	; Expire
+						604800 ); Negative Cache TTL
+		@	IN	NS	toilamlap.com.
+			IN	A	103.45.89.45
 		
 	Cấu hình file `reverse.toilamlap.com`
 
 		$TTL	604800
-		@		IN			SOA	toilamlap.com.	root.toilamlap.com. (
-									21					; Serial --tăng mỗi lần thay đổi
-								604800				    ; Refresh
-								 86400                  ; Retry
-							   2419200			        ; Expire
-							    604800 )			    ; Negative Cache TTL
-		@		IN			NS	toilamlap.com.
-				IN			A	103.45.89.45
-		45		IN			PTR	toilamlap.com.
+		@	IN	SOA	toilamlap.com.	root.toilamlap.com. (
+						21	; Serial --tăng mỗi lần thay đổi
+						604800	; Refresh
+						86400   ; Retry
+						2419200	; Expire
+						604800 ); Negative Cache TTL
+		@	IN	NS	toilamlap.com.
+			IN	A	103.45.89.45
+		45	IN	PTR	toilamlap.com.
 
 	Kiểm tra `config` đã hợp lệ chưa 
 
