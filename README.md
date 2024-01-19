@@ -680,7 +680,13 @@ Hệ thống thư mục trong linux:
 
 		chattr [ -RVf ] [ -v version ] [ mode ] files...
 
-	Mục đích chính là khiến file thay đổi bởi người dùng (kể cả superuser) cho đến khi thuộc tính được sửa lại.
+	Mục đích chính là khiến file không thể thay đổi bởi người dùng (kể cả superuser) cho đến khi thuộc tính được sửa lại.
+	
+ 	Các mode thông thường:
+	+ `i`: không thể rename, tạo symlink, thực thi, ghi.
+ 	+ `a`: không thể rename, tạo symlink, thực thi, chỉ có thể ghi vào cuối file
+  	+ `d`: không được backup khi tiến trình dump chạy
+   	+ `s`: 1 file có thuộc tính này bị sửa, thay đổi được cập nhật đồng bộ trên ổ cứng	 
 	ví dụ:
 	+ Khiến 1 file không thể thay đổi, xóa
 
@@ -697,6 +703,10 @@ Hệ thống thư mục trong linux:
 		useradd | adduser {user_name}
 
 	--> tạo ra thư mục home, các file bash, mail spool tại /var/spool/mail, nhóm mới tên với user_name.
+
++ Cập nhật mật khẩu người dùng
+
+		sudo passwd {user_name}
 
 + Xóa người dùng
 
@@ -1097,7 +1107,7 @@ Thông tin về IP `ip -c a`
 
 1. <p id="ip-tĩnh">IP tĩnh:</p>
 
-	Thiết lập IP tĩnh cho Ubuntu: chỉnh sửa file tại `/etc/netplan/`(nếu không có file có thể tạo)
+	Thiết lập IP tĩnh cho Ubuntu: chỉnh sửa file tại `/etc/netplan/`(nếu không có file có thể tạo sử dụng `sudo netplan generate`)
 	Nội dung file cơ bản:
 	```
 	network:
@@ -1123,7 +1133,7 @@ Thông tin về IP `ip -c a`
 	+ `ens33`: tên thiết bị mạng có trong `ip -c a`
 	+ `dhcp4`, `dhcp6`: vì đang thiết lập IP tĩnh, không muốn tự động cấp IP cho mạng nên để giá trị `false`
 	+ `addresses`: IP tĩnh muốn thiết lập
-	+ `routes`: danh sách các địa chỉ ( `- to`) và cách để đến các địa chỉ này (`via`)
+	+ `routes`: danh sách các địa chỉ ( `- to`) và cách để đến các địa chỉ này (`via`)(router hoặc thiết bị mạng cung cấp IP)
 	+ `nameservers`: DNS server
 
 	Kiểm tra cấu hình đã đúng chưa
@@ -1357,23 +1367,23 @@ SSH cung cấp giao diện chữ(terminal) để làm việc, các câu lệnh �
 	
 SSH tới host
 
-	ssh <user_name>@<IP | domain of host>
+	ssh <user_name>@<IP|domain of host>
 
 nếu tên người client dùng trùng với tên người dùng tại host
 
-	ssh <IP | domian of host>
+	ssh <IP|domian of host>
 
 Mặc định sẽ ssh sử dụng port 22, nếu muốn sử dụng port khác
 
-	ssh <user_name>@<IP | domain of host> -p <port_number>
+	ssh <user_name>@<IP|domain of host> -p <port_number>
 
 Copy `public key` tới host --> ssh không cần mật khẩu
 
-	ssh-copy-id <use_name>@<IP | domain of host>
+	ssh-copy-id <use_name>@<IP|domain of host>
 
 hoặc 
 
-	cat ~/.ssh/id_rsa.pub | ssh <user_name>@<IP | domain of host> "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys"
+	cat ~/.ssh/id_rsa.pub | ssh <user_name>@<IP|domain of host> "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys"
 
 Tạo key ssh
 
@@ -1403,11 +1413,11 @@ rsync trên 2 máy khác nhau
 
 + Từ client đến server
 
-		rsync -azv source <user_name>@<IP | domain of host>:dest
+		rsync -azv source <user_name>@<IP|domain of host>:dest
 
 + Từ server đến client tại client
 
-		rsync -azve ssh <user_name>@<IP | domain of host>:source dest
+		rsync -azve ssh <user_name>@<IP|domain of host>:source dest
 
 	Trong đó:
 	+ `-a`: tất cả symlink, thuộc tính, quyền,... đều được giữ nguyên
@@ -1423,11 +1433,12 @@ scp trên 2 máy khác nhau
 
 + Từ client đến server
 
-		scp source... <user_name>@<IP | domain of host>:/dest
+		scp source... <user_name>@<IP|domain of host>:/dest
 
 + Giữa 2 server thông qua client
 
-		scp -3 <user_name1>@<IP | domain of host 1> <user_name2>@<IP | domain of host 2>
+		scp -3 <user_name1>@<IP|domain of host 1>:<port_number>/path/to/source <user_name2>@<IP|domain of host 2>:<port_number>/path/to/dest
+  Lưu ý đường dẫn là `path/to/source`, `path/to/dest` nếu muốn đường tuyệt đối sử dụng `<user_name1>@<IP|domain of host 1>:<port_number>//absolute/path`
 
 [back to top](#sysadminintern)
 
