@@ -1077,6 +1077,8 @@ Có thể test các cấu hình các log file sử dụng `sudo logrotate /etc/l
 
 Nếu công việc thực thi lặp đi lặp lại theo 1 thời gian, kế hoạch cụ thể thì nên sử dụng `cron`.
 
+Có thể tạo file script tại `/etc/cron.{hourly|daily|weekly|monthly}`.
+
 Trong phần [StartUp Script](#startup-script), các file script có thể tự khởi chạy sử dụng `@reboot` trong `cron`. Ngoài ra, có thể lập trình thời gian chạy khác cho file script. Thêm đoạn code vào `crontab -e`
 
 		{minute} {hour} {day of month} {month} {day of week} /bin/sh path/to/command
