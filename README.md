@@ -663,6 +663,8 @@ Hệ thống thư mục trong linux:
 		chown [option]... {new_owner | --reference=ref_file} file…
 
 	nếu sử dụng `new_owner` thì chỉ định người sở hữu mới và/hoặc nhóm bằng `[owner] [ : [group] ]`
+
+	Các `user` và `group` khác không phải `owner` đều được cho vào `other`
 	Ví dụ: Cho nhóm `readers` sở hữu thư mục `/Reader`(bao gồm tất cả file và subfolder)
 
 		sudo chown -R :readers /Reader 
