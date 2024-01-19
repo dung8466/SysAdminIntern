@@ -1089,9 +1089,10 @@ với các giá trị `minute, hour, day of month, month, day of week`, ngoài c
 + `,`: 2 hoặc nhiều lần thực thi lệnh
 + `-`: khoảng thời gian thực thi lệnh
 + `/`: khoảng thời gian cụ thể
-+ `L`: ngày cuối cùng của tuần trong tháng
-+ `W`: ngày gần nhất trong tuần
-+ `#`: ngày của tuần
++ `L`: ngày cuối cùng của tháng(`* * L * *`)/thứ 7(`* * * * L`)/ngày cuối cùng của thứ trong tháng(`* * * * 6L` thứ 6 cuối cùng của tháng)...
++ `W`: ngày gần nhất trong tuần(ví dụ `* * 15W * *`: ngày trong tuần gần nhất với ngày 15)
++ `#`: ngày của tuần(ví dụ `* * * * 6#3`: thứ 6 thứ 3)
++ `?`: không có giá trị cụ thể
 
 Ví dụ:
 
