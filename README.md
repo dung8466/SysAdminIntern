@@ -372,6 +372,17 @@ Lệnh `uptime` trả về kết quả `load average: <0,74>, <0,77>, <0,64>` - 
    	Lệnh `kill -9` buộc tiến trình dừng mà không đợi `clean up`
 ### Quản lý packages
 
+Các packages của các distro sẽ được chứa trong Repositories. Cài đặt, lấy thông tin từ các package đều thông qua các Repositories này. Ngoài Repositories chính thức của distro do chính distro quản lý, có thể thêm các Repositories ngoài.
+
+Kiểm tra các Repositories đã cài đặt
+
+	grep -Erh ^deb /etc/apt/sources.list*
+
+ `Dependencies` bao gồm các thư viện, package và modules cần cài đặt để ứng dụng có thể chạy và hoạt động.
+ 
+ Ví dụ khi dùng `apt show firefox`, có thể thấy `Depends` của nó là `debconf`.
+ 
+
 1. <p id="cài-đặt-phần-mềm">Cài đặt phần mềm:</p>
 
 	Sử dụng package manager:
