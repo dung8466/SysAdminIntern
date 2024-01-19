@@ -483,12 +483,23 @@ Dùng để quản lý dữ liệu đọc và lưu của hệ thống.
 Filesystem là cách quản lý dữ liệu trong partition theo 1 cách dễ quản lý.
 Partition cài đặt điểm bắt đầu, kết thúc của phân vùng trên ổ cứng.
 	
-Các filesystems thông thường: ext{2,3,4}, ntfs, vfat, proc,...
+Các filesystems thông thường: ext{2,3,4}, xfs, ntfs, vfat, proc,...
+
+Cả ext và xfs đều là `journaling filesystem`(filesystem lưu trữ `log` về thay đổi đến filesystem)
+| ext4 | xfs |
+|------|-----|
+| hỗ trợ partition lên đến 1EiB, kích thước file 16TiB | hỗ trợ partition, file lên đến 8EiB |
+| x | inodes(lưu thuộc tính, địa chỉ của dữ liệu) phân bổ tự động |
+| giới hạn độ dài của xattr(thuộc tính thêm) không quá 1 khối (4K) | giới hạn độ dài của xattr là 64K |
+| x | có sẵn công cụ backup và khôi phục dữ liệu(`xfsdump`, `xfsrestore`)
+| hỗ trợ `journal checksum`(kiểm tra dữ liệu có đúng không) | x |
+| có thể tắt tính năng `journal` | x |
+| có thể trực tiếp shrink volume | x |
 
 Hệ thống thư mục trong linux:
 
 | Thư mục     |      Chức năng |
-|-------------|:--------------------------:|
+|-------------|--------------------------|
 | /bin |  chứa các câu lệnh như ls, cp,..., các file có thể thực thi |
 | /boot |    chứa các file để khởi tạo hệ thống |
 | /dev | chứa các file thiết bị, được tạo trong thời gian khởi động hoặc khi cắm |
