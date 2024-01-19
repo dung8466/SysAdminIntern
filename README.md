@@ -1073,6 +1073,8 @@ Có thể test các cấu hình các log file sử dụng `sudo logrotate /etc/l
 
 #### Quản lý công việc 
 
+Nếu công việc thực thi lặp đi lặp lại theo 1 thời gian, kế hoạch cụ thể thì nên sử dụng `cron`.
+
 Trong phần [StartUp Script](#startup-script), các file script có thể tự khởi chạy sử dụng `@reboot` trong `cron`. Ngoài ra, có thể lập trình thời gian chạy khác cho file script. Thêm đoạn code vào `crontab -e`
 
 		{minute} {hour} {day of month} {month} {day of week} /bin/sh path/to/command
@@ -1099,6 +1101,9 @@ Ví dụ:
 + Thực thi lệnh hàng quý ngày mồng 1 lúc 8h:
 
 		* 8 1 */3 * /bin/sh path/to/file
++ Thực thi lệnh vào 3 giờ, 2 ngày 1 lần:
+
+  		0 3 */2 * * /bin/sh path/to/file
 
 Nếu chỉ muốn chạy lệnh 1 lần trong 1 thời gian biết trước, có thể sử dụng `at`: lệnh `at` sẽ gửi mail lại cho người cài đặt về kết quả output và lỗi.
 
