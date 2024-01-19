@@ -1137,7 +1137,7 @@ Thông tin về IP `ip -c a`
 					- 192.168.109.100/24
 				routes:
 					- to: default
-						via: 192.168.109.28
+					  via: 192.168.109.28
 				nameservers:
 					addresses:
 						- 8.8.8.8
