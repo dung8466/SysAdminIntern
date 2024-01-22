@@ -1193,9 +1193,39 @@ Thông tin về IP `ip -c a`
 	Nếu không có lỗi sẽ được hỏi có muốn sử dụng cấu hình luôn. Hoặc có thể tự sử dụng cấu hình
 
 		sudo netplan apply
+
+	Thiết lập IP tĩnh cho CentOs: tạo file `/etc/sysconfig/network-scripts/ifcfg-<device_name>`
+
+	Nội dung file cơ bản:
+
+	```
+ 	TYPE=Ehternet
+ 	BOOTPROTO=static
+ 	DEFROUTE=yes
+ 	IPV4_FAILURE_FATAL=no
+ 	NAME=ens33
+ 	UUID=3277c242-cd77-46bb-a316-061b15d48c68
+ 	DEVICE=ens33
+ 	ONBOOT=yes
+ 	IPADDR=192.168.109.100
+ 	PREFIX=24
+ 	GATEWAY=192.168.109.28
+ 	DNS1=8.8.8.8
+ 	```
+ 	Trong đó:
+	+ `DEVICE`,`NAME`: tên thiết bị mạng
+ 	+ `BOOTPROTO`: cấu hình IP tĩnh nên để static, nếu là DHCP thì là `dhcp`
+  	+ `ONBOOT`: khi hệ thống reboot, network tự động bật lên với cấu hình mạng tương ứng
+   	+ `IPADDR`: địa chỉ IP tĩnh
+   	+ `PREFIX`: subnet mask lớp mạng IP sử dụng
+   	+ `DEFROUTE`: muốn sử dụng default gateway
+   	+ `GATEWAY`: địa chỉ IP gateway
+   	+ `DNS1`: dns server
+   	+ `UUID`: có được thông qua `uuidgen ens33`
+   	+ `IPV4_FAILURE_FATAL`: cần IPv4 cho kết nối hoàn thiện 	
 3. <p id="ip-động">IP động:</p>
 
-	Chỉnh sửa file tại `/etc/netplan/` với nội dung
+	Với Ubuntu: Chỉnh sửa file tại `/etc/netplan/` với nội dung
 
 	```
 	network:
@@ -1206,7 +1236,21 @@ Thông tin về IP `ip -c a`
 				dhcp4: true
 				dhcp6: true
 	```
+
+ 	Với CentOs: thay đổi `BOOTPROTO=dhcp` và loại bỏ `IPADDR=192.168.109.100`, `PREFIX=24`, `GATEWAY=192.168.109.28`, `DNS1=8.8.8.8`
+
+	```
+ 	TYPE=Ehternet
+ 	BOOTPROTO=dhcp
+ 	DEFROUTE=yes
+ 	IPV4_FAILURE_FATAL=no
+ 	NAME=ens33
+ 	UUID=3277c242-cd77-46bb-a316-061b15d48c68
+ 	DEVICE=ens33
+ 	ONBOOT=yes
+ 	```
 Sử dụng IP tĩnh cho các server và thiết bị mạng (các thiết bị cần được truy cập bằng các thiết bị, hệ thống khác --> dễ tìm kiếm) 
+
 Các máy tính, điện thoại cá nhân,... nên sử dụng IP động(dễ dàng gán các địa chỉ IP từ các địa chỉ IP khả dụng)
 
 [back to top](#sysadminintern)
