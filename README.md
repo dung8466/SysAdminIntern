@@ -381,6 +381,14 @@ Kiểm tra các Repositories đã cài đặt
  `Dependencies` bao gồm các thư viện, package và modules cần cài đặt để ứng dụng có thể chạy và hoạt động.
  
  Ví dụ khi dùng `apt show firefox`, có thể thấy `Depends` của nó là `debconf`.
+
+ `Binary package` là gói ứng dụng bao gồm tệp thực thi(có sẵn), được build từ mã nguồn và không thể đảo ngược(giấu mã nguồn và không thể thay đổi)
+
+ Ubuntu có các file `.deb` gồm 2 phần, 1 phần chứa thông tin và 1 phần chứa tệp nhị phân của ứng dụng.
+
+ Sử dụng `dbkg -I <file.deb>` để có được thông tin như version, maintainer, conflicts, ....
+
+ và `dbkg -c <file.deb>` để liệt kê các file thông thường của file .deb
  
 
 1. <p id="cài-đặt-phần-mềm">Cài đặt phần mềm:</p>
@@ -400,6 +408,16 @@ Kiểm tra các Repositories đã cài đặt
    		make
    		sudo make install -- nếu chưa install
 
+   	Cài đặt sử dụng `flatpak`, `snapd`,...:
+
+   	Ubuntu đang sử dụng mặc định `snapd`
+
+ 		sudo snap install <package_name>
+
+ 	Fedora, Linux Mint, Pop!_OS, Manjaro, CentOs đã cài đặt sẵn `flatpak`
+
+		flatpak install <remoteserver> <appid> --cài đặt
+		flatpak run <appid> --chạy
 3. <p id="gỡ-bỏ-phần-mềm">Gỡ phần mềm:</p>
 	
 		sudo apt remove {package} -y
