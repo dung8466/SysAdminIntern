@@ -189,6 +189,7 @@
 		uniq [options] [input [output]]
 
 	kết hợp pipe: `sort file | uniq -cd` --> cho lần lặp lại và dòng lặp lại.
+
 	`sort file | uniq -u` tìm kiếm dòng xuất hiện duy nhất trong file.
 
 + [nl](https://www.gnu.org/software/coreutils/nl): trả về số dòng có trong files
@@ -214,6 +215,7 @@
   		tail -n 5 {file}
 
 + [less](https://greenwoodsoftware.com/less/): giống `more` nhưng có thể tiến 1 trang bằng `space` hoặc lùi 1 trang bằng `ESC + v`
+
 Tìm kiếm ngược trong các trang sử dụng `?`, tìm kiếm xuôi sử dụng `/`.
 
 		less [options] [file]...
@@ -369,6 +371,7 @@ Lệnh `uptime` trả về kết quả `load average: <0,74>, <0,77>, <0,64>` - 
 		SIGSTOP	17,19,23		Stop process
 
   	Lệnh `kill` gửi tín hiệu TERMINATE tới tiến trình, cho phép nó `clean up`(giải phóng bộ nhớ, xử lý tiến trình con,...). Tiến trình có thể bỏ qua nếu đang trong lúc giải phóng bộ nhớ,....
+
    	Lệnh `kill -9` buộc tiến trình dừng mà không đợi `clean up`
 ### Quản lý packages
 
@@ -508,8 +511,8 @@ Kiểm tra các Repositories đã cài đặt
 
 #### Quản lý filesystems
 
-Dùng để quản lý dữ liệu đọc và lưu của hệ thống.
-Filesystem là cách quản lý dữ liệu trong partition theo 1 cách dễ quản lý.
+Filesystem là cách quản lý dữ liệu trong partition theo 1 cách dễ quản lý. Dùng để quản lý dữ liệu đọc và lưu của hệ thống.
+
 Partition cài đặt điểm bắt đầu, kết thúc của phân vùng trên ổ cứng.
 	
 Các filesystems thông thường: ext{2,3,4}, xfs, ntfs, vfat, proc,...
@@ -564,7 +567,8 @@ Hệ thống thư mục trong linux:
 		mkfs [options] [-t type] [fs-option] device [size]
 
 	không có `-t type` thì mặc định sử dụng `ext2`
-	trả về 0 thành công và 1 nếu thất bại.
+	
+ 	trả về 0 thành công và 1 nếu thất bại.
 
 2. <p id="mount-và-umount">Mount/Unmount filesystems: sử dụng <a href="https://manned.org/mount.8">mount</a> và <a href="https://manned.org/umount.8">umount</a></p>
 
@@ -694,6 +698,7 @@ Hệ thống thư mục trong linux:
 	nếu sử dụng `new_owner` thì chỉ định người sở hữu mới và/hoặc nhóm bằng `[owner] [ : [group] ]`
 
 	Các `user` và `group` khác không phải `owner` đều được cho vào `other`
+
 	Ví dụ: Cho nhóm `readers` sở hữu thư mục `/Reader`(bao gồm tất cả file và subfolder)
 
 		sudo chown -R :readers /Reader 
@@ -814,7 +819,8 @@ Hệ thống thư mục trong linux:
 		du [option]... [file]...
 
 	Tương tự, `du -h` sẽ hiện thị bộ nhớ file chiếm dưới dạng `K,M,G`.
-	--> Điểm khác biệt của 2 câu lệnh là `df` sẽ chỉ quan tâm đến mounted filesystems chứa file/thư mục, không đi vào chi tiết và `du` chỉ  trả về dung lượng mỗi file chiếm.
+
+  	--> Điểm khác biệt của 2 câu lệnh là `df` sẽ chỉ quan tâm đến mounted filesystems chứa file/thư mục, không đi vào chi tiết và `du` chỉ  trả về dung lượng mỗi file chiếm.
 2. <p id="phân-vùng-disk">Phân vùng disk:</p>
 
 	Liệt kê các disk:
@@ -862,8 +868,10 @@ Hệ thống thư mục trong linux:
  	--> `sudo mount /dev/sda3 /mnt/data3`
 	
  	Có thể kiểm tra đã tạo và mount đúng chưa sử dụng `lsblk`
-	Tìm kiếm UUID sử dụng `sudo blkid`
-	Tự động mount bằng cách thêm vào file `/etc/fstab`(theo cú pháp tại [Quản lý Filesystems](#quản-lý-filesystems))
+	
+ 	Tìm kiếm UUID sử dụng `sudo blkid`
+	
+ 	Tự động mount bằng cách thêm vào file `/etc/fstab`(theo cú pháp tại [Quản lý Filesystems](#quản-lý-filesystems))
 	
  	```
 	UUID=d10afb5c-80b0-4636-a6c0-a41e8ddfbb47      	/data1  ext4    defaults 	0	2
@@ -880,6 +888,7 @@ Hệ thống thư mục trong linux:
 	+ RAID 0(Tối thiểu 2 ổ cứng): Không có dữ liệu trùng lặp, chia dữ liệu thành nhiều phần và mỗi phần lưu vào 1 ổ. Tốc độ đọc và ghi tăng nhưng mức độ đảm bảo dữ liệu không thay đổi so với 1 ổ. 
 	+ RAID 1(Tối thiểu 2 ổ cứng): Các ổ đều chứa dữ liệu giống nhau. Tốc độ đọc tăng nhưng tốc độ ghi không đổi, dữ liệu được đảm bảo so với 1 ổ.	
 	+ RAID 5(Tối thiểu 3 ổ): Dữ liệu chia ra làm nhiều phần và các phần đều được lưu trữ vào từng ổ ngoại trừ ổ cuối cùng lưu trữ bản sao backup của dữ liệu trên(dữ liệu backup này sẽ được lưu vào các ổ khác nhau, lần lượt từng ổ). Dữ liệu được đảm bảo nếu mất đi 1 ổ, tốc độ đọc-ghi tăng so với 1 ổ nhưng không bằng RAID 0.
+
 Ví dụ: Có 3 ổ cứng, dữ liệu A được chia làm A1, A2 lưu vào ổ 1 và ổ 2, ổ 3 sẽ lưu backup của A. Dữ liệu B được chia làm B1, B2 lưu vào ổ 2 và ổ 3, ổ 1 lưu backup của B.
 
 + Quản lý RAID sử dụng [mdadm](https://manned.org/mdadm):
@@ -926,6 +935,7 @@ Ví dụ: Có 3 ổ cứng, dữ liệu A được chia làm A1, A2 lưu vào �
 + <p id="lab-raid">LAB:</p>
 	
 	Cấu hình VM theo [hướng dẫn](https://gist.github.com/fevangelou/2f7aa0d9b5cb42d783302727665bf80a)(tạo toàn bộ partitions cần thiết unformatted trước khi cấu hình raid).
+
 	Kiểm tra cài đặt sử dụng `cat /proc/mdstat`
 
 		md0: active raid1 sda2[1] sdb2[0] -- boot partition
@@ -947,8 +957,10 @@ Ví dụ: Có 3 ổ cứng, dữ liệu A được chia làm A1, A2 lưu vào �
 		sudo sysbench fileio --file-total-size=15G --file-test-mode=rndrw prepare
 
 	`--file-total-size=15G`: file test có độ lớn 15G
+
 	`--file-test-mode=rndrw`: chế độ đọc viết ngẫu nhiên
-	--> `16106127360 bytes written in 14.81 seconds (1036.594 Mib/sec)`
+
+  	--> `16106127360 bytes written in 14.81 seconds (1036.594 Mib/sec)`
 
 		sudo sysbench fileio --file-total-size=15G --file-test-mode=rndrw run
 
@@ -997,12 +1009,17 @@ Ví dụ: Có 3 ổ cứng, dữ liệu A được chia làm A1, A2 lưu vào �
 
 
 	So sánh RAID 1 và RAID 0 tại 2 ổ `/dev/sdc` và `/dev/sdd` cho thấy:
+
 	RAID 0 trong quá trình: đọc 149.82 MiB/s, ghi 99.88 MiB/s
+
 	RAID 1 trong quá trình: đọc 105.95 MiB/s, ghi 70.64 MiB/s
-	--> Tốc độ đọc, ghi của RAID 0 nhanh hơn RAID 1.
+
+  	--> Tốc độ đọc, ghi của RAID 0 nhanh hơn RAID 1.
 			
 	Trong VM có 2 ổ hệ thống là `/dev/sda` và `/dev/sdb`. Thử loại bỏ `/dev/sdb` tại VM
-	--> Thời gian boot lâu nhưng hệ thống vẫn boot thành công.
+
+  	--> Thời gian boot lâu nhưng hệ thống vẫn boot thành công.
+
 	Kiểm tra sử dụng `cat /proc/mdstat`:
 
 		md1: active raid1 sda3[0]
@@ -1020,12 +1037,15 @@ Ví dụ: Có 3 ổ cứng, dữ liệu A được chia làm A1, A2 lưu vào �
 Trong phần [thư mục](#quản-lý-filesystems), các log file được lưu tại `/var/log` và các thư mục con trong đó.
 
 `/var/log/syslog` chứa dữ liệu hoạt động của toàn hệ thống trong `Debian, Ubuntu,...`.
+
 `/var/log/auth.log`: những vấn đề liên quan đến bảo mật.
+
 `/var/log/kern.log`: những sự kiện, lỗi, cảnh báo về kernel...
 
 `Rotate Log`: quá trình giới hạn các file log về kích thước, thời gian,... thì sẽ đổi tên file log và tạo ra 1 file log mới trùng tên với file log ban đầu, tiếp tục ghi log vào file mới tạo.
 
 Để thực hiện `Rotate Log`, sử dụng `logrotate`
+
 Cấu hình `logrotate` tại `/etc/logrotate.conf`: 
 
 ```
@@ -1158,7 +1178,8 @@ Thông tin về IP `ip -c a`
 1. <p id="ip-tĩnh">IP tĩnh:</p>
 
 	Thiết lập IP tĩnh cho Ubuntu: chỉnh sửa file tại `/etc/netplan/`(nếu không có file có thể tạo sử dụng `sudo netplan generate`)
-	Nội dung file cơ bản:
+	
+ 	Nội dung file cơ bản:
 	```
 	network:
 		version: 2
