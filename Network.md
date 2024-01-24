@@ -152,6 +152,23 @@ TCP yêu cầu thiết lập kết nối trước khi truyền tin, sử dụng 
 
 ![3-way handshake](pictures/tcp-start.gif)
 
+Quá trình `3-way handshake`:
+
++ client gửi `SYN` tới server, thông báo với server muốn kết nối.
++ server nhận được và gửi lại `SYN-ACK`. Trong đó, `ACK` để xác nhận yêu cầu kết nối của client và `SYN` để biểu thị số thứ tự mà nó có thể bắt đầu.
++ clent gửi `ACK` để xác nhận đã thiết lập kết nối và sẽ bắt đầu quá trình truyền tải dữ liệu.
+
+Sau khi kết thúc quá trình truyền tải dữ liệu, client sẽ kết thúc kết nối đã thiết lập.
+
+![Kết thúc kết nối](pictures/tcp-end.gif)
+
+Quá trình hủy kết nối:
+
++ client gửi `FIN` thông báo muốn kết thúc kết nối đã thiết lập.
++ server nhận được và gửi lại `ACK` để xác nhận quá trình hủy kết nối.
++ server gửi `FIN` để kết thúc kết nối.
++ client gửi `ACK` và kết thúc kết nối.
+
 ## IPv4 và IPv6
 
 ### IPv4
