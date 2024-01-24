@@ -16,63 +16,63 @@ Có 7 lớp trong mô hình OSI:
 
 + Lớp ứng dụng (application layer):
 
- + Là lớp duy nhất tương tác trực tiếp với dữ liệu từ người dùng. Các ứng dụng như trình duyệt web, email đều dựa vào lớp ứng dụng để bắt đầu kết nối.
+	+ Là lớp duy nhất tương tác trực tiếp với dữ liệu từ người dùng. Các ứng dụng như trình duyệt web, email đều dựa vào lớp ứng dụng để bắt đầu kết nối.
 
- + Cung cấp giao thức và thao tác dữ liệu mà các phần mềm dựa vào để trình bày dữ liệu tới người dùng.
+	+ Cung cấp giao thức và thao tác dữ liệu mà các phần mềm dựa vào để trình bày dữ liệu tới người dùng.
 
-Các giao thức của lớp ứng dụng gồm HTTP, SMTP.
+	+ Các giao thức của lớp ứng dụng gồm HTTP, SMTP.
 
 + Lớp trình bày (presentation layer):
 
-Chức năng chính là giải quyết vấn đề liên quan đến cú pháp, ngữ nghĩa của dữ liệu hiển thị tại lớp ứng dụng.
+	+ Chức năng chính là giải quyết vấn đề liên quan đến cú pháp, ngữ nghĩa của dữ liệu hiển thị tại lớp ứng dụng.
 
-2 thiết bị kết nối có thể sử dụng 2 phương pháp `encoding` (mã hóa) khác nhau nên lớp trình bày cần chuyển dữ liệu thành cú pháp mà lớp ứng dụng có thể hiểu.
+	+ 2 thiết bị kết nối có thể sử dụng 2 phương pháp `encoding` (mã hóa) khác nhau nên lớp trình bày cần chuyển dữ liệu thành cú pháp mà lớp ứng dụng có thể hiểu.
 
-Nếu các thiết bị kết nối sử dụng kết nối mã hóa thì lớp trình bày phải thêm mã hóa ở phía người gửi và thêm giải mã ở phía người nhận để lớp ứng dụng có dữ liệu đọc được, không bị mã hóa.
+	+ Nếu các thiết bị kết nối sử dụng kết nối mã hóa thì lớp trình bày phải thêm mã hóa ở phía người gửi và thêm giải mã ở phía người nhận để lớp ứng dụng có dữ liệu đọc được, không bị mã hóa.
 
-Nén dữ liệu nhận được từ lớp ứng dụng trước khi chuyển xuống lớp phiên.
+	+ Nén dữ liệu nhận được từ lớp ứng dụng trước khi chuyển xuống lớp phiên.
 
 + Lớp phiên (session layer):
 
-Cho phép mở và đóng liên kết giữa 2 thiết bị. Đảm bảo phiên mở đủ lâu để truyền hết dữ liệu và đóng phiên để giảm tài nguyên.
+	+ Cho phép mở và đóng liên kết giữa 2 thiết bị. Đảm bảo phiên mở đủ lâu để truyền hết dữ liệu và đóng phiên để giảm tài nguyên.
 
-Truyền dữ liệu với các `checkpoints`. Ví dụ cần truyền 100MB thì có thể có `checkpoint` mỗi 5MB, nếu liên kết bất ngờ đóng khi đã truyền 52MB thì phiên sẽ tiếp tục ở `checkpoint` cuối (50MB).
+	+ Truyền dữ liệu với các `checkpoints`. Ví dụ cần truyền 100MB thì có thể có `checkpoint` mỗi 5MB, nếu liên kết bất ngờ đóng khi đã truyền 52MB thì phiên sẽ tiếp tục ở `checkpoint` cuối (50MB).
 
 + Lớp truyền tải (transport layer):
 
-Đảm nhiệm cho kết nối end-to-end giữa các thiết bị.
+	+ Đảm nhiệm cho kết nối end-to-end giữa các thiết bị.
 
-Lấy dữ liệu từ lớp phiên và phân nhỏ thành các `segments` và gửi xuống lớp mạng. Tại thiết bị nhận thì gộp các `segments` thành dữ liệu và gửi lên lớp phiên.
+	+ Lấy dữ liệu từ lớp phiên và phân nhỏ thành các `segments` và gửi xuống lớp mạng. Tại thiết bị nhận thì gộp các `segments` thành dữ liệu và gửi lên lớp phiên.
 
-Kiểm soát luồng và lỗi, là tầng cuối cùng chịu trách nhiệm về mức độ an toàn trong truyền dữ liệu.
+	+ Kiểm soát luồng và lỗi, là tầng cuối cùng chịu trách nhiệm về mức độ an toàn trong truyền dữ liệu.
 
-Có thể thực hiện ghép kênh (multiplex) một vài liên kết thành 1 để giảm giá thành.
+	+ Có thể thực hiện ghép kênh (multiplex) một vài liên kết thành 1 để giảm giá thành.
 
 + Lớp mạng (network layer):
 
-Phân phối dữ liệu giữa các thiệt bị khác mạng, nếu trên cùng 1 mạng thì lớp mạng không cần thiết.
+	+ Phân phối dữ liệu giữa các thiệt bị khác mạng, nếu trên cùng 1 mạng thì lớp mạng không cần thiết.
 
-Chia nhỏ các `segments` từ lớp truyền tải thành các gói tin. Tại thiết bị nhận thì gộp lại các gói tin nhận được.
+	+ Chia nhỏ các `segments` từ lớp truyền tải thành các gói tin. Tại thiết bị nhận thì gộp lại các gói tin nhận được.
 
-Tìm đường đi vật lý tối ưu nhất cho dữ liệu (routing).
+	+ Tìm đường đi vật lý tối ưu nhất cho dữ liệu (routing).
 
-Giao thức lớp mạng bao gồm IP, ICMP, IGMP và IPsec.
+	+ Giao thức lớp mạng bao gồm IP, ICMP, IGMP và IPsec.
 
 + Lớp liên kết dữ liệu (data link layer):
 
-Phân phối dữ liệu từ nút này sang nút khác, các thiết bị trên cùng một mạng.
+	+ Phân phối dữ liệu từ nút này sang nút khác, các thiết bị trên cùng một mạng.
 
-Nhận gói tin từ `network` và chia nhỏ thành các `frames`, truyền tuần tự các `frame`, xử lý thông điệp xác nhận (ACK).
+	+ Nhận gói tin từ `network` và chia nhỏ thành các `frames`, truyền tuần tự các `frame`, xử lý thông điệp xác nhận (ACK).
 
---> Kiểm soát lỗi, luồng, lưu lượng.
+	--> Kiểm soát lỗi, luồng, lưu lượng.
 
-Chuyển đổi các `frame` thành chuỗi bit và chuyển xuống lớp vật lý.
+	+ Chuyển đổi các `frame` thành chuỗi bit và chuyển xuống lớp vật lý.
     
 + Lớp vật lý (physical layer):
 
-Bao gồm các thiết bị vật lý liên quan đến việc truyền dữ liệu (cáp, thiết bị chuyển mạch, ...).
+	+ Bao gồm các thiết bị vật lý liên quan đến việc truyền dữ liệu (cáp, thiết bị chuyển mạch, ...).
 
-Có chức năng truyền chuỗi bit qua các phương tiện vật lý.
+	+ Có chức năng truyền chuỗi bit qua các phương tiện vật lý.
 
 Ưu điểm: 
 
