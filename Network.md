@@ -134,6 +134,8 @@ Nhược điểm:
 
 ### UDP
 
+Là giao thức giao tiếp không đáng tin cậy (không có tính năng xác thực, khôi phục sau lỗi và kiểm soát luồng).
+
 ### TCP
 
 ## IPv4 và IPv6
