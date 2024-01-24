@@ -169,7 +169,19 @@ Quá trình hủy kết nối:
 + server gửi `FIN` để kết thúc kết nối.
 + client gửi `ACK` và kết thúc kết nối.
 
+TCP được sử dụng trong trường hợp cần đảm bảo các gói tin được truyền đi đúng và đủ, thời gian truyền không phải thời gian thực. TCP thường được sử dụng trong truyền tải dữ liệu web, gửi/nhận email, truyền tệp tin giữa máy chủ và client, ....
+
 ## IPv4 và IPv6
+
+Cấu trúc: Gồm 32 bit, chia làm 4 cụm (`octet`) với 2 cụm đầu là phần mạng, 2 cụm sau là phần host.
+
+Phân lớp: Gồm 5 lớp A, B, C, D, E.
+
++ Lớp A: 8bit đầu phần mạng (bit đầu luôn là 0) và 24bit sau phần host. Có các địa chỉ mạng từ `1.0.0.0` đến `126.0.0.0` và mỗi mạng có 224 địa chỉ host.
++ Lớp B: 16bit đầu phần mạng (2bit đầu luôn là 1.0) và 16bit sau phần host. Có các địa chỉ mạng từ `128.0.0.0` đến `191.255.0.0` và mỗi mạng có 214 địa chỉ host.
++ Lớp C: 24bit đầu phần mạng (3bit đầu luôn là 1.0.0) và 8bit sau phần host. Có các địa chỉ magnj từ `192.0.0.0` đến `223.255.255.0` và mỗi mạng có 26 địa chỉ host.
++ Lớp D: Những địa chỉ multicast bao gồm `224.0.0.0` đến `239.255.255.255`.
++ Lớp E: Có vai trò dự phòng, bao gồm các địa chỉ từ `240.0.0.0` trở đi.
 
 ### IPv4
 
