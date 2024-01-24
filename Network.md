@@ -136,7 +136,21 @@ Nhược điểm:
 
 Là giao thức giao tiếp không đáng tin cậy (không có tính năng xác thực, khôi phục sau lỗi và kiểm soát luồng).
 
+Dữ liệu được chia thành các gói tin. Mỗi gói tin chứa đủ thông tin để xác định nguồn, đích và kiểm soát lỗi.
+
+UDP không yêu cầu thiết lập kết nối trước khi truyền tải các gói tin. Có thể gửi trực tiếp các gói tin đến IP và cổng nhận.
+
+UDP sử dụng trong trường hợp cần muốn ưu tiên thời gian truyền tải, cần thời gian thực, chấp nhận bỏ qua gói tin thay vì chờ đợi. UDP được sử dụng trong truyền tải audio/video trực tuyến (streaming), game trực tuyến, DNS,... các ứng dụng không yêu cầu tin cậy và thiết lập kết nối trước.
+
 ### TCP
+
+Là giao thức đảm bảo truyền tin giữa các thiết bị trong mạng.
+
+Dữ liệu cũng được chia nhỏ thành các gói tin như UDP. Mỗi gói tin chứa các thông tin như địa chỉ nguồn, đích, kiểm tra lỗi, số thứ tự, số ACK, độ đai header, các bit điều khiển cờ, ....
+
+TCP yêu cầu thiết lập kết nối trước khi truyền tin, sử dụng `3-way handshake`.
+
+
 
 ## IPv4 và IPv6
 
