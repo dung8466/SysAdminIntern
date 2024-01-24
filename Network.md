@@ -150,7 +150,7 @@ Dữ liệu cũng được chia nhỏ thành các gói tin như UDP. Mỗi gói 
 
 TCP yêu cầu thiết lập kết nối trước khi truyền tin, sử dụng `3-way handshake`.
 
-
+![3-way handshake](pictures/tcp-start.gif)
 
 ## IPv4 và IPv6
 
