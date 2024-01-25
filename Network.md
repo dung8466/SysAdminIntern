@@ -173,18 +173,53 @@ TCP được sử dụng trong trường hợp cần đảm bảo các gói tin 
 
 ## IPv4 và IPv6
 
-Cấu trúc: Gồm 32 bit, chia làm 4 cụm (`octet`) với 2 cụm đầu là phần mạng, 2 cụm sau là phần host.
+### IPv4
+
+Cấu trúc: Gồm 32 bit, chia làm 4 cụm (`octet`) với 2 cụm đầu là phần mạng (chỉ định số độc nhất được gán cho mạng và cũng xác định loại mạng được gán), 2 cụm sau là phần host (chỉ định cho mỗi máy, xác định máy trong mạng). --> Trong cùng 1 mạng, phần mạng sẽ giống nhau và phần host sẽ khác nhau.
 
 Phân lớp: Gồm 5 lớp A, B, C, D, E.
 
-+ Lớp A: 8bit đầu phần mạng (bit đầu luôn là 0) và 24bit sau phần host. Có các địa chỉ mạng từ `1.0.0.0` đến `126.0.0.0` và mỗi mạng có 224 địa chỉ host.
-+ Lớp B: 16bit đầu phần mạng (2bit đầu luôn là 1.0) và 16bit sau phần host. Có các địa chỉ mạng từ `128.0.0.0` đến `191.255.0.0` và mỗi mạng có 214 địa chỉ host.
-+ Lớp C: 24bit đầu phần mạng (3bit đầu luôn là 1.0.0) và 8bit sau phần host. Có các địa chỉ magnj từ `192.0.0.0` đến `223.255.255.0` và mỗi mạng có 26 địa chỉ host.
-+ Lớp D: Những địa chỉ multicast bao gồm `224.0.0.0` đến `239.255.255.255`.
-+ Lớp E: Có vai trò dự phòng, bao gồm các địa chỉ từ `240.0.0.0` trở đi.
++ Lớp A:
+	+ 8bit đầu phần mạng (bit đầu luôn là 0) và 24bit sau phần host.
+	+ Có các địa chỉ mạng từ `1.0.0.0` đến `126.0.0.0` và mỗi mạng có 224 địa chỉ host.
+	+ Dải địa chỉ private: `10.x.x.x`.
++ Lớp B:
+	+ 16bit đầu phần mạng (2bit đầu luôn là 1.0) và 16bit sau phần host.
+	+ Có các địa chỉ mạng từ `128.0.0.0` đến `191.255.0.0` và mỗi mạng có 214 địa chỉ host.
+	+ Dải địa chỉ private: `172.16.x.x` đến `172.31.x.x`.
++ Lớp C:
+	+ 24bit đầu phần mạng (3bit đầu luôn là 1.0.0) và 8bit sau phần host.
+	+ Có các địa chỉ mạng từ `192.0.0.0` đến `223.255.255.0` và mỗi mạng có 26 địa chỉ host.
+	+ Dải địa chỉ private: `192.168.x.x`.
++ Lớp D:
+	+ Những địa chỉ `multicast` bao gồm `224.0.0.0` đến `239.255.255.255`. `Multicast`: 1 gói tin có thể chuyển đến nhiều người nhận nhưng có chọn lọc thay vì gửi đến tất cả các thiết bị trong phạm vi như `boardcast`.
++ Lớp E:
+	+ Có vai trò dự phòng, bao gồm các địa chỉ từ `240.0.0.0` trở đi.
+ 	+ Thường được sử dụng trong nghiên cứu, không dùng trong internet thông thường.
 
-### IPv4
+<p id="chia-subnet">Chia IPv4</p>
 
++ Đầu tiên ta cần xác định địa chỉ IP thuộc lớp nào --> tính được số bit cần mượn --> tính được số bit host sau khi mượn.
++ Tìm số đường mạng theo công thức `2^(số bit mượn)` (số đường mạng có thể phân ra từ mạng gốc).
++ Xác định mỗi đường mạng sẽ có bao nhiêu máy đặt trong đó theo công thức `2^(số bit host sau khi mượn) - 2` vì sẽ phải bỏ đi địa chỉ mạng và boardcast.
++ Tìm subnet mask mới. Dựa vào lớp mạng, mượn bao nhiêu bit sẽ phải bật lên bấy nhiêu bit 1 ở subnet mặc định.
++ Tìm bước nhảy theo công thức `256 - (subnet mask mới)`. --> Số dải IP khả dụng trong mạng
+
+Ví dụ: Từ 192.168.1.1/29 tìm phạm vi địa chỉ host nó thuộc về.
+
++ Mạng thuộc lớp C, 24bit dùng cho mạng --> mượn `29 - 24 = 5bit` --> số bit host `8 - 5 = 3bit`
++ Số đường mạnh `2^5 = 32`
++ Số host mỗi đường mạng `2^3 - 2 = 6`
++ Subnet mới:
+	+ subnet mặc định `/24`: `255.255.255.0` --> `11111111.11111111.1111111.00000000`
+ 	+ mượn 5bit --> `11111111.11111111.11111111.11111000` --> `255.255.255.248`
++ Bước nhảy `256 - 248 = 32`
++ Các dải IP khả dụng
+	+ `192.168.1.1` đến `192.168.1.6`, `192.168.1.0`: địa chỉ mạng, `192.168.1.7`: boardcast
+	+ `192.168.1.9` đến `192.168.1.14`, `192.168.1.8`: địa chỉ mạng, `192.168.1.15`: boardcast
+ 	+ `192.168.1.17` đến  `192.168.1.22`, `192.168.1.16`: địa chỉ mạng, `192.168.1.23`: boardcast
+  	+ `192.168.1.25` đến `192.168.1.30`, `192.168.1.24`: địa chỉ mạng, `192.168.1.31`: boardcast...
+  --> mạng `192.168.1.1/29` thuộc dải `192.168.1.1` đến `192.168.1.6`, với địa chỉ mạng là `192.168.1.0`, boardcast là `192.168.1.7`.
 ### IPv6
 
 ## Switching
