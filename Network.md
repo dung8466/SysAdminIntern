@@ -301,6 +301,28 @@ Ngắt kết nối cả 2 giao diện mạng `ens33` và `ens36` thì `bond0` `D
 
 ## Routing
 
+Một mạng máy tính được tạo ra từ nhiều máy tính kết nối gọi là các nút và các đường dẫn, liên kết các nút đó. Định tuyến là lựa chọn đường dẫn tốt nhất dựa trên 1 số quy tắc định trước.
+
+Bộ định tuyến là thiết bị mạng kết nối các máy tính và mạng với những mạng khác. Có chức năng xác định đường dẫn, chuyển tiếp dữ liệu và cân bằng tải (gửi bản sao của cùng 1 gói dữ liệu bằng nhiều đường dẫn khác nhau).
+
+Phương pháp hoạt động: 
+	+ các gói dữ liệu được gửi đến bộ định tuyến trước 
+ 	+ Bộ định tuyến sau đó sẽ tra cứu gói có tiêu đề và xác định điểm đích của nó 
+  	+ Tự tra cứu bảng nội bộ của nó và chuyển tiếp gói (đến bộ định tuyến tiếp theo hoặc thiết bị khác)
+Phân loại:
+	+ Định tuyến tĩnh: sử dụng bảng tĩnh để đặt cấu hình và chọn các tuyến mạng theo cách thủ công.
+ 	+ Định tuyến động: các bộ định tuyến tạo và cập nhật bảng định tuyến trong thời gian chạy dựa trên điều kiện mạng thực tế.
+
+Bảng định tuyến: là 1 bộ quy tắc dưới dạng bảng, lưu thông tin các định tuyến tốt nhất. Bao gồm nhiều entry, mỗi entry chứa thông tin các tuyến đường đến các đích khác nhau.
+
+Cấu trúc 1 entry:
+	+ Địa chỉ IP đích: có thể là 1 host (host-id khác 0) hoặc 1 mạng (host-id bằng 0).
+ 	+ Địa chỉ IP của next-hop router hoặc địa chỉ mạng kết nối trực tiếp: địa chỉ có thể chuyển tiếp gói tin đến đích.
+  	+ Network interface: cổng của router được sử dụng để gửi gói tin đến next-hop.
+   	+ Cờ: cho biết nguồn cập nhật của route.
+    	+ Metric: "khoảng cách" từ router đến IP đích, dùng để so sánh khi các route sử dụng cùng 1 giao thức định tuyến.
+     	+ Administrative Distance: số ưu tiên đặt cho bảng định tuyến, gán cho các giao thức (giá trị từ 0 đến 255, càng bé càng ưu tiên).
+
 ## Firewall
 
 	sudo iptables [option] CHAIN_rule [-j target]
