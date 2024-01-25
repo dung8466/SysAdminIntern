@@ -224,9 +224,103 @@ Ví dụ: Từ 192.168.1.1/29 tìm phạm vi địa chỉ host nó thuộc về.
 
 ## Switching
 
+Là kết hợp nhiều `network interfaces` (giao diện mạng) thành một giao diện liên kết duy nhất, hoạt động cuả giao diện này phụ thuộc vào chế độ (dự phòng hoặc cân bằng tải).
+
+Sử dụng hệ điều hành CentOs, thêm 1 mạng vào hệ thống.
+
+Kiểm tra `bonding` đã kích hoạt chưa
+
+	lsmod | grep bonding
+
+ Nếu chưa thì kích hoạt
+
+ 	sudo modprobe --first-time bonding
+	modinfo bonding
+
+ Cấu hình `bonding` tự động chạy khi hệ thống khởi động tại `/etc/modprobe.d/bonding.conf`
+
+ 	alias bond0 bonding
+
+Kiểm tra các giao diện mạng `ip -c a` --> `ens33` và `ens36` đều `UP`, `bond0` có state `DOWN`.
+
+Cấu hình giao diện `bond0` master tại `/etc/sysconfig/network-scripts/ifcfg-bond0`
+
+```
+DEVICE=bond0
+IPADDR=172.16.47.130
+NETMASK=255.255.255.0
+GATEWAY=172.16.47.1
+ONBOOT=yes
+BOOTPROTO=no
+USERCTL=no
+NM_CONTROLLED=no
+BONDING_OPTS="miimon=1000 mode=1"
+```
+
+Với `miimon`: thời gian dám sát MII của NIC (milisecond), `mode=1`: mode active-backup của bonding.
+
+Cấu hình `ens33` slave tại `/etc/sysconfig/network-scripts/ifcfg-ens33`
+
+```
+DEVICE=ens33
+TYPE=Ethernet
+ONBOOT=yes
+BOOTPROTO=none
+NM_CONTROLLED=no
+MASTER=bond0
+SLAVE=yes
+```
+
+Cấu hình `ens36` slave tại `/etc/sysconfig/network-scripts/ifcfg-ens36`
+
+```
+DEVICE=ens36
+TYPE=Ethernet
+ONBOOT=yes
+BOOTPROTO=none
+NM_CONTROLLED=no
+MASTER=bond0
+SLAVE=yes
+```
+
+Khởi động giao diện `bond0`
+
+	sudo service network restart
+
+Kiểm tra sử dụng `ip -c a` --> `ens33` và `ens36` có thêm giá trị `SLAVE`, không còn địa chỉ IP.
+
+`bond0` có giá trị `MASTER`, state `UP` và có giá trị IP, netmask,... theo cấu hình đã cài đặt. 
+
+Kiểm tra cơ chế hoạt động của bonding với `cat /sys/class/net/bond0/bonding/mode` --> `active-backup 1`.
+
+Kiểm tra giao diện mạng bonding có hoạt động không với `cat /sys/class/net/bonding_masters` --> `bond0`.
+
+Thử ngắt kết nối giao diện mạng `ens36` --> chỉ `ens36` `DOWN`, cả `ens33` và `bond0` đều `UP` và vẫn hoạt động bình thường.
+
+Ngắt kết nối cả 2 giao diện mạng `ens33` và `ens36` thì `bond0` `DOWN`.
+
 ## Routing
 
 ## Firewall
+
+	sudo iptables [option] CHAIN_rule [-j target]
+
+ Kiểm tra quy tắc của `iptables`
+
+ 	sudo iptables -L
+
+ Chặn 1 port có thể chặn đến/đi, giao thức tcp/udp, ...
+
+ 	iptables -A <INPUT | OUTPUT> <-p tcp | -p udp> <-s IP | -d IP> <--dport port_number> -j DROP
+
+Trong đó:
+	+ `-p`: giao thức mạng muốn chặn.
+ 	+ `-s`: IP nguồn muốn chặn.
+  	+ `-d`: IP đích muốn chặn.
+   	+ `-dport`: port muốn chặn.
+Ngược lại, nếu muốn cho phép có thể thay thế `DROP` thành `ACCEPT`.
+
+ 	
 
 ## DHCP và DNS
 
