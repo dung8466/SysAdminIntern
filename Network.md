@@ -313,7 +313,7 @@ Phân loại:
 + Định tuyến tĩnh: sử dụng bảng tĩnh để đặt cấu hình và chọn các tuyến mạng theo cách thủ công.
 + Định tuyến động: các bộ định tuyến tạo và cập nhật bảng định tuyến trong thời gian chạy dựa trên điều kiện mạng thực tế.
 
-Bảng định tuyến: là 1 bộ quy tắc dưới dạng bảng, lưu thông tin các định tuyến tốt nhất. Bao gồm nhiều entry, mỗi entry chứa thông tin các tuyến đường đến các đích khác nhau.
+Bảng định tuyến: là 1 bộ quy tắc dưới dạng bảng, lưu thông tin các định tuyến. Bao gồm nhiều entry, mỗi entry chứa thông tin các tuyến đường đến các đích khác nhau.
 
 Cấu trúc 1 entry:
 + Địa chỉ IP đích: có thể là 1 host (host-id khác 0) hoặc 1 mạng (host-id bằng 0).
@@ -323,17 +323,64 @@ Cấu trúc 1 entry:
 + Metric: "khoảng cách" từ router đến IP đích, dùng để so sánh khi các route sử dụng cùng 1 giao thức định tuyến.
 + Administrative Distance: số ưu tiên đặt cho bảng định tuyến, gán cho các giao thức (giá trị từ 0 đến 255, càng bé càng ưu tiên).
 
+Cài đặt định tuyến tĩnh:
+
++ Kiểm tra định tuyến hiện tại:
+
+		route -n
+  	hoặc
+
+    		ip r
+
++ Thêm định tuyến tĩnh sử dụng `ip route`:
+
+		ip route add <IP/mask> via <gateway IP> [dev <network interface>]
++ Thêm định tuyến sử dụng `route`:
+
+   		route add -net <IP> netmask <mask> [gw <gateway IP>] [<network interface>]
+
++ Thêm định tuyến tĩnh tại `/etc/netplan/*.yaml`:
+
+		routes:
+  			- to: <IP đích>
+  			  via: <gateway IP>
++ Thêm định tuyến vĩnh viễn cho RHEL, FEDORA, CentOS tại `/etc/sysconfig/network-scripts/route-<network interface>`:
+
+		<IP | IP/mask> via <gateway IP>
++ Thêm định tuyến vĩnh viễn cho Ubuntu tại `/etc/network/interfaces`:
+
+		up route add -net <IP> netmask <mask> gw <gateway IP>
++ Xóa định tuyến sử dụng `ip route`:
+
+		ip route del <IP/mask> via <gateway IP> [dev <network interface>]
++ Xóa định tuyến sử dụng `route`:
+
+		route del -net <IP> netmask <mask> [gw <gateway IP>] [<network interface>]
++ Khóa route (tim route cho địa chỉ hoặc mạng sẽ tìm kiếm thất bại):
+
+		route add -net <IP/mask> reject
+
 ## Firewall
+
+Là thiết bị/phần mềm mạng giám sát lưu lượng mạng đến và đi, có thể cho phép hoặc chặn dữ liệu theo quy tắc bảo mật.
 
 	sudo iptables [option] CHAIN_rule [-j target]
 
- Kiểm tra quy tắc của `iptables`
+ `iptables` cần được lưu lại thủ công mỗi lần reboot. Có thể tự động load `iptables` mỗi lần reboot sử dụng package `iptables-presistent`, các quy tắc sẽ được lưu tại `/etc/iptables/rules.v4` và `/etc/iptables/rules.v6`. 
 
- 	sudo iptables -L
+ Lưu các quy tắc sử dụng `iptables-save` và `ip6tables-save`
 
- Chặn 1 port có thể chặn đến/đi, giao thức tcp/udp, ...
+ 		sudo iptables-save > /etc/iptables/rules.v4
+   		sudo ip6tables-save > /etc/iptables/rules.v6
 
- 	iptables -A <INPUT | OUTPUT> <-p tcp | -p udp> <-s IP | -d IP> <--dport port_number> -j DROP
+ + Kiểm tra quy tắc của `iptables`
+
+ 		sudo iptables -L
+
+
+ + Chặn 1 port có thể chặn đến/đi, giao thức tcp/udp, ...
+
+ 		iptables -A <INPUT | OUTPUT> <-p tcp | -p udp> <-s IP | -d IP> <--dport port_number> -j DROP
 
 Trong đó:
 	+ `-p`: giao thức mạng muốn chặn.
@@ -342,8 +389,29 @@ Trong đó:
    	+ `-dport`: port muốn chặn.
 Ngược lại, nếu muốn cho phép có thể thay thế `DROP` thành `ACCEPT`.
 
- 	
++ Chặn toàn bộ port trừ 1 số port:
+	+ Khởi tạo lại các quy tắc
 
+ 			iptables -F
+   			iptbales -X
+ 	+ Cài đặt quy tắc mặc định
+
+   			iptables -P INPUT DROP
+    			iptables -P OUTPUT DROP
+    			iptables -P FORWARD DROP
+	+ Cho phép port
+
+			iptables -A <INPUT | OUTPUT> -p <tcp | udp> -m multiport --dport <port number 1, port number 2,...> -j ACCEPT
+
+ 	+ Chặn hết các port không `ACCEPT`
+
+			iptables -A <INPUT | OUTPUT> -j DROP
+
++ Chỉ cho phép ssh từ 1 số nguồn:
+
+		iptables -A INPUT -p tcp --dport ssh -s <IP/mask> -j ACCEPT
+  		iptbales -A INPUT -p tcp --dport ssh -j REJECT
+  
 ## DHCP và DNS
 
 ## Keepalived
