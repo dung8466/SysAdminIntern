@@ -222,6 +222,26 @@ Ví dụ: Từ 192.168.1.1/29 tìm phạm vi địa chỉ host nó thuộc về.
   --> mạng `192.168.1.1/29` thuộc dải `192.168.1.1` đến `192.168.1.6`, với địa chỉ mạng là `192.168.1.0`, boardcast là `192.168.1.7`.
 ### IPv6
 
+Cấu trúc: Gồm 128bit, được chia làm 8 nhóm, mỗi nhóm gồm 4 số hex tách biệt bằng `:` (IPv6-address/ prefix-length).
+
+Ví dụ: `1080:0000:0000:0070:0000:0989:CB45:345F`, `200F::AB00:0:0:0:0/56` ( 56 prefix cho `200F00000000AB`).
+
+Nén IPv6: Cho phép bỏ `0` trước mỗi nhóm, nhóm toàn `0` thay bằng `0`, thay `::` cho các nhóm liên tiếp toàn `0`.
+
+--> Từ `1080:0000:0000:0070:0000:0989:CB45:345F` thành `1080:0:0:70::989: CB45:345F`.
+
+Bao gồm 3 phần:
+
++ Site prefix: Định danh mạng hay tổ chức. Cho biết địa chỉ hay mạng thuộc tổ chức nào. 
++ Subnet ID: Phân chia mạng thành các phần nhỏ hơn (`subnet`)
++ Interface ID: Định danh thiết bị trong mạng. Giúp xác định thiết bị cụ thể trong mạng.
+
+Phân loại: Chia làm 3 loại:
+
++ IPv6 Unicast: 1 địa chỉ Unicast được định nghĩa duy nhất trên một cổng của 1 node IPv6. Gói tin gửi đến Unicast được đưa đến cổng định nghĩa bởi địa chỉ đó.
++ IPv6 Multicast: Được định nghĩa 1 nhóm các cổng IPv6. Gói tin gửi đến Multicast được xử lý bởi tất cả các thành viên của nhóm Multicast.
++ IPv6 Anycast: Được đăng ký cho nhiều cổng trên nhiều node. Gói tin gửi đến Anycast được chuyển đến 1 trong số các cổng Anycast, thường là gần nhất.
+
 ## Switching
 
 Là kết hợp nhiều `network interfaces` (giao diện mạng) thành một giao diện liên kết duy nhất, hoạt động cuả giao diện này phụ thuộc vào chế độ (dự phòng hoặc cân bằng tải).
