@@ -441,10 +441,10 @@ Ngược lại, nếu muốn cho phép có thể thay thế `DROP` thành `ACCEP
    			iptables -P INPUT DROP
     			iptables -P OUTPUT DROP
     			iptables -P FORWARD DROP
-    	+ Chấp nhận loopback (localhost)
+    + Chấp nhận loopback (localhost)
 
-				iptables -A INPUT  -i lo -j ACCEPT
-				iptables -A OUTPUT -o lo -j ACCEPT
+			iptables -A INPUT  -i lo -j ACCEPT
+			iptables -A OUTPUT -o lo -j ACCEPT
 	+ Cho phép port
 
 			iptables -A <INPUT | OUTPUT> -p <tcp | udp> [-m multiport] --dport <port number 1, port number 2,...> -j ACCEPT
