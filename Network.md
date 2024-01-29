@@ -641,9 +641,9 @@ Giúp dễ dàng theo dõi lịch sử, cộng tác viết mã theo mã và xem 
  		+ Hoàn lại 1 commit:
 
     				git revert <commit id>
-    		+ Chỉnh sửa lại comment commit trước khi hoàn tác commit
+    	+ Chỉnh sửa lại comment commit trước khi hoàn tác commit
 
-        			git revert -e <commit id>
+       			git revert -e <commit id>
      	+ Trực tiếp hoàn tác commit cuối, không sửa commnet
 
   				git revert -n <commit id>
