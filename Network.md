@@ -623,6 +623,12 @@ Giúp dễ dàng theo dõi lịch sử, cộng tác viết mã theo mã và xem 
 	+ `checkoout`: chuyển từ nhánh này sang nhánh khác
 
   			git checkout [branch name]
+   		+ Tạo 1 branch và cùng lúc checkout branch đó
+
+       			git checkout -b [branch name]
+       + Tạo 1 branch mới trên 1 branch đã có và checkout branch mới tạo
+
+           		git checkout -b [new branch] [exist branch]
    	+ `commit`: Lưu thay đổi trên kho lưu trữ
 
   		+ Thêm comment cho commit
@@ -638,9 +644,9 @@ Giúp dễ dàng theo dõi lịch sử, cộng tác viết mã theo mã và xem 
     		+ Chỉnh sửa lại comment commit trước khi hoàn tác commit
 
         			git revert -e <commit id>
-        	+ Trực tiếp hoàn tác commit cuối, không sửa commnet
+     	+ Trực tiếp hoàn tác commit cuối, không sửa commnet
 
-  					git revert -n <commit id>
+  				git revert -n <commit id>
   	+ `reset`: hoàn tác thay đổi trên nhánh private, chưa đẩy lên bằng `push`
   		+ Hủy commit cuối, con trỏ HEAD chuyển về commit trước đó, commit hủy đưa lại danh sách stagging để sửa đổi
 
@@ -656,6 +662,9 @@ Giúp dễ dàng theo dõi lịch sử, cộng tác viết mã theo mã và xem 
   	   	  		git reset -- <file name>
   	+ `log`: liệt kê lịch sử commit của nhánh hiện tại
   	+ `branch`: liệt kê nhánh của kho lưu trữ cục bộ
+  		+ Xóa branch khỏi kho lưu trữ
+
+  	   			git branch -d [branch name]
   	+ `merge`: gộp lịch sử của nhánh chỉ định vào nhánh hiện tại
 
 	  		git merge [branch name]
