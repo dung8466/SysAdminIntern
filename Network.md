@@ -600,3 +600,77 @@ Ví dụ: Kiểm tra kết nối tới `google.com` gửi 3 packets.
 
 ## Git
 
+Là hệ thống kiểm soát phiên bản mã nguồn. Ghi lại và lưu các thay đổi, cho phép khôi phục phiên bản trước đó.
+
+Giúp dễ dàng theo dõi lịch sử, cộng tác viết mã theo mã và xem ai đã thực hiện thay đổi nào.
+
+`Git branch`: các nhánh của mã nguồn, dùng để kiểm soát phiên bản của mã nguồn trong khi vẫn tiếp tục phát triển mã nguồn.
+
++ Gitflow:
+	+ Nhánh (branch) khởi đầu là `main`. Khi phát triển tính năng sẽ checkout từ `main` sang `develop`.
+ 	+ Mỗi tính năng checkout từ `develop` sang các nhánh có prefix là `feature` và phát triển độc lập với nhau. Sau khi hoàn thành merge lại `develop`.
+  	+ Đến khi release thì merge `develop` sang `release` (vai trò như môi trường stagging, gần với production nhất). Nhánh `release` chỉ bao gồm các commit bugfix, nếu có fix bug thì sẽ merge `release` vào `develop`.
+  	+ Khi đã hết bug, merge `release` vào `main`. Đánh dấu tag để làm phiên bản.
+  	+ Khi production có lỗi, checkout từ `main` sang `hotfix`. Sau khi sửa lỗi xong, thì merge nhánh vừa tạo vào `develop`, nếu bản fix đã hoạt động, merge `hotfix` vào `main` và kết thúc sửa lỗi.
+
++ Các lệnh git cơ bản:
+	+ `push`: tạo 1 nhánh trong kho lưu trữ từ xa và đẩy các thay đổi trong kho cục bộ.
+
+  			git push [variable name] [branch]
+   	+ `pull`: kéo các file thay đổi từ kho lưu trữ từ xa vào kho cục bộ
+ 
+   	  		git pull
+	+ `checkoout`: chuyển từ nhánh này sang nhánh khác
+
+  			git checkout [branch name]
+   	+ `commit`: Lưu thay đổi trên kho lưu trữ
+
+  		+ Thêm comment cho commit
+
+				git commit -m <Commit message>
+		+ Sửa đổi comment gần nhất
+
+   	  			git commit --amend
+ 	+ `revert`: hoàn tác thay đổi trên nhánh public, chưa đẩy lên bằng `push`, không xóa bỏ dữ liệu trong quá trình
+ 		+ Hoàn lại 1 commit:
+
+    				git revert <commit id>
+    		+ Chỉnh sửa lại comment commit trước khi hoàn tác commit
+
+        			git revert -e <commit id>
+        	+ Trực tiếp hoàn tác commit cuối, không sửa commnet
+
+  					git revert -n <commit id>
+  	+ `reset`: hoàn tác thay đổi trên nhánh private, chưa đẩy lên bằng `push`
+  		+ Hủy commit cuối, con trỏ HEAD chuyển về commit trước đó, commit hủy đưa lại danh sách stagging để sửa đổi
+
+  	   			git reset --soft HEAD~1
+  	   	+ Hủy hoàn toàn commit (không được lại danh sách stagging)
+
+  	   	  		git reser --hard HEAD~1
+  		+ Hủy lệnh `git add`
+
+  	   			git reset
+  	   	+ Hủy đưa 1 file vào stagging
+
+  	   	  		git reset -- <file name>
+  	+ `log`: liệt kê lịch sử commit của nhánh hiện tại
+  	+ `branch`: liệt kê nhánh của kho lưu trữ cục bộ
+  	+ `merge`: gộp lịch sử của nhánh chỉ định vào nhánh hiện tại
+
+	  		git merge [branch name]
++ Submodule: cho phép 1 thư mục git nằm trong 1 thư mục git khác nhưng vẫn giữ các commit tách biệt.
+	+ Thêm 1 submodule:
+
+   			git submodule add <git url> <path/to/submodule>
+   	+ Phải clone submodule nếu clone dự án chính trên máy khác:
+
+      			git submodule update --init
+   	  		git submodule update --recursive --remote
+   	  		git pull --recurse-submodules
+	+ Xóa submodule:
+
+      			git submodule deinit <path/to/submodule> -f
+   			git rm <path/to/submodule>
+   			git commit -m <commit message>
+   			rm -rf .git/modules/<path_to_submodule_folder>
