@@ -668,6 +668,32 @@ Giúp dễ dàng theo dõi lịch sử, cộng tác viết mã theo mã và xem 
   	+ `merge`: gộp lịch sử của nhánh chỉ định vào nhánh hiện tại
 
 	  		git merge [branch name]
+  		+ Gộp tất cả các commit thành 1 sau đó hợp vào nhánh hiện tại
+
+  	   			git merge --squash 
+  	+ `rebase`: lấy tất cả các thay đổi đã commit trên 1 nhánh và sao chép sang nhánh khác
+  		+ Gộp nhánh B sang nhánh A, đứng ở nhánh A
+
+       			git rebase b A
+  	   + Interactive rebase, đứng tại nhánh đã checkout
+
+				git rebase -i
+	+ `cherry-pick`: sao chép commit từ nhánh khác sang nhánh hiện tại
+ 
+   			git cherry-pick <commit> 
+   		+ Commit cho cả 2 branch A,B
+
+       			git add -A, git commit -m "commit A" -- branch A
+       			git checkout B
+       			git cherry-pick A
+       + `fetch`: lấy các thay đổi từ xa nhưng không hợp vào nhánh hiện tại
+       + `tag`: xác định phiên bản mã nguồn
+		+ tag lightweight: đánh dấu cho 1 commit
+
+    			git tag [version]
+    		+ tag annotated: có thêm tên tác giả, comment, ngày
+
+	 				git tag -a [version] -m [commit message]  
 + Submodule: cho phép 1 thư mục git nằm trong 1 thư mục git khác nhưng vẫn giữ các commit tách biệt.
 	+ Thêm 1 submodule:
 
