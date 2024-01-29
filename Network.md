@@ -454,15 +454,147 @@ Ngược lại, nếu muốn cho phép có thể thay thế `DROP` thành `ACCEP
 			iptables -A <INPUT | OUTPUT> -j DROP
 
 + Chỉ cho phép ssh từ 1 số nguồn:
+	+ Khởi tạo lại quy tắc:
 
-		iptables -A INPUT -p tcp --dport ssh -s <IP/mask> -j ACCEPT
-  		iptbales -A INPUT -p tcp --dport ssh -j REJECT
+  			iptables -F
+ 	+ Cho phép từ các nguồn:
+
+  			iptables -A INPUT -p tcp -s <IP> --dport <ssh port> -j ACCEPT
+  			... 
+  	+ Cho phép các kết nối có liên quan, đã kết nối thành công:
+
+  			iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+  	+ Chặn từ các nguồn khác:
+
+  			iptables -A INPUT -p tcp -j DROP
   
 ## DHCP và DNS
 
+
+
 ## Keepalived
 
++ Cung cấp 2 chức năng chính:
+
+	+ Kiểm tra hệ thống LVS (Linux Virtual Server).
+ 	+ Áp dụng VRRPv2 (Virtual Redundancy Routing Protocol) để xử lý nếu cân bằng thất bại.
++ Kỹ thuật cân bằng tải (Load Balancing):
+	+ via `NAT`: nhận yêu cầu từ người dùng qua mạng public và sử dụng `network address translation` (NAT) để chuyển các yêu cầu về server thật nằm tại mạng private và trả về quả theo chiều ngược lại.
+
+   	--> server được bảo mật khỏi mạng public.
+   	+ via `Tunneling`: yêu cầu được gửi đến server thông qua `IP tunnel` (đường liên kết sử dụng công nghệ đóng gói giữa các mạng không có đường định tuyến) trước rồi gửi yêu cầu thông qua NAT sau.
+
+  	--> chuyển tiếp yêu cầu đến các nhóm node và các node sẽ phản hồi trực tiếp client không thông qua cân bằng tải. --> Cách tiếp cận nodes khác mạng.
+	+ via `Direct Routing`: client gửi yêu cầu đến `VIP` trong cân bằng tải. Cân bằng tải sử dụng thuật toán phân phối chuyển yêu cầu đến server thực tương ứng, server phản hồi trực tiếp đến người dùng.
+
++ Cài đặt `keepalived`:
+
+		sudo apt install keepalived
+  		ln -s /etc/init.d/keepalived.init /etc/rc2.d/S99keepalived
+
++ Cấu hình `keepalived` Failover:
+
+	+ Tại server 1:
+   
+			vrrp_instance VI_1 {
+			state MASTER
+			interface ens33
+			virtual_router_id 101
+			priority 101
+			advert_int 1
+			authentication {
+			auth_type PASS
+			auth_pass 1111
+			}
+			virtual_ipaddress {
+			172.16.47.200
+			}
+			}
+   	+ Tại server 2:
+
+			vrrp_instance VI_1 {
+			state MASTER
+			interface ens33
+			virtual_router_id 101
+			priority 100
+			advert_int 1
+			authentication {
+			auth_type PASS
+			auth_pass 1111
+			}
+			virtual_ipaddress {
+			172.16.47.200
+			}
+			}
+   	--> `virtual_router_id` phải giống nhau tại 2 server, `priority` tại server chính > tại server phụ.
+
+  	Nếu muốn nhận email:
+
+  			global_defs {
+			notification_email {
+  			<email> ...
+			}
+			notification_email_from <email của server>
+			smtp_server localhost
+			smtp_connect_timeout 30
+			}
+   	+ Khởi động `keepalived` tại cả 2 server:
+
+  			sudo server keepalived start
+	+ Kiểm tra `ens33` tại server 1:
+
+   			inet 172.16.47.200/32 scope global ens33
+   	+ `ens33` tại server 2 chưa thay đổi. Tắt server 1 và kiểm tra `ens33` tại server 2:
+
+   			inet 172.16.47.200/32 scope global ens33
+  	+ Nếu bật lại server 1 thì IP `172.16.47.200/32` sẽ quay lại server 1.
+
 ## Debug, config network
+
++ `ip link`:
+	+ Hiển thị thông tin toàn bộ giao diện mạng: `ip link show`
+   	+ Hiển thị thông tin giao diện mạng cụ thể: `ip link show [dev] <interface name>`
+   	+ `up/down` giao diện mạng: `ip link set [dev] <interface name> <up | down>`
++ `ip addr`:
+	+ Hiển thị thông tin toàn bộ giao diện mạng: `ip addr` hoặc `ip a`
+   	+ Hiển thị thông tin giao diện cụ thể: `ip addr show <interface name>` hoặc `ip a show <interface name>`
+   	+ Thêm địa chỉ IP tạm thời: `ip addr add <IP/mask> dev <interface name>`
+   	+ Xóa địa chỉ IP: `ip addr del <IP/mask> dev <interface name>`
++ `ip route`:
+	+ Hiển thị thông tin toàn bộ giao diện mạng: `ip route show|list`
+   	+ Thêm định tuyến tĩnh: `ip route add <IP dest> via <gateway IP> dev <interface name>`
+   	+ Xóa định tuyến tĩnh: `ip route del <IP dest> dev <interface name>`
+   	+ Thay đổi định tuyến tĩnh: `ip route change|replace <IP dest> via <gateway IP> dev <interface name>`
+   	+ Hiển thị tuyến đường sử dụng để đến 1 IP: `ip route get <IP dest>`
++ `arp`: (Address Resolution Protocol) phân giải địa chỉ IP thành địa chỉ mac
+	+ Hiển thị bảng ARP: `arp -a` hoặc `arp -v` hoặc `arp -n`
+	+ Xóa 1 mục trong bảng: `arp -d <address>` với `address` là cột đầu tiên tại bảng
+	+ Thêm 1 mục vào bảng: `arp -s <address> <mac address>`
++ `telnet`: Kết nối tới 1 port cụ thể của 1 host --không phải giao thức bảo mật
+	+ Kiểm tra 1 port tại server có mở không: `telnet <IP server> <port number>`
++ `ping`: Kiểm tra kết nối tới máy khác
+
+Ví dụ: Kiểm tra kết nối tới `google.com` gửi 3 packets.
+		
+  	ping -c 3 google.com
++ `traceroute`: Dấu vết gói định tuyến, nếu không thể kết nối tới server có thể dùng để kiểm tra vấn đề
+	+ Truy vết tới 1 server: `traceroute <server IP|name>`
+   	+ Truy vết nhưng không dùng map giữa địa chỉ IP và tên: `traceroute -n <server IP|name>` 
++ `mtr`: Kết hợp giữa `traceroute` và `ping`
+	+ Định tuyến đến server và liên tục ping các bước nhảy trung gian: `mtr <server IP|name>`
+	+ Sử dụng IPv4
++ `netstat`: In kết nối mạng, bảng định tuyến, thống kê giao diện, kết nối giả mạo và tư cách thành viên multicast
+	+ Hiển thị tất cả các port: `netstat -a`
+	+ Hiển thị các port đang `listening`: `netstat -l`
+	+ Hiển thị các tiến trình, đang lắng nghe trên các cổng: `netstat -ltnp`
+	+ Hiển thị thông tin router: `netstat -r`
+	+ Hiển thị các kết nối tcp/udp: `netstat -t|u`
++ `tcpdump`: Phân tích gói dữ liệu trên mạng
+	+ Hiển thị các giao diện mạng: `tcpdump -D`
+ 	+ Nắm bắt lưu lượng truy cập tại 1 giao diện: `tcpdump -i <interface name>`
+  	+ Nắm bắt lưu lượng truy cập ra/vào tại 1 server: `tcpdump host <server IP|name>`
+  	+ Nắm bắt lưu lượng truy cập tại 1 mạng: `tcpdump net <IP/mask>`
+  	+ Nắm bắt lưu lượng truy cập từ một giao diện, nguồn, đích và cổng đích cụ thể: `tcpdump -i <interface name> src <IP source> and dst <IP dest> and dst port <port number>`
 
 ## Ansible
 
