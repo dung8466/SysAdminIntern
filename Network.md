@@ -369,9 +369,9 @@ Cài đặt định tuyến tĩnh:
 + Kiểm tra định tuyến hiện tại:
 
 		route -n
-  	hoặc
+  hoặc
 
-    		ip r
+  		ip r
 
 + Thêm định tuyến tĩnh sử dụng `ip route`:
 
@@ -433,16 +433,21 @@ Ngược lại, nếu muốn cho phép có thể thay thế `DROP` thành `ACCEP
 + Chặn toàn bộ port trừ 1 số port:
 	+ Khởi tạo lại các quy tắc
 
- 			iptables -F
-   			iptbales -X
- 	+ Cài đặt quy tắc mặc định
+			iptables -Z --zero-counter
+ 			iptables -F --flush rules
+   			iptbales -X --delete all extra chains
+ 	+ Cài đặt quy tắc filter mặc định
 
    			iptables -P INPUT DROP
     			iptables -P OUTPUT DROP
     			iptables -P FORWARD DROP
+    	+ Chấp nhận loopback (localhost)
+
+				iptables -A INPUT  -i lo -j ACCEPT
+				iptables -A OUTPUT -o lo -j ACCEPT
 	+ Cho phép port
 
-			iptables -A <INPUT | OUTPUT> -p <tcp | udp> -m multiport --dport <port number 1, port number 2,...> -j ACCEPT
+			iptables -A <INPUT | OUTPUT> -p <tcp | udp> [-m multiport] --dport <port number 1, port number 2,...> -j ACCEPT
 
  	+ Chặn hết các port không `ACCEPT`
 
