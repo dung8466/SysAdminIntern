@@ -693,7 +693,7 @@ Giúp dễ dàng theo dõi lịch sử, cộng tác viết mã theo mã và xem 
     			git tag [version]
     		+ tag annotated: có thêm tên tác giả, comment, ngày
 
-	 				git tag -a [version] -m [commit message]  
+					git tag -a [version] -m [commit message]  
 + Submodule: cho phép 1 thư mục git nằm trong 1 thư mục git khác nhưng vẫn giữ các commit tách biệt.
 	+ Thêm 1 submodule:
 
