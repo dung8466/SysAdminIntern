@@ -423,12 +423,13 @@ Là thiết bị/phần mềm mạng giám sát lưu lượng mạng đến và 
 
  		iptables -A <INPUT | OUTPUT> <-p tcp | -p udp> <-s IP | -d IP> <--dport port_number> -j DROP
 
-Trong đó:
+	Trong đó:
 	+ `-p`: giao thức mạng muốn chặn.
- 	+ `-s`: IP nguồn muốn chặn.
-  	+ `-d`: IP đích muốn chặn.
-   	+ `-dport`: port muốn chặn.
-Ngược lại, nếu muốn cho phép có thể thay thế `DROP` thành `ACCEPT`.
+	 + `-s`: IP nguồn muốn chặn.
+	  + `-d`: IP đích muốn chặn.
+	   + `-dport`: port muốn chặn.
+
+	Ngược lại, nếu muốn cho phép có thể thay thế `DROP` thành `ACCEPT`.
 
 + Chặn toàn bộ port trừ 1 số port:
 	+ Khởi tạo lại các quy tắc
@@ -574,9 +575,9 @@ Ngược lại, nếu muốn cho phép có thể thay thế `DROP` thành `ACCEP
 	+ Kiểm tra 1 port tại server có mở không: `telnet <IP server> <port number>`
 + `ping`: Kiểm tra kết nối tới máy khác
 
-Ví dụ: Kiểm tra kết nối tới `google.com` gửi 3 packets.
+	Ví dụ: Kiểm tra kết nối tới `google.com` gửi 3 packets.
 		
-  	ping -c 3 google.com
+	  	ping -c 3 google.com
 + `traceroute`: Dấu vết gói định tuyến, nếu không thể kết nối tới server có thể dùng để kiểm tra vấn đề
 	+ Truy vết tới 1 server: `traceroute <server IP|name>`
    	+ Truy vết nhưng không dùng map giữa địa chỉ IP và tên: `traceroute -n <server IP|name>` 
@@ -636,7 +637,7 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
   	+ ping đến toàn bộ server: `ansible -m ping all`
   	+ kiểm tra uptime của host_group "test-servers": `ansible -m command -a uptime test-servers` hoặc `ansible -a uptime test-servers`
   	+ xem tổng quan của filesystem của toàn bộ server: `ansible -m command -a "df -h" all` hoặc `ansible -a "df -h" all`
-     	+ Copy 1 file đến "test-servers": `ansible -m ansible.builtin.copy -a "src=path/to/src dest=path/to/dest" test-servers`
+     + Copy 1 file đến "test-servers": `ansible -m ansible.builtin.copy -a "src=path/to/src dest=path/to/dest" test-servers`
   	  
 + Chạy nhiều lệnh sử dụng file ansible playbook, có thể lưu tại `/etc/ansible/*.yml` hoặc trong thư mục riêng tự.
 	+ Cấu trúc ansible playbook:
@@ -647,11 +648,36 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 
    			  tasks:
    			  - name: <task name>
-   			    <builtin command | package manager>:
-   				<all require option>
+   			    <module>:
+	   				<all require option>
 
-   	Ví dụ: 
-  	+ 
+	   	Ví dụ: 
+	  	+ Kiểm tra `ping` và cài đặt `apache2` tại Ubuntu:
+
+				- name: Check ping and Install apache2
+				  hosts: test-servers
+				  tasks:
+				  - name: Check ping
+				    ping: ~
+				  - name: Install Apache2
+				    apt:
+					    name: apache2
+					    update_cache: yes
+	  	+ Tạo 1 user và copy file:
+
+				- name: Test ansible
+				  hosts: all
+				  tasks:
+				  - name: Add user 'bob'
+				    ansible.builtin.user:
+					    name: bob
+					  become: yes
+					  become_method: sudo
+					- name: Copy file with permission
+					  ansible.builtin.copy:
+						  src: ./hosts
+						  dest: /tmp/hosts_backup
+						  mode: '0664'
 ## Git
 
 Là hệ thống kiểm soát phiên bản mã nguồn. Ghi lại và lưu các thay đổi, cho phép khôi phục phiên bản trước đó.
@@ -740,14 +766,14 @@ Giúp dễ dàng theo dõi lịch sử, cộng tác viết mã theo mã và xem 
        			git add -A, git commit -m "commit A" -- branch A
        			git checkout B
        			git cherry-pick A
-       + `fetch`: lấy các thay đổi từ xa nhưng không hợp vào nhánh hiện tại
-       + `tag`: xác định phiên bản mã nguồn
+     + `fetch`: lấy các thay đổi từ xa nhưng không hợp vào nhánh hiện tại
+     + `tag`: xác định phiên bản mã nguồn
 		+ tag lightweight: đánh dấu cho 1 commit
 
     			git tag [version]
-    		+ tag annotated: có thêm tên tác giả, comment, ngày
+    	+ tag annotated: có thêm tên tác giả, comment, ngày
 
-					git tag -a [version] -m [commit message]  
+				git tag -a [version] -m [commit message]  
 + Submodule: cho phép 1 thư mục git nằm trong 1 thư mục git khác nhưng vẫn giữ các commit tách biệt.
 	+ Thêm 1 submodule:
 
@@ -763,3 +789,4 @@ Giúp dễ dàng theo dõi lịch sử, cộng tác viết mã theo mã và xem 
    			git rm <path/to/submodule>
    			git commit -m <commit message>
    			rm -rf .git/modules/<path_to_submodule_folder>
+
