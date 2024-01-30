@@ -475,10 +475,12 @@ Là thiết bị/phần mềm mạng giám sát lưu lượng mạng đến và 
 
 ## Keepalived
 
+Là chương trình cung cấp khả năng tạo độ sẵn sàng cao (High availability) cho hệ thống. Hệ thống có `High availability` thì việc bị down là không thể chấp nhận.
+
 + Cung cấp 2 chức năng chính:
 
-	+ Kiểm tra hệ thống LVS (Linux Virtual Server).
- 	+ Áp dụng VRRPv2 (Virtual Redundancy Routing Protocol) để xử lý nếu cân bằng thất bại.
+	+ Cân bằng tải sử dụng hệ thống LVS (Linux Virtual Server) cùng cơ chế checkhealth.
+ 	+ Áp dụng VRRPv2 (Virtual Redundancy Routing Protocol) để xử lý nếu cân bằng thất bại (IP Failover).
 + Kỹ thuật cân bằng tải (Load Balancing):
 	+ via `NAT`: nhận yêu cầu từ người dùng qua mạng public và sử dụng `network address translation` (NAT) để chuyển các yêu cầu về server thật nằm tại mạng private và trả về quả theo chiều ngược lại.
 
@@ -487,13 +489,14 @@ Là thiết bị/phần mềm mạng giám sát lưu lượng mạng đến và 
 
   	--> chuyển tiếp yêu cầu đến các nhóm node và các node sẽ phản hồi trực tiếp client không thông qua cân bằng tải. --> Cách tiếp cận nodes khác mạng.
 	+ via `Direct Routing`: client gửi yêu cầu đến `VIP` trong cân bằng tải. Cân bằng tải sử dụng thuật toán phân phối chuyển yêu cầu đến server thực tương ứng, server phản hồi trực tiếp đến người dùng.
++ `keepalived` cung cấp dịch vụ cân bằng tải (load balancing) không mạnh mẽ, tùy biến linh hoạt như Nginx nên chủ yếu sử dụng tính năng IP Failover.
 
 + Cài đặt `keepalived`:
 
 		sudo apt install keepalived
   		ln -s /etc/init.d/keepalived.init /etc/rc2.d/S99keepalived
 
-+ Cấu hình `keepalived` Failover:
++ Cấu hình `keepalived` IP Failover:
 
 	+ Tại server 1:
    
