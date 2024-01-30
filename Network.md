@@ -208,7 +208,7 @@ Phân lớp: Gồm 5 lớp A, B, C, D, E.
 Ví dụ: Từ 192.168.1.1/29 tìm phạm vi địa chỉ host nó thuộc về.
 
 + Mạng thuộc lớp C, 24bit dùng cho mạng --> mượn `29 - 24 = 5bit` --> số bit host `8 - 5 = 3bit`
-+ Số đường mạnh `2^5 = 32`
++ Số đường mạng `2^5 = 32`
 + Số host mỗi đường mạng `2^3 - 2 = 6`
 + Subnet mới:
 	+ subnet mặc định `/24`: `255.255.255.0` --> `11111111.11111111.1111111.00000000`
@@ -644,6 +644,7 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 	+ Cấu trúc thư mục ansible playbooks:
 
 	  		.
+			├── ansible.cfg # config cho ansible playbooks
 			├── production # các server chạy chính thức
 			├── development # các server đang phát triển 
 			├── group_vars/
@@ -659,14 +660,14 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 			├── site.yml # file chính của ansible playbooks
 			├── webservers.yml # file playbooks cho webservers
 			├── dbservers.yml # file playbooks cho db servers
-			└── roles/ # lưu trữ các role/
+			└── roles/ # lưu trữ các role (các tác vụ có liên quan gộp lại)
 			    └── role1/ # role có tên role1/
 			        ├── tasks/
 			        │   └── main.yml # thực thi các task người quản trị cần
 			        ├── handlers/
 			        │   └── main.yml # file điều khiển khi có yêu cầu từ task gọi đến
 			        ├── templates/
-			        │   └── role1.conf.j2 # file template
+			        │   └── role1.conf.j2 # file template (có thể format html, xml,...)
 			        ├── files/ # lưu trữ các file cần thiết(tar, sh,...)
 			        ├── vars/
 			        │   └── main.yml # các biến cho role
@@ -674,7 +675,7 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 			        │   └── main.yml # các biến mặc định, độ ưu tiên thấp hơn
 			        └── meta/
 			            └── main.yml # các role liên quan
-	+ Cấu trúc file ansible playbooks:
+	+ Cấu trúc file `tasks/main.yml` trong 1 role:
 
    			- name: <general name>
    			  host: <group host name>
@@ -712,6 +713,13 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 					src: ./hosts
 					dest: /tmp/hosts_backup
 					mode: '0664'
+	+ Tạo file config mẫu: `ansible-config init --disabled > ansible.cfg` hoặc `ansible-config init --disabled -t all > ansible.cfg` để có sẵn các plugins
+ 	+ Để bảo mật password, key lưu tại các file `vars/main.yml`, `group_vars/`, `host_vars/`,... sử dụng `Vault`(chỉ mã hóa các file yaml).
+  		+ Tạo file mã hóa: `ansible-vault create <path/to/file.yml>`
+      		+ Giải mã file: `ansible-vaulr decrypt <path/to/file.yml>`
+          	+ Giải mã 1 file mã hóa, sửa đổi rồi mã hóa lại: `ansible-vault edit <path/to/file.yml>`
+          	+ Mã hóa 1 file chưa mã hóa: `ansible-vault encrypt <path/to/file.yml>`
+          	+ Thay đổi mật khẩu của file mã hóa: `ansible-vault rekey <path/to/file.yml>`
 ## Git
 
 Là hệ thống kiểm soát phiên bản mã nguồn. Ghi lại và lưu các thay đổi, cho phép khôi phục phiên bản trước đó.
