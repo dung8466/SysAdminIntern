@@ -661,8 +661,8 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 				    ping: ~
 				  - name: Install Apache2
 				    apt:
-					    name: apache2
-					    update_cache: yes
+				   	name: apache2
+			  		update_cache: yes
 	  	+ Tạo 1 user và copy file:
 
 				- name: Test ansible
@@ -670,14 +670,14 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 				  tasks:
 				  - name: Add user 'bob'
 				    ansible.builtin.user:
-					    name: bob
-					  become: yes
-					  become_method: sudo
-					- name: Copy file with permission
-					  ansible.builtin.copy:
-						  src: ./hosts
-						  dest: /tmp/hosts_backup
-						  mode: '0664'
+				  	name: bob
+					become: yes
+					become_method: sudo
+				   - name: Copy file with permission
+				   	ansible.builtin.copy:
+						src: ./hosts
+						dest: /tmp/hosts_backup
+						mode: '0664'
 ## Git
 
 Là hệ thống kiểm soát phiên bản mã nguồn. Ghi lại và lưu các thay đổi, cho phép khôi phục phiên bản trước đó.
