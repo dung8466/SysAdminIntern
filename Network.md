@@ -640,7 +640,41 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
      + Copy 1 file đến "test-servers": `ansible -m ansible.builtin.copy -a "src=path/to/src dest=path/to/dest" test-servers`
   	  
 + Chạy nhiều lệnh sử dụng file ansible playbook, có thể lưu tại `/etc/ansible/*.yml` hoặc trong thư mục riêng tự.
-	+ Cấu trúc ansible playbook:
+
+	+ Cấu trúc thư mục ansible playbooks:
+
+	  		.
+			├── production # các server chạy chính thức
+			├── development # các server đang phát triển 
+			├── group_vars/
+			│   ├── group1 # các biến dùng chung cho group1
+			│   ├── group2 # tương tự
+			│   └── ...
+			├── host_vars/
+			│   ├── hostname1 # các biến dùng riêng cho hostname1
+			│   ├── hostname2 # tương tự
+			│   └── ...
+			├── library/ (optional) # nếu cần code module riêng
+			├── filter_plugins/ (optional) # nếu cần code plugin filter
+			├── site.yml # file chính của ansible playbooks
+			├── webservers.yml # file playbooks cho webservers
+			├── dbservers.yml # file playbooks cho db servers
+			└── roles/ # lưu trữ các role/
+			    └── role1/ # role có tên role1/
+			        ├── tasks/
+			        │   └── main.yml # thực thi các task người quản trị cần
+			        ├── handlers/
+			        │   └── main.yml # file điều khiển khi có yêu cầu từ task gọi đến
+			        ├── templates/
+			        │   └── role1.conf.j2 # file template
+			        ├── files/ # lưu trữ các file cần thiết(tar, sh,...)
+			        ├── vars/
+			        │   └── main.yml # các biến cho role
+			        ├── defaults/
+			        │   └── main.yml # các biến mặc định, độ ưu tiên thấp hơn
+			        └── meta/
+			            └── main.yml # các role liên quan
+	+ Cấu trúc file ansible playbooks:
 
    			- name: <general name>
    			  host: <group host name>
