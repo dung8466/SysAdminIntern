@@ -582,7 +582,7 @@ Ví dụ: Kiểm tra kết nối tới `google.com` gửi 3 packets.
    	+ Truy vết nhưng không dùng map giữa địa chỉ IP và tên: `traceroute -n <server IP|name>` 
 + `mtr`: Kết hợp giữa `traceroute` và `ping`
 	+ Định tuyến đến server và liên tục ping các bước nhảy trung gian: `mtr <server IP|name>`
-	+ Sử dụng IPv4
+	+ Sử dụng IPv4|IPv6: `mtr -4|6 <server IP|name>`
 + `netstat`: In kết nối mạng, bảng định tuyến, thống kê giao diện, kết nối giả mạo và tư cách thành viên multicast
 	+ Hiển thị tất cả các port: `netstat -a`
 	+ Hiển thị các port đang `listening`: `netstat -l`
@@ -598,6 +598,60 @@ Ví dụ: Kiểm tra kết nối tới `google.com` gửi 3 packets.
 
 ## Ansible
 
+Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, điều phối quy trình công việc để hỗ trợ triển khai ứng dụng, cập nhật hệ thống,... Có thể cấu hình nhiều server tùy biến đa dạng, giảm thời gian thao tác trên từng server cài đặt.
+
++ Cài đặt trên Ubuntu:
+
+		sudo apt-add-repository ppa:ansible/ansible -y
+  		sudo apt update
+  		sudo apt install ansible
++ Cài đặt trên CentOS:
+
+		sudo yum install epel-release
+  		sudo yum install ansible
++ Tạo key ssh cho email sử dụng, copy key đến các server
+
+		ssh-keygen -t rsa -b 4096 -C "<email>"
+  		ssh-copy-id <user>@<IP|domain server>
++ Khai báo host_group (còn được gọi là `inventory`) để dễ gọi đến các khối server tại `/etc/ansible/hosts`:
+
+  		[<group hosts name>]
+  		<server IP|domain>...
+
++ Chạy từng lệnh:
+
+		ansible [-i /etc/ansible/hosts] -m [module] -a [tham số truyền vào module] [tên host_group]
+
+  `-i /etc/ansible/hosts`: trỏ vào file chứa group_host, mặc định nếu không có sẽ là `/etc/ansible/hosts`.
+
+  `-m [module]`: mặc định sẽ là `-m commnad`.
+
+  Ngoài ra còn có các `option`:
+
+  + `-s`: chạy lệnh với quyền sudo
+  + `-k`: ưu tiên sử dụng password hơn ssh key để xác thực server
+  + `-u`: chạy lệnh với user nào của server
+  Ví dụ:
+  	+ ping đến host_group "test-servers": `ansible -m ping test-servers`
+  	+ ping đến toàn bộ server: `ansible -m ping all`
+  	+ kiểm tra uptime của host_group "test-servers": `ansible -m command -a uptime test-servers` hoặc `ansible -a uptime test-servers`
+  	+ xem tổng quan của filesystem của toàn bộ server: `ansible -m command -a "df -h" all` hoặc `ansible -a "df -h" all`
+     	+ Copy 1 file đến "test-servers": `ansible -m ansible.builtin.copy -a "src=path/to/src dest=path/to/dest" test-servers`
+  	  
++ Chạy nhiều lệnh sử dụng file ansible playbook, có thể lưu tại `/etc/ansible/*.yml` hoặc trong thư mục riêng tự.
+	+ Cấu trúc ansible playbook:
+
+   			- name: <general name>
+   			  host: <group host name>
+			  remote-user: <user run task>
+
+   			  tasks:
+   			  - name: <task name>
+   			    <builtin command | package manager>:
+   				<all require option>
+
+   	Ví dụ: 
+  	+ 
 ## Git
 
 Là hệ thống kiểm soát phiên bản mã nguồn. Ghi lại và lưu các thay đổi, cho phép khôi phục phiên bản trước đó.
