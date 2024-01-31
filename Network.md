@@ -805,8 +805,8 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 				  - name: Add user 'bob'
 				    ansible.builtin.user:
 				  	name: bob
-					become: yes
-					become_method: sudo
+				     become: yes
+				     become_method: sudo
 				   - name: Copy file with permission
 				     ansible.builtin.copy:
 					src: ./hosts
@@ -819,6 +819,26 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
           	+ Giải mã 1 file mã hóa, sửa đổi rồi mã hóa lại: `ansible-vault edit <path/to/file.yml>`
           	+ Mã hóa 1 file chưa mã hóa: `ansible-vault encrypt <path/to/file.yml>`
           	+ Thay đổi mật khẩu của file mã hóa: `ansible-vault rekey <path/to/file.yml>`
+
++ LAB:
+	+ Lab 5: tạo user,  Disable ssh bằng password, cấp quyền sudo cho user,Add thêm public key  để user ssh đựợc bằng ssh-key
+
+		+ File `hosts`:
+
+     			[user]
+    			172.16.47.128
+    		+ File `playbook.yml`
+
+					- name: Lab 5
+					  hosts: user
+					  tasks:
+					    - name: Create new user
+        				      ansible.builtin.user:
+        				        name: test-user
+        				      become: yes
+        				      become_method: sudo
+        	+ Chạy ansible sử dụng `ansible-playbook -i hosts playbook.yml -K` để có thể chạy với quyền sudo tại server.
+   
 ## Git
 
 Là hệ thống kiểm soát phiên bản mã nguồn. Ghi lại và lưu các thay đổi, cho phép khôi phục phiên bản trước đó.
