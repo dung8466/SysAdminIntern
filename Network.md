@@ -471,7 +471,103 @@ Là thiết bị/phần mềm mạng giám sát lưu lượng mạng đến và 
   
 ## DHCP và DNS
 
++ Tại server làm gateway, có 2 mạng `ens33` và `ens37`.
 
+	+ Cấu hình địa chỉ IP tại `/etc/netplan/*.yaml`:
+
+ 			network:
+   				version: 2
+   				ethernets:
+   					ens33:
+   						dhcp4: true
+   					ens37:
+   						dhcp4: false
+   						addresses: [172.16.48.1/24]
+   						nameservers:
+   							addresses: [8.8.8.8, 8.8.4.4]
+   + Cấu hình DHCP server tại `/etc/dhcp/dhcpd.conf`:
+
+   			option domain-name-servers 8.8.8.8, 8.8.4.4;
+     			default-lease-time 600;
+     			max-lease-time 7200;
+     			ddns-update-style none;
+     			authoritative;
+     			subnet 172.16.48.0 netmask 255.255.255.0 {
+     			range 172.16.48.101 172.16.48.200;
+     			option subnet-mask 255.255.255.0;
+     			option routers 172.16.48.1;
+     			option broadcast-address 172.16.48.255;
+     			}
+  + Khởi động lại `isc-dhcp-server`: `sudo systemctl restart isc-dhcp-server`
+  + Cấu hình DNS server: `toilamlap.com` với IP `103.45.89.45` như [đã làm](README.md#dns)
+  + Cho phép IP Forward (chuyển IP packet tới mạng hoặc máy khác) tại `/etc/sysctl.conf`:
+
+  			net.ipv4.ip_forward=1
+  + Cấu hình port, giao diện mạng với `iptables`:
+
+    		# Cho phép gói tin đến localhost và ens37
+		iptables -A INPUT -i lo -j ACCEPT
+		iptables -A INPUT -i ens37 -j ACCEPT
+
+		# Cho phép gói tin đến ens33 nếu bộ định tuyến khởi xướng kết nối
+		iptables -A INPUT -i ens33 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+			
+		# Chuyển gói tin từ ens37 sang ens33.
+		iptables -A FORWARD -i ens37 -o ens33 -j ACCEPT
+			
+		# Chuyển gói tin từ ens33 sang ens37 nếu ens37 khởi xướng kết nối
+		iptables -A FORWARD -i ens33 -o ens37 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+			
+		# NAT đi qua ens33.
+		iptables -t nat -A POSTROUTING -o ens33 -j MASQUERADE
+
+  + Lưu các câu lệnh vào `/etc/rc.local`, thêm `@reboot /bin/sh /etc/rc.local` vào crontab để có thể khởi động cùng hệ thống:
+
+  		#!/bin/sh
+    		# Cho phép gói tin đến localhost và ens37
+		iptables -A INPUT -i lo -j ACCEPT
+		iptables -A INPUT -i ens37 -j ACCEPT
+
+		# Cho phép gói tin đến ens33 nếu bộ định tuyến khởi xướng kết nối
+		iptables -A INPUT -i ens33 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+			
+		# Chuyển gói tin từ ens37 sang ens33.
+		iptables -A FORWARD -i ens37 -o ens33 -j ACCEPT
+			
+		# Chuyển gói tin từ ens33 sang ens37 nếu ens37 khởi xướng kết nối
+		iptables -A FORWARD -i ens33 -o ens37 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+			
+		# NAT đi qua ens33.
+		iptables -t nat -A POSTROUTING -o ens33 -j MASQUERADE
+		exit 0
+	hoặc sử dụng `iptables-persistent`.
+
++ Tại client:
+
+	+ Cấu hình IP qua gateway tại `/etc/netplan/*.yaml`:
+
+   			network:
+   				version: 2
+   				ethernets:
+   					ens33:
+   						dhcp4: true
+   					routes:
+   						- to: default
+   						 via: 172.16.48.1 -- địa chỉ IP ens37 tại server
+   					nameservers:
+   						search: [toilamlap.com]
+   						addresses: [172.16.47.132] --địa chỉ IP ens33 tại server
+   	+ Kiểm tra địa chỉ IP sử dụng `ip -c a`: đuọc địa chỉ `172.16.48.101/24` --> trong dải DHCP server đã cấu hình.
+   	+ Kiểm tra hoạt động của DHCP server sử dụng `sudo nmap --script broadcast-dhcp-discover`:
+
+      			IP Offered: 172.16.48.102
+   	  		Server Identifier: 172.16.48.1
+   	  		Router: 172.16.48.1
+   	  		Broadcast Address: 172.16.48.255
+  	+ Kiểm tra DNS server sử dụng `dig toilamlap.com`:
+
+  			toilamlap.com. 7090 IN A 103.45.89.45
+   					
 
 ## Keepalived
 
@@ -834,4 +930,5 @@ Giúp dễ dàng theo dõi lịch sử, cộng tác viết mã theo mã và xem 
    			git rm <path/to/submodule>
    			git commit -m <commit message>
    			rm -rf .git/modules/<path_to_submodule_folder>
+
 
