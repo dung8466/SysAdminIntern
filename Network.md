@@ -827,6 +827,9 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 
      			[user]
     			172.16.47.128
+    		+ File `group_vars/user`:
+
+					pass: "1234" 
     		+ File `playbook.yml`
 
 					- name: Lab 5
@@ -835,6 +838,7 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 					    - name: Create new user
         				      ansible.builtin.user:
         				        name: test-user
+        					password: "{{ pass | password_hash('sha512') }}"
         				      become: yes
         				      become_method: sudo
         	+ Chạy ansible sử dụng `ansible-playbook -i hosts playbook.yml -K` để có thể chạy với quyền sudo tại server.
