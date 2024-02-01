@@ -823,25 +823,72 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 + LAB:
 	+ Lab 5: tạo user,  Disable ssh bằng password, cấp quyền sudo cho user,Add thêm public key  để user ssh đựợc bằng ssh-key
 
-		+ File `hosts`:
+		+ Cấu trúc ansible playbooks:
 
-     			[user]
-    			172.16.47.128
-    		+ File `group_vars/user`:
+	    			.
+				├── group_vars/
+				│   └── user
+				├── roles/
+				│   ├── add-user/
+				│   │   └── tasks/
+				│   │       └── main.yml
+				│   └── ssh/
+				│       ├── tasks/
+				│       │   └── main.yml
+				│       └── handlers/
+				│           └── main.yml
+				├── hosts
+				└── main.yml
+    		+ File `hosts`:
 
-					pass: "1234" 
-    		+ File `playbook.yml`
+					[user]
+					172.16.47.128
+        	+ File `group_vars/user` là biến của nhóm `user` trong `hosts`:
 
-					- name: Lab 5
-					  hosts: user
-					  tasks:
-					    - name: Create new user
-        				      ansible.builtin.user:
-        				        name: test-user
-        					password: "{{ pass | password_hash('sha512') }}"
-        				      become: yes
-        				      become_method: sudo
-        	+ Chạy ansible sử dụng `ansible-playbook -i hosts playbook.yml -K` để có thể chạy với quyền sudo tại server.
+	   				name: "test-user"
+					pass: "1234"
+					sshd_PasswordAuthentication: "no"
+		+ File `roles/add-user/tasks/main.yml`:
+
+    					- name: Create new user
+  		 			  ansible.builtin.user:
+    					    name: "{{name}}"
+    					    password: "{{pass | password_hash('sha512')}}"
+  					  become: yes
+  					  become_method: sudo
+
+					- name: Make sudo for new user
+  					  copy:
+    					    dest: /etc/sudoers.d/ansible-sudo-user
+    					    content: "{{name}} ALL=(ALL:ALL) ALL"
+    					    mode: 0440
+    					    validate: '/usr/sbin/visudo -cf %s'
+  					  become: yes
+  					  become_method: sudo
+    		+ File `roles/ssh/tasks/main.yml`:
+
+      					- name: disable ssh password
+					  lineinfile:
+    					    dest: /etc/ssh/sshd_config
+    					    regexp: '^#?PasswordAuthentication'
+    					    line: 'PasswordAuthentication {{sshd_PasswordAuthentication}}'
+    					    validate: 'sshd -t -f %s'
+  					    notify: restart ssh service
+  					    when: sshd_PasswordAuthentication is defined
+        	+ File `roles/ssh/handlers/main.yml`:
+
+	   				- name: restart ssh service
+					  service:
+					    name: sshd
+					    state: restarted
+		+ File `main.yml`:
+
+    					- hosts: user
+    					  roles:
+    					    - role: add-user
+    					    - role: ssh
+    		+ Chạy ansible playbooks sử dụng `ansible-playbook -i hosts main.yml -K`
+
    
 ## Git
 
