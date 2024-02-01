@@ -825,7 +825,7 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 
 		+ Cấu trúc ansible playbooks:
 
-	    			.
+	   			.
 				├── group_vars/
 				│   └── user
 				├── roles/
@@ -857,14 +857,14 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
   					      become: yes
   					      become_method: sudo
 
-					- name: Make sudo for new user
-  					  copy:
-    				    dest: /etc/sudoers.d/ansible-sudo-user
-    					content: "{{name}} ALL=(ALL:ALL) ALL"
-    					mode: 0440
-    					validate: '/usr/sbin/visudo -cf %s'
-  					  become: yes
-  					  become_method: sudo
+						- name: Make sudo for new user
+  					  	  copy:
+    				    		    dest: /etc/sudoers.d/ansible-sudo-user
+    						    content: "{{name}} ALL=(ALL:ALL) ALL"
+    						    mode: 0440
+    						    validate: '/usr/sbin/visudo -cf %s'
+  					  	  become: yes
+  						  become_method: sudo
     	+ File `roles/ssh/tasks/main.yml`:
 
       			- name: disable ssh password
