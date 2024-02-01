@@ -865,16 +865,16 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
     					    validate: '/usr/sbin/visudo -cf %s'
   					  become: yes
   					  become_method: sudo
-    		+ File `roles/ssh/tasks/main.yml`:
+    	+ File `roles/ssh/tasks/main.yml`:
 
-      					- name: disable ssh password
-					  lineinfile:
-    					    dest: /etc/ssh/sshd_config
-    					    regexp: '^#?PasswordAuthentication'
-    					    line: 'PasswordAuthentication {{sshd_PasswordAuthentication}}'
-    					    validate: 'sshd -t -f %s'
-  					    notify: restart ssh service
-  					    when: sshd_PasswordAuthentication is defined
+      			- name: disable ssh password
+			  lineinfile:
+    			    dest: /etc/ssh/sshd_config
+    			    regexp: '^#?PasswordAuthentication'
+    			    line: 'PasswordAuthentication {{sshd_PasswordAuthentication}}'
+    			    validate: 'sshd -t -f %s'
+  			  notify: restart ssh service
+  			  when: sshd_PasswordAuthentication is defined
     	+ File `roles/ssh/handlers/main.yml`:
 
 	   				- name: restart ssh service
