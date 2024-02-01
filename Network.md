@@ -859,10 +859,10 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 
 						- name: Make sudo for new user
   					  	  copy:
-    						  dest: /etc/sudoers.d/ansible-sudo-user
-    						  content: "{{name}} ALL=(ALL:ALL) ALL"
-    						  mode: 0440
-    						  validate: '/usr/sbin/visudo -cf %s'
+						    dest: /etc/sudoers.d/ansible-sudo-user
+						    content: "{{name}} ALL=(ALL:ALL) ALL"
+						    mode: 0440
+						    validate: '/usr/sbin/visudo -cf %s'
   					  	  become: yes
   						  become_method: sudo
     	+ File `roles/ssh/tasks/main.yml`:
