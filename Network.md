@@ -804,14 +804,14 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 				  tasks:
 				  - name: Add user 'bob'
 				    ansible.builtin.user:
-				  	name: bob
+					   name: bob
 				     become: yes
 				     become_method: sudo
 				   - name: Copy file with permission
 				     ansible.builtin.copy:
-					src: ./hosts
-					dest: /tmp/hosts_backup
-					mode: '0664'
+					     src: ./hosts
+					     dest: /tmp/hosts_backup
+					     mode: '0664'
 	+ Tạo file config mẫu: `ansible-config init --disabled > ansible.cfg` hoặc `ansible-config init --disabled -t all > ansible.cfg` để có sẵn các plugins
  	+ Để bảo mật password, key lưu tại các file `vars/main.yml`, `group_vars/`, `host_vars/`,... sử dụng `Vault`(chỉ mã hóa các file yaml).
   		+ Tạo file mã hóa: `ansible-vault create <path/to/file.yml>`
@@ -851,30 +851,30 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 		+ File `roles/add-user/tasks/main.yml`:
 
     					- name: Create new user
-  		 			  ansible.builtin.user:
+  		 			      ansible.builtin.user:
     					    name: "{{name}}"
     					    password: "{{pass | password_hash('sha512')}}"
-  					  become: yes
-  					  become_method: sudo
+  					      become: yes
+  					      become_method: sudo
 
 					- name: Make sudo for new user
   					  copy:
-    					    dest: /etc/sudoers.d/ansible-sudo-user
-    					    content: "{{name}} ALL=(ALL:ALL) ALL"
-    					    mode: 0440
-    					    validate: '/usr/sbin/visudo -cf %s'
+    				    dest: /etc/sudoers.d/ansible-sudo-user
+    					content: "{{name}} ALL=(ALL:ALL) ALL"
+    					mode: 0440
+    					validate: '/usr/sbin/visudo -cf %s'
   					  become: yes
   					  become_method: sudo
     	+ File `roles/ssh/tasks/main.yml`:
 
       			- name: disable ssh password
-			  lineinfile:
+			      lineinfile:
     			    dest: /etc/ssh/sshd_config
     			    regexp: '^#?PasswordAuthentication'
     			    line: 'PasswordAuthentication {{sshd_PasswordAuthentication}}'
     			    validate: 'sshd -t -f %s'
-  			  notify: restart ssh service
-  			  when: sshd_PasswordAuthentication is defined
+  			      notify: restart ssh service
+  			      when: sshd_PasswordAuthentication is defined
     	+ File `roles/ssh/handlers/main.yml`:
 
 	   				- name: restart ssh service
@@ -1001,5 +1001,6 @@ Giúp dễ dàng theo dõi lịch sử, cộng tác viết mã theo mã và xem 
    			git rm <path/to/submodule>
    			git commit -m <commit message>
    			rm -rf .git/modules/<path_to_submodule_folder>
+
 
 
