@@ -839,15 +839,15 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 				│           └── main.yml
 				├── hosts
 				└── main.yml
-    		+ File `hosts`:
+    	+ File `hosts`:
 
-					[user]
-					172.16.47.128
-        	+ File `group_vars/user` là biến của nhóm `user` trong `hosts`:
+				[user]
+				172.16.47.128
+     	+ File `group_vars/user` là biến của nhóm `user` trong `hosts`:
 
-	   				name: "test-user"
-					pass: "1234"
-					sshd_PasswordAuthentication: "no"
+	   			name: "test-user"
+				pass: "1234"
+				sshd_PasswordAuthentication: "no"
 		+ File `roles/add-user/tasks/main.yml`:
 
     					- name: Create new user
@@ -875,7 +875,7 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
     					    validate: 'sshd -t -f %s'
   					    notify: restart ssh service
   					    when: sshd_PasswordAuthentication is defined
-        	+ File `roles/ssh/handlers/main.yml`:
+    	+ File `roles/ssh/handlers/main.yml`:
 
 	   				- name: restart ssh service
 					  service:
@@ -887,7 +887,7 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
     					  roles:
     					    - role: add-user
     					    - role: ssh
-    		+ Chạy ansible playbooks sử dụng `ansible-playbook -i hosts main.yml -K`
+    	+ Chạy ansible playbooks sử dụng `ansible-playbook -i hosts main.yml -K`
 
    
 ## Git
