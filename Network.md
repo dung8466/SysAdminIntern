@@ -1010,5 +1010,10 @@ Giúp dễ dàng theo dõi lịch sử, cộng tác viết mã theo mã và xem 
    			git commit -m <commit message>
    			rm -rf .git/modules/<path_to_submodule_folder>
 
+## TIG stack
 
+[Cài đặt Grafana](https://grafana.com/docs/grafana/latest/setup-grafana/installation/debian/)
 
+[Cài đặt InfluxDB](https://docs.influxdata.com/influxdb/v2/install/?t=Linux)
+
+[Cài đặt Telegraf](https://www.influxdata.com/time-series-platform/telegraf/#)
