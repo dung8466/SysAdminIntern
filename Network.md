@@ -848,6 +848,7 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 	   			name: "test-user"
 				pass: "1234"
 				sshd_PasswordAuthentication: "no"
+				key: "public key info..."
 		+ File `roles/add-user/tasks/main.yml`:
 
     					- name: Create new user
@@ -875,6 +876,13 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
     			    validate: 'sshd -t -f %s'
   			      notify: restart ssh service
   			      when: sshd_PasswordAuthentication is defined
+       			- name: Copy ssh from user
+       			  ansible.posix,authorized_key:
+       			    user: "{{name}}"
+   			    state: present
+       			    key: "{{key}}"
+       			  become: yes
+			  become_method: sudo
     	+ File `roles/ssh/handlers/main.yml`:
 
 	   				- name: restart ssh service
