@@ -879,7 +879,7 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
        			- name: Copy ssh from user
        			  ansible.posix,authorized_key:
        			    user: "{{name}}"
-   			    state: present
+   			       state: present
        			    key: "{{key}}"
        			  become: yes
 			      become_method: sudo
