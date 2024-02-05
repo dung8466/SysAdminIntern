@@ -1016,6 +1016,11 @@ Cài đặt `apache2, mariadb, php`:
 
 	sudo apt install apache2 mariadb-server mariadb-client mariadb-common php php-gd php-mbstring php-mysqlnd php-curl php-xml php-cli php-soap php-intl php-xmlrpc php-zip  php-common php-opcache php-gmp php-imagick php-pgsql -y
 
+Khởi động `apache2, mariadb` cùng hệ thống:
+
+	sudo apt start {apache2, mariadb}
+	sudo apt enable {apache2, mariadb}
+
 Tạo tài khoản root mysql
 
 	sudo mysql_secure_installation
@@ -1068,3 +1073,16 @@ Kết quá:
 [Cài đặt InfluxDB](https://docs.influxdata.com/influxdb/v2/install/?t=Linux)
 
 [Cài đặt Telegraf](https://www.influxdata.com/time-series-platform/telegraf/#)
+
+Truy cập `http://<server-ip>:8086/`, lưu token được cấp và chọn `Quick start` để tạo `telegraf` rồi theo hường dẫn hiện lên:
+
+	export INFLUX_TOKEN=<INFLUX_TOKEN>
+ 	telegraf --config http://<server-ip>:8086/api/v2/telegrafs/<number>
+
+Truy cập `http://<server-ip>:3000` để tạo đồ thị `grafana`.
+
+Tại `data source`: lựa chọn `influxdb` với ngôn ngữ `flux` và kết nối tới `bucket` đã tạo tại `http://<server-ip>:8086`.
+
+Lựa chọn import dashboard với id `15650`. Chọn `bucket: telegraf` để hiện thông số hệ thống.
+
+![TIG image](pictures/tig.png)
