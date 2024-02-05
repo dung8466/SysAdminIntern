@@ -1010,6 +1010,57 @@ Giúp dễ dàng theo dõi lịch sử, cộng tác viết mã theo mã và xem 
    			git commit -m <commit message>
    			rm -rf .git/modules/<path_to_submodule_folder>
 
+## Icinga2
+
+Cài đặt `apache2, mariadb, php`:
+
+	sudo apt install apache2 mariadb-server mariadb-client mariadb-common php php-gd php-mbstring php-mysqlnd php-curl php-xml php-cli php-soap php-intl php-xmlrpc php-zip  php-common php-opcache php-gmp php-imagick php-pgsql -y
+
+Tạo tài khoản root mysql
+
+	sudo mysql_secure_installation
+Thay đổi `timezone` tại `/etc/php/8.1/apache2/php.ini`:
+
+	date.timezone = "Asia/Kolkata"
+
+[Cài đặt `icinga2`](https://icinga.com/docs/icinga-2/latest/doc/02-installation/02-Ubuntu/), `monitoring-plugins`, `icinga2-ido-mysql`
+
+Tạo database cho `icinga2` với `sudo mysql -u root -p`:
+
+	> CREATE DATABASE icinga_ido_db;
+	> GRANT ALL ON icinga_ido_db.* TO 'icinga_ido_user'@'localhost' IDENTIFIED BY 'Password';
+	> FLUSH PRIVILEGES;
+	> EXIT;
+Nhập schema cho `icinga_ido_db`:
+
+	sudo mysql -u root -p icinga_ido_db < /usr/share/icinga2-ido-mysql/schema/mysql.sql
+Cấu hình `icinga2-ido-mysql` để có thể kết nối với `icingaweb2` tại `/etc/icinga2/features-available/ido-mysql.conf`:
+
+	object IdoMysqlConnection "ido-mysql" {
+  		user = "icinga_ido_user",
+  		password = "Password",
+  		host = "localhost",
+  		database = "icinga_ido_db"
+	}
+Cho phép tính năng `ido-mysql`: `sudo icinga2 feature enable ido-mysql` và khởi động lại `icinga2`: `sudo systemctl restart icinga2`
+
+Cài đặt `icingaweb2` và `icingacli`: `sudo apt install icingaweb2 icingacli -y`
+
+Tạo database cho `icingaweb2` với `sudo mysql -u root -p`:
+
+	> CREATE DATABASE icingaweb2;
+	> GRANT ALL ON icingaweb2.* TO 'icingaweb2user'@'localhost' IDENTIFIED BY 'Password';
+	> FLUSH PRIVILEGES;
+	> EXIT;
+Tạo token cho `icingaweb2`: `sudo icingacli setup token create`
+
+Truy cập `http://<server-ip>/icingaweb2/setup` và nhập token vừa tạo để cài đặt `icingaweb2`.
+
+Kết quá:
+
+![result icinga2](pictures/icinga.png)
+
+
 ## TIG stack
 
 [Cài đặt Grafana](https://grafana.com/docs/grafana/latest/setup-grafana/installation/debian/)
