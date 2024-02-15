@@ -965,7 +965,7 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 					    line: 'INTERFACESv4="{{interface}}"'
 		+ `tasks/setup-RedHat.yml`:
 
-     				- name: Install isc-dhcp-server
+    			- name: Install isc-dhcp-server
 				  yum:
 				    name: dhcp 
 				    state: present
