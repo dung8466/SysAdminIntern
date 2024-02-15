@@ -791,27 +791,27 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 				- name: Check ping and Install apache2
 				  hosts: test-servers
 				  tasks:
-				  - name: Check ping
-				    ping: ~
-				  - name: Install Apache2
-				    apt:
-				   	name: apache2
-			  	update_cache: yes
+				- name: Check ping
+				  ping: ~
+				- name: Install Apache2
+				  apt:
+				    name: apache2
+			  	    update_cache: yes
 	  	+ Tạo 1 user và copy file:
 
 				- name: Test ansible
 				  hosts: all
 				  tasks:
-				  - name: Add user 'bob'
-				    ansible.builtin.user:
-					   name: bob
-				     become: yes
-				     become_method: sudo
-				   - name: Copy file with permission
-				     ansible.builtin.copy:
-					     src: ./hosts
-					     dest: /tmp/hosts_backup
-					     mode: '0664'
+				- name: Add user 'bob'
+				  ansible.builtin.user:
+				    name: bob
+				  become: yes
+				  become_method: sudo
+				- name: Copy file with permission
+				  ansible.builtin.copy:
+				    src: ./hosts
+				    dest: /tmp/hosts_backup
+				    mode: '0664'
 	+ Tạo file config mẫu: `ansible-config init --disabled > ansible.cfg` hoặc `ansible-config init --disabled -t all > ansible.cfg` để có sẵn các plugins
  	+ Để bảo mật password, key lưu tại các file `vars/main.yml`, `group_vars/`, `host_vars/`,... sử dụng `Vault`(chỉ mã hóa các file yaml).
   		+ Tạo file mã hóa: `ansible-vault create <path/to/file.yml>`
