@@ -963,18 +963,18 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 					    dest: /etc/default/isc-dhcp-server
 					    regexp: '^INTERFACESv4='
 					    line: 'INTERFACESv4="{{interface}}"'
-		+ `tasks/setup-RedHat.yml`:
+			+ `tasks/setup-RedHat.yml`:
 
-    			- name: Install isc-dhcp-server
-				  yum:
-				    name: dhcp 
-				    state: present
+    				- name: Install isc-dhcp-server
+				  	yum:
+				    	name: dhcp 
+				    	state: present
 					
-				- name: setup interface
-				  lineinfile:
-				    dest: /etc/sysconfig/dhcpd
-				    regexp: '^DHCPDARGS='
-				    line: 'DHCPDARGS={{interface}}'
+					- name: setup interface
+				  	lineinfile:
+				    	dest: /etc/sysconfig/dhcpd
+				    	regexp: '^DHCPDARGS='
+				    	line: 'DHCPDARGS={{interface}}'
      		+ `handlers/main.yml`:
    
 				  - name: restart dhcp
