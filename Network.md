@@ -1049,7 +1049,7 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 
     					- name: Install bind package
 						  apt:
-					          name:
+						    name:
 					        - bind9
 					        - dnsutils
 					        - bind9-dnsutils
