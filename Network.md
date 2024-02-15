@@ -1065,9 +1065,9 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 				+ `handlers/main.yml`:
 
     					- name: restart bind9
-					  service:
-					    name: bind9
-					    state: restarted
+					    service:
+					        name: bind9
+					        state: restarted
 					
 						- name: restart named
 						  service:
