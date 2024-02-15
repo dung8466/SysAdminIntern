@@ -971,10 +971,10 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 					    state: present
 					
 					- name: setup interface
-				  	  lineinfile:
-				    	    dest: /etc/sysconfig/dhcpd
-				    	    regexp: '^DHCPDARGS='
-				    	    line: 'DHCPDARGS={{interface}}'
+					  lineinfile:
+					    dest: /etc/sysconfig/dhcpd
+					    regexp: '^DHCPDARGS='
+					    line: 'DHCPDARGS={{interface}}'
      		+ `handlers/main.yml`:
    
 				  - name: restart dhcp
