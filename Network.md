@@ -851,21 +851,21 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 				key: "public key info..."
 		+ File `roles/add-user/tasks/main.yml`:
 
-    					- name: Create new user
-  		 			      	  ansible.builtin.user:
-    					    name: "{{name}}"
-    					    password: "{{pass | password_hash('sha512')}}"
-  					      	  become: yes
-  					      	  become_method: sudo
+    			- name: Create new user
+  			  ansible.builtin.user:
+    			    name: "{{name}}"
+    			    password: "{{pass | password_hash('sha512')}}"
+  			  become: yes
+  			  become_method: sudo
 
-						- name: Make sudo for new user
-  					  	  copy:
-						    dest: /etc/sudoers.d/ansible-sudo-user
-						    content: "{{name}} ALL=(ALL:ALL) ALL"
-						    mode: 0440
-						    validate: '/usr/sbin/visudo -cf %s'
-  					  	  become: yes
-  						  become_method: sudo
+				- name: Make sudo for new user
+  				  copy:
+				    dest: /etc/sudoers.d/ansible-sudo-user
+				    content: "{{name}} ALL=(ALL:ALL) ALL"
+				    mode: 0440
+				    validate: '/usr/sbin/visudo -cf %s'
+  				  become: yes
+  				  become_method: sudo
     	+ File `roles/ssh/tasks/main.yml`:
 
       			- name: disable ssh password
