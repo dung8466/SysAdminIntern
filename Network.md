@@ -978,9 +978,9 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
      		+ `handlers/main.yml`:
    
 				  - name: restart dhcp
-				  service:
-				    name: "{{service}}"
-				    state: restarted
+				    service:
+				      name: "{{service}}"
+				      state: restarted
      		+ `templates/dhcpd.conf.j2`:
 
 			  		option domain-name-servers 8.8.8.8, 8.8.4.4;
