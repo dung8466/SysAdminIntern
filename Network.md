@@ -1048,7 +1048,7 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 				+ `tasks/setup-Debian.yml`:
 
     					- name: Install bind package
-					  apt:
+						  apt:
 					    name:
 					      - bind9
 					      - dnsutils
