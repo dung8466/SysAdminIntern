@@ -978,7 +978,7 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
      		+ `handlers/main.yml`:
    
 				  - name: restart dhcp
-				        service:
+				    service:
 				      name: "{{service}}"
 				      state: restarted
      		+ `templates/dhcpd.conf.j2`:
