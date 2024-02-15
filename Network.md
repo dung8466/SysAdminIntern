@@ -1017,7 +1017,7 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 			+ Cấu hình DNS cho CentOs và Ubuntu:
 				+ `tasks/main.yml`:
 
-		      				- include_tasks: setup-Debian.yml
+		    			- include_tasks: setup-Debian.yml
 						  when: ansible_os_family == 'Debian'
 						- name: Config dns server
 						  template:
