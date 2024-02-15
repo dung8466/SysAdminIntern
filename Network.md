@@ -1103,7 +1103,7 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 					  @	IN	NS	{{zone.zone_name}}.
 					  	IN	A	{{zone.ip[0]}}
 					  {{zone.last[0]}}	IN	PTR	{{zone.zone_name}}.
-      				+ `templates/db.zone.j2`:
+   			  + `templates/db.zone.j2`:
 
 							$TTL	604800
 						  @	IN	SOA	{{zone.zone_name}}.	root.{{zone.zone_name}}. (
