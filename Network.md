@@ -1114,7 +1114,7 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 						  				604800 ); Negative Cache TTL
 						  @	IN	NS	{{zone.zone_name}}.
 						  	IN	A	{{zone.ip[0]}}
-				+ `vars/main.yml`:
+			+ `vars/main.yml`:
 
       					zones:
 					      - name: test1
