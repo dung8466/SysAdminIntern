@@ -932,25 +932,25 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 		+ File `hosts`:
 
   				[dns]
-    				172.16.47.131
-    				[dhcp]
-    				172.16.47.137
-    				172.16.47.138
+    			172.16.47.131
+    			[dhcp]
+    			172.16.47.137
+    			172.16.47.138
     		+ Cài đặt và cấu hình DHCP:
 
-	 		+ `tasks/main.yml`:
+	 			+ `tasks/main.yml`:
 
-					- include_tasks: setup-RedHat.yml
-					  when: ansible_os_family == 'RedHat'
-					
-					- include_tasks: setup-Debian.yml
-					  when: ansible_os_family == 'Debian'
-					
-					- name: Config DHCP
-					  template:
-					    src: "dhcpd.conf.j2"
-					    dest: "/etc/dhcp/dhcpd.conf"
-					  notify: restart dhcp
+						- include_tasks: setup-RedHat.yml
+						  when: ansible_os_family == 'RedHat'
+						
+						- include_tasks: setup-Debian.yml
+						  when: ansible_os_family == 'Debian'
+						
+						- name: Config DHCP
+						  template:
+						    src: "dhcpd.conf.j2"
+						    dest: "/etc/dhcp/dhcpd.conf"
+						  notify: restart dhcp
       			+ `tasks/setup-Debian.yml`:
 
 		   				- name: Install isc-dhcp-server
