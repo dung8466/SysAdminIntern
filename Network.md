@@ -963,56 +963,56 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 					    dest: /etc/default/isc-dhcp-server
 					    regexp: '^INTERFACESv4='
 					    line: 'INTERFACESv4="{{interface}}"'
-			+ `tasks/setup-RedHat.yml`:
+		+ `tasks/setup-RedHat.yml`:
 
-     					- name: Install isc-dhcp-server
-					  yum:
-					    name: dhcp 
-					    state: present
+     				- name: Install isc-dhcp-server
+				  yum:
+				    name: dhcp 
+				    state: present
 					
-					- name: setup interface
-					  lineinfile:
-					    dest: /etc/sysconfig/dhcpd
-					    regexp: '^DHCPDARGS='
-					    line: 'DHCPDARGS={{interface}}'
-     			+ `handlers/main.yml`:
+				- name: setup interface
+				  lineinfile:
+				    dest: /etc/sysconfig/dhcpd
+				    regexp: '^DHCPDARGS='
+				    line: 'DHCPDARGS={{interface}}'
+     		+ `handlers/main.yml`:
    
-          				- name: restart dhcp
-					  service:
-					    name: "{{service}}"
-					    state: restarted
-     			+ `templates/dhcpd.conf.j2`:
+         			- name: restart dhcp
+				  service:
+				    name: "{{service}}"
+				    state: restarted
+     		+ `templates/dhcpd.conf.j2`:
 
-			  			option domain-name-servers 8.8.8.8, 8.8.4.4;
-						default-lease-time 600;
-						max-lease-time 7200;
-						ddns-update-style none;
-						authoritative;
+			  		option domain-name-servers 8.8.8.8, 8.8.4.4;
+					default-lease-time 600;
+					max-lease-time 7200;
+					ddns-update-style none;
+					authoritative;
 						
-						subnet {{ subnet_add }} netmask {{ netmask_add }} {
-						range {{ ip_range[0] }} {{ ip_range[1] }};
-						option subnet-mask {{ subnet_mask_add }};
-						option routers {{ routers_add }};
-						option broadcast-address {{ broadcast_add }};
-						}
-     			+ `vars/main.yml`:
+					subnet {{ subnet_add }} netmask {{ netmask_add }} {
+					range {{ ip_range[0] }} {{ ip_range[1] }};
+					option subnet-mask {{ subnet_mask_add }};
+					option routers {{ routers_add }};
+					option broadcast-address {{ broadcast_add }};
+					}
+     		+ `vars/main.yml`:
 
-			  			os_specific_vars:
-						  Debian:
-						    service: "isc-dhcp-server"
-						  RedHat:
-						    service: "dhcpd"
+			  		os_specific_vars:
+					  Debian:
+					    service: "isc-dhcp-server"
+					  RedHat:
+					    service: "dhcpd"
 						
-						subnet_add: 172.16.47.100
-						netmask_add: 255.255.255.0
-						routers_add: 172.16.48.1
-						subnet_mask_add: 255.255.255.0
-						ip_range:
-						  - 172.16.48.101
-						  - 172.16.48.200
-						broadcast_add: 172.16.48.255
+					subnet_add: 172.16.47.100
+					netmask_add: 255.255.255.0
+					routers_add: 172.16.48.1
+					subnet_mask_add: 255.255.255.0
+					ip_range:
+					  - 172.16.48.101
+					  - 172.16.48.200
+					broadcast_add: 172.16.48.255
 						
-						interface: "ens33"
+					interface: "ens33"
 
 			+ Cấu hình DNS cho CentOs và Ubuntu:
 				+ `tasks/main.yml`:
