@@ -897,7 +897,257 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
     					    - role: ssh
     	+ Chạy ansible playbooks sử dụng `ansible-playbook -i hosts main.yml -K`
 
+	+ LAB 6: Cài đặt DHCP, DNS trên Centos và Ubuntu
+
+ 		+ Cấu trúc ansible-playbook:
+
+	   			.
+				├── main.yml
+				├── hosts
+				└── roles/
+				    ├── dhcp/
+				    │   ├── handlers/
+				    │   │   └── main.yml
+				    │   ├── tasks/
+				    │   │   ├── main.yml
+				    │   │   ├── setup-Debian.yml
+				    │   │   └── setup-RedHat.yml
+				    │   ├── templates/
+				    │   │   └── dhcpd.conf.j2
+				    │   └── vars/
+				    │       └── main.yml
+				    └── dns/
+				        ├── handlers/
+				        │   └── main.yml
+				        ├── tasks/
+				        │   ├── main.yml
+				        │   ├── setup-Debian.yml
+				        │   └── setup-RedHat.yml
+				        ├── templates/
+				        │   ├── db.conf.j2
+				        │   ├── db.reverse_zone.j2
+				        │   └── db.zone.j2
+				        └── vars/
+				            └── main.yml
+		+ File `hosts`:
+
+  				[dns]
+    				172.16.47.131
+    				[dhcp]
+    				172.16.47.137
+    				172.16.47.138
+    		+ Cài đặt và cấu hình DHCP:
+
+	 		+ `tasks/main.yml`:
+
+					- include_tasks: setup-RedHat.yml
+					  when: ansible_os_family == 'RedHat'
+					
+					- include_tasks: setup-Debian.yml
+					  when: ansible_os_family == 'Debian'
+					
+					- name: Config DHCP
+					  template:
+					    src: "dhcpd.conf.j2"
+					    dest: "/etc/dhcp/dhcpd.conf"
+					  notify: restart dhcp
+      			+ `tasks/setup-Debian.yml`:
+
+		   				- name: Install isc-dhcp-server
+						  apt:
+						    name: isc-dhcp-server
+						    state: present
+						
+						- name: add interface
+						  lineinfile:
+						    dest: /etc/default/isc-dhcp-server
+						    regexp: '^INTERFACESv4='
+						    line: 'INTERFACESv4={{interface}}'
+			+ `tasks/setup-RedHat.yml`:
+
+     					- name: Install isc-dhcp-server
+					  yum:
+					    name: dhcp 
+					    state: present
+					
+					- name: setup interface
+					  lineinfile:
+					    dest: /etc/sysconfig/dhcpd
+					    regexp: '^DHCPDARGS='
+					    line: 'DHCPDARGS={{interface}}'
+     			+ `handlers/main.yml`:
    
+          				- name: restart dhcp
+					  service:
+					    name: "{{service}}"
+					    state: restarted
+     			+ `templates/dhcpd.conf.j2`:
+
+			  			option domain-name-servers 8.8.8.8, 8.8.4.4;
+						default-lease-time 600;
+						max-lease-time 7200;
+						ddns-update-style none;
+						authoritative;
+						
+						subnet {{ subnet_add }} netmask {{ netmask_add }} {
+						range {{ ip_range[0] }} {{ ip_range[1] }};
+						option subnet-mask {{ subnet_mask_add }};
+						option routers {{ routers_add }};
+						option broadcast-address {{ broadcast_add }};
+						}
+     			+ `vars/main.yml`:
+
+			  			os_specific_vars:
+						  Debian:
+						    service: "isc-dhcp-server"
+						  RedHat:
+						    service: "dhcpd"
+						
+						subnet_add: 172.16.47.100
+						netmask_add: 255.255.255.0
+						routers_add: 172.16.48.1
+						subnet_mask_add: 255.255.255.0
+						ip_range:
+						  - 172.16.48.101
+						  - 172.16.48.200
+						broadcast_add: 172.16.48.255
+						
+						interface: "ens33"
+
+			+ Cấu hình DNS cho CentOs và Ubuntu:
+				+ `tasks/main.yml`:
+
+		      				- include_tasks: setup-Debian.yml
+						  when: ansible_os_family == 'Debian'
+						- name: Config dns server
+						  template:
+						    src: "db.conf.j2"
+						    dest: "{{bind_main_config}}"
+						  
+						- name: Create forward zone
+						  template:
+						    src: "db.zone.j2"
+						    dest: "{{bind_zone}}/forward.{{zone.zone_name}}"
+						  loop: "{{zones}}"
+						  loop_control:
+						    loop_var: zone
+						  tags: 
+						    - confs
+						
+						
+						- name: Create reverse zone
+						  template:
+						    src: "db.reverse_zone.j2"
+						    dest: "{{bind_zone}}/reverse.{{zone.zone_name}}"
+						  loop: "{{zones}}"
+						  loop_control:
+						    loop_var: zone
+						  tags:
+						    - confs
+						  notify: restart "{{bind_daemon}}"
+				+ `tasks/setup-Debian.yml`:
+
+    					- name: Install bind package
+					  apt:
+					    name:
+					      - bind9
+					      - dnsutils
+					      - bind9-dnsutils
+					    state: present
+      				+ `tasks/setup-RedHat.yml`:
+
+		    				- name: Install bind package
+						  yum:
+						    name:
+						      - bind
+						      - bind-utils
+						    state: present
+				+ `handlers/main.yml`:
+
+    					- name: restart bind9
+					  service:
+					    name: bind9
+					    state: restarted
+					
+						- name: restart named
+						  service:
+						    name: named
+						    state: restarted
+      				+ `templates/db.conf.j2`:
+
+		    				{% for zone in zones %}
+							zone "{{ zone.zone_name }}" IN {
+							    type master;
+							    file "forward.{{ zone.zone_name }}";
+							    allow-update { none; };
+							};
+							
+							{% for reverse_entry in zone.reverse %}
+							zone "{{ reverse_entry }}.in-addr.arpa" IN {
+							    type master;
+							    file "reverse.{{ zone.zone_name }}";
+							    allow-update { none; };
+							};
+							{% endfor %}
+							
+							{% endfor %}
+				+ `templates/db.reverse_zone.j2`:
+
+      					$TTL	604800
+					  @	IN	SOA	{{zone.zone_name}}.	root.{{zone.zone_name}}. (
+					  				21	; Serial 
+					  				604800	; Refresh
+					  				86400   ; Retry
+					  				2419200	; Expire
+					  				604800 ); Negative Cache TTL
+					  @	IN	NS	{{zone.zone_name}}.
+					  	IN	A	{{zone.ip[0]}}
+					  {{zone.last[0]}}	IN	PTR	{{zone.zone_name}}.
+      				+ `templates/db.zone.j2`:
+
+		    				$TTL	604800
+						  @	IN	SOA	{{zone.zone_name}}.	root.{{zone.zone_name}}. (
+						  				   1	; Serial 
+						  				604800	; Refresh
+						  				86400   ; Retry
+						  				2419200	; Expire
+						  				604800 ); Negative Cache TTL
+						  @	IN	NS	{{zone.zone_name}}.
+						  	IN	A	{{zone.ip[0]}}
+				+ `vars/main.yml`:
+
+      					zones:
+					  - name: test1
+					    zone_name: test1.com
+					    ip: 
+					      - 1.2.3.4
+					    reverse: 
+					      - 3.2.1
+					    last:
+					      - 4
+					  - name: test2
+					    zone_name: test2.com
+					    ip: 
+					      - 1.2.3.4
+					    reverse: 
+					      - 3.2.1
+					    last:
+					      - 4
+					
+						bind_daemon: "{{ os_specific_vars[ansible_os_family].bind_daemon }}"
+						bind_main_config: "{{ os_specific_vars[ansible_os_family].bind_main_config }}"
+						bind_zone: "{{ os_specific_vars[ansible_os_family].bind_zone }}"
+						
+						os_specific_vars:
+						  Debian:
+						    bind_daemon: "bind9"
+						    bind_main_config: "/etc/bind/named.conf.local"
+						    bind_zone: "/etc/bind"
+						  RedHat:
+						    bind_daemon: "named"
+						    bind_main_config: "/etc/named.conf"
+						    bind_zone: "/var/named"
+
 ## Git
 
 Là hệ thống kiểm soát phiên bản mã nguồn. Ghi lại và lưu các thay đổi, cho phép khôi phục phiên bản trước đó.
