@@ -977,7 +977,7 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 				    line: 'DHCPDARGS={{interface}}'
      		+ `handlers/main.yml`:
    
-         			- name: restart dhcp
+				  - name: restart dhcp
 				  service:
 				    name: "{{service}}"
 				    state: restarted
