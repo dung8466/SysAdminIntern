@@ -962,7 +962,7 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 						  lineinfile:
 						    dest: /etc/default/isc-dhcp-server
 						    regexp: '^INTERFACESv4='
-						    line: 'INTERFACESv4={{interface}}'
+						    line: 'INTERFACESv4="{{interface}}"'
 			+ `tasks/setup-RedHat.yml`:
 
      					- name: Install isc-dhcp-server
