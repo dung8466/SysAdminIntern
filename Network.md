@@ -1054,14 +1054,14 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 					          - dnsutils
 					          - bind9-dnsutils
 						    state: present
-      				+ `tasks/setup-RedHat.yml`:
+				+ `tasks/setup-RedHat.yml`:
 
-		    				- name: Install bind package
+						- name: Install bind package
 						  yum:
 						    name:
 						      - bind
 						      - bind-utils
-						    state: present
+						  state: present
 				+ `handlers/main.yml`:
 
     					- name: restart bind9
