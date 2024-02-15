@@ -936,33 +936,33 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
     			[dhcp]
     			172.16.47.137
     			172.16.47.138
-    		+ Cài đặt và cấu hình DHCP:
+    	+ Cài đặt và cấu hình DHCP:
 
-	 			+ `tasks/main.yml`:
+	 		+ `tasks/main.yml`:
 
-						- include_tasks: setup-RedHat.yml
-						  when: ansible_os_family == 'RedHat'
+					- include_tasks: setup-RedHat.yml
+					  when: ansible_os_family == 'RedHat'
 						
-						- include_tasks: setup-Debian.yml
-						  when: ansible_os_family == 'Debian'
+					- include_tasks: setup-Debian.yml
+					  when: ansible_os_family == 'Debian'
 						
-						- name: Config DHCP
-						  template:
-						    src: "dhcpd.conf.j2"
-						    dest: "/etc/dhcp/dhcpd.conf"
-						  notify: restart dhcp
-      			+ `tasks/setup-Debian.yml`:
+					- name: Config DHCP
+					  template:
+					    src: "dhcpd.conf.j2"
+					    dest: "/etc/dhcp/dhcpd.conf"
+					  notify: restart dhcp
+      		+ `tasks/setup-Debian.yml`:
 
-		   				- name: Install isc-dhcp-server
-						  apt:
-						    name: isc-dhcp-server
-						    state: present
+		   			- name: Install isc-dhcp-server
+					  apt:
+					    name: isc-dhcp-server
+					    state: present
 						
-						- name: add interface
-						  lineinfile:
-						    dest: /etc/default/isc-dhcp-server
-						    regexp: '^INTERFACESv4='
-						    line: 'INTERFACESv4="{{interface}}"'
+					- name: add interface
+					  lineinfile:
+					    dest: /etc/default/isc-dhcp-server
+					    regexp: '^INTERFACESv4='
+					    line: 'INTERFACESv4="{{interface}}"'
 			+ `tasks/setup-RedHat.yml`:
 
      					- name: Install isc-dhcp-server
