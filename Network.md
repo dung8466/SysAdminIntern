@@ -1073,7 +1073,7 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 						  service:
 						    name: named
 						    state: restarted
-			+ `templates/db.conf.j2`:
+				+ `templates/db.conf.j2`:
 
 		    				{% for zone in zones %}
 							zone "{{ zone.zone_name }}" IN {
