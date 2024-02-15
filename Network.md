@@ -852,11 +852,11 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 		+ File `roles/add-user/tasks/main.yml`:
 
     			- name: Create new user
-  			    ansible.builtin.user:
+  			      ansible.builtin.user:
     			    name: "{{name}}"
     			    password: "{{pass | password_hash('sha512')}}"
-  			  	become: yes
-  			  	become_method: sudo
+  			      become: yes
+  			      become_method: sudo
 
 				- name: Make sudo for new user
   				  copy:
