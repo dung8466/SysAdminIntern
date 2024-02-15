@@ -1073,7 +1073,7 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 						  service:
 						    name: named
 						    state: restarted
-   				+ `templates/db.conf.j2`:
+				+ `templates/db.conf.j2`:
 
 		    				{% for zone in zones %}
 							zone "{{ zone.zone_name }}" IN {
@@ -1105,7 +1105,7 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 					  {{zone.last[0]}}	IN	PTR	{{zone.zone_name}}.
       				+ `templates/db.zone.j2`:
 
-		    				$TTL	604800
+							$TTL	604800
 						  @	IN	SOA	{{zone.zone_name}}.	root.{{zone.zone_name}}. (
 						  				   1	; Serial 
 						  				604800	; Refresh
