@@ -885,16 +885,16 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 			      become_method: sudo
     	+ File `roles/ssh/handlers/main.yml`:
 
-	   				- name: restart ssh service
-					  service:
-					    name: sshd
-					    state: restarted
+	   			- name: restart ssh service
+				  service:
+				    name: sshd
+				    state: restarted
 		+ File `main.yml`:
 
-    					- hosts: user
-    					  roles:
-    					    - role: add-user
-    					    - role: ssh
+    			- hosts: user
+    			  roles:
+    			    - role: add-user
+    			    - role: ssh
     	+ Chạy ansible playbooks sử dụng `ansible-playbook -i hosts main.yml -K`
 
 	+ LAB 6: Cài đặt DHCP, DNS trên Centos và Ubuntu
