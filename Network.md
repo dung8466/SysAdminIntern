@@ -1065,7 +1065,7 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 				+ `handlers/main.yml`:
 
     					- name: restart bind9
-					    service:
+					      service:
 					        name: bind9
 					        state: restarted
 					
@@ -1073,7 +1073,7 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 						  service:
 						    name: named
 						    state: restarted
-      				+ `templates/db.conf.j2`:
+   				+ `templates/db.conf.j2`:
 
 		    				{% for zone in zones %}
 							zone "{{ zone.zone_name }}" IN {
@@ -1117,22 +1117,22 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 				+ `vars/main.yml`:
 
       					zones:
-					  - name: test1
-					    zone_name: test1.com
-					    ip: 
-					      - 1.2.3.4
-					    reverse: 
-					      - 3.2.1
-					    last:
-					      - 4
-					  - name: test2
-					    zone_name: test2.com
-					    ip: 
-					      - 1.2.3.4
-					    reverse: 
-					      - 3.2.1
-					    last:
-					      - 4
+					      - name: test1
+					        zone_name: test1.com
+					        ip: 
+					          - 1.2.3.4
+					        reverse: 
+					          - 3.2.1
+					        last:
+					          - 4
+					      - name: test2
+					        zone_name: test2.com
+					        ip: 
+					          - 1.2.3.4
+					        reverse: 
+					          - 3.2.1
+					        last:
+					          - 4
 					
 						bind_daemon: "{{ os_specific_vars[ansible_os_family].bind_daemon }}"
 						bind_main_config: "{{ os_specific_vars[ansible_os_family].bind_main_config }}"
