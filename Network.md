@@ -1018,102 +1018,96 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 			+ `tasks/main.yml`:
 
 					- include_tasks: setup-Debian.yml
-						  when: ansible_os_family == 'Debian'
-						- name: Config dns server
-						  template:
-						    src: "db.conf.j2"
-						    dest: "{{bind_main_config}}"
+					  when: ansible_os_family == 'Debian'
+					- name: Config dns server
+					  template:
+					    src: "db.conf.j2"
+					    dest: "{{bind_main_config}}"
 						  
-						- name: Create forward zone
-						  template:
-						    src: "db.zone.j2"
-						    dest: "{{bind_zone}}/forward.{{zone.zone_name}}"
-						  loop: "{{zones}}"
-						  loop_control:
-						    loop_var: zone
-						  tags: 
-						    - confs
+					- name: Create forward zone
+					  template:
+					    src: "db.zone.j2"
+					    dest: "{{bind_zone}}/forward.{{zone.zone_name}}"
+					    loop: "{{zones}}"
+					    loop_control:
+					      loop_var: zone
 						
-						
-						- name: Create reverse zone
-						  template:
-						    src: "db.reverse_zone.j2"
-						    dest: "{{bind_zone}}/reverse.{{zone.zone_name}}"
-						  loop: "{{zones}}"
-						  loop_control:
-						    loop_var: zone
-						  tags:
-						    - confs
-						  notify: restart "{{bind_daemon}}"
+					- name: Create reverse zone
+					  template:
+					    src: "db.reverse_zone.j2"
+					    dest: "{{bind_zone}}/reverse.{{zone.zone_name}}"
+					    loop: "{{zones}}"
+					    loop_control:
+					      loop_var: zone
+					  notify: restart "{{bind_daemon}}"
 			+ `tasks/setup-Debian.yml`:
 
-    					- name: Install bind package
-						  apt:
-						    name:
-					          - bind9
-					          - dnsutils
-					          - bind9-dnsutils
-						    state: present
+					- name: Install bind package
+					  apt:
+					    name:
+					      - bind9
+					      - dnsutils
+					      - bind9-dnsutils
+					  state: present
 			+ `tasks/setup-RedHat.yml`:
 
-						- name: Install bind package
-						  yum:
-						    name:
-						      - bind
-						      - bind-utils
-						    state: present
+					- name: Install bind package
+					  yum:
+					    name:
+					      - bind
+					      - bind-utils
+					  state: present
 			+ `handlers/main.yml`:
 
-    					- name: restart bind9
-					      service:
-					        name: bind9
-					        state: restarted
+					- name: restart bind9
+					  service:
+					    name: bind9
+					    state: restarted
 					
-						- name: restart named
-						  service:
-						    name: named
-						    state: restarted
+					- name: restart named
+					  service:
+					    name: named
+					    state: restarted
 			+ `templates/db.conf.j2`:
 
-						{% for zone in zones %}
-						zone "{{ zone.zone_name }}" IN {
-							type master;
-							file "forward.{{ zone.zone_name }}";
-							allow-update { none; };
-						};
+					{% for zone in zones %}
+					zone "{{ zone.zone_name }}" IN {
+					  type master;
+					  file "forward.{{ zone.zone_name }}";
+					  allow-update { none; };
+					};
 							
-						{% for reverse_entry in zone.reverse %}
-						zone "{{ reverse_entry }}.in-addr.arpa" IN {
-							type master;
-							file "reverse.{{ zone.zone_name }}";
-							allow-update { none; };
-						};
-						{% endfor %}
-							
-						{% endfor %}
+					{% for reverse_entry in zone.reverse %}
+					zone "{{ reverse_entry }}.in-addr.arpa" IN {
+					  type master;
+					  file "reverse.{{ zone.zone_name }}";
+					  allow-update { none; };
+					};
+					{% endfor %}	
+					{% endfor %}
 			+ `templates/db.reverse_zone.j2`:
 
-      					$TTL	604800
-					  @	IN	SOA	{{zone.zone_name}}.	root.{{zone.zone_name}}. (
-					  				21	; Serial 
-					  				604800	; Refresh
-					  				86400   ; Retry
-					  				2419200	; Expire
-					  				604800 ); Negative Cache TTL
-					  @	IN	NS	{{zone.zone_name}}.
-					  	IN	A	{{zone.ip[0]}}
-					  {{zone.last[0]}}	IN	PTR	{{zone.zone_name}}.
+     				$TTL	604800
+					@	IN	SOA	{{zone.zone_name}}.	root.{{zone.zone_name}}. (
+						21	; Serial 
+						604800	; Refresh
+						86400   ; Retry
+						2419200	; Expire
+						604800 ); Negative Cache TTL
+					@	IN	NS	{{zone.zone_name}}.
+						IN	A	{{zone.ip[0]}}
+					{{zone.last[0]}}	IN	PTR	{{zone.zone_name}}.
 			+ `templates/db.zone.j2`:
 
-							$TTL	604800
-						  @	IN	SOA	{{zone.zone_name}}.	root.{{zone.zone_name}}. (
-						  				   1	; Serial 
-						  				604800	; Refresh
-						  				86400   ; Retry
-						  				2419200	; Expire
-						  				604800 ); Negative Cache TTL
-						  @	IN	NS	{{zone.zone_name}}.
-						  	IN	A	{{zone.ip[0]}}
+					$TTL	604800
+					@	IN	SOA	{{zone.zone_name}}.	root.{{zone.zone_name}}. (
+						1	; Serial 
+						604800	; Refresh
+						86400   ; Retry
+						2419200	; Expire
+						604800 ); Negative Cache TTL
+					@	IN	NS	{{zone.zone_name}}.
+						IN	A	{{zone.ip[0]}}
 			+ `vars/main.yml`:
 
 					zones:
