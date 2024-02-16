@@ -5,10 +5,10 @@
   <summary>Table of Contents</summary>
     <ol>
 	    <li>
-		    <a href="#mô-hình-osi%2C-tcp%2Fip">Mô hình OSI, TCP/IP</a>
+		    <a href="#mô-hình-osi-tcp-ip">Mô hình OSI, TCP/IP</a>
 		    <ul>
 			    <li><a href="#mô-hình-osi">Mô hình OSI</a></li>
-			    <li><a href="#mô-hình-tcp%2Fip">Mô hình TCP/IP</a></li>
+			    <li><a href="#mô-hình-tcp-ip">Mô hình TCP/IP</a></li>
 		    </ul>
     	    </li>
 	    <li>
