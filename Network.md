@@ -30,7 +30,7 @@
 	    <li><a href="#firewall">Firewall</a></li>
 	    <li><a href="#dhcp-và-dns">DHCP và DNS</a></li>
 	    <li><a href="#keepalived">Keepalived</a></li>
-	    <li><a href="#debug,-config-network">Debug và config network</a></li>
+	    <li><a href="#debug-config-network">Debug và config network</a></li>
 	    <li>
 		    <a href="#ansible">Ansible</a>
 		    <ul>
