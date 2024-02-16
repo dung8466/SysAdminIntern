@@ -5,10 +5,10 @@
   <summary>Table of Contents</summary>
     <ol>
 	    <li>
-		    <a href="#mô-hình-osi-tcp-ip">Mô hình OSI, TCP/IP</a>
+		    <a href="#heading2">Mô hình OSI, TCP/IP</a>
 		    <ul>
 			    <li><a href="#mô-hình-osi">Mô hình OSI</a></li>
-			    <li><a href="#mô-hình-tcp-ip">Mô hình TCP/IP</a></li>
+			    <li><a href="#heading3">Mô hình TCP/IP</a></li>
 		    </ul>
     	    </li>
 	    <li>
@@ -44,7 +44,7 @@
     </ol>
 </details>
 
-## Mô hình OSI, TCP/IP
+<h2 id="heading2"> Mô hình OSI, TCP/IP</h2>
 
 ### Mô hình OSI
 
@@ -122,7 +122,7 @@ Nhược điểm:
 + Cài đặt mô hình khó.
 + Không hỗ trợ các giao thức và ứng dụng thường dùng ở internet như HTTP, FTP, TCP, UDP, IP, and Ethernet --> sử dụng như 1 mô hình tham khảo.
 
-### Mô hình TCP/IP
+<h3 id="heading3"> Mô hình TCP/IP</h3>
 
 Có 4 lớp trong mô hình TCP/IP:
 
