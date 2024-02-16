@@ -1014,10 +1014,10 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 						
 					interface: "ens33"
 
-			+ Cấu hình DNS cho CentOs và Ubuntu:
-				+ `tasks/main.yml`:
+		+ Cấu hình DNS cho CentOs và Ubuntu:
+			+ `tasks/main.yml`:
 
-		    			- include_tasks: setup-Debian.yml
+					- include_tasks: setup-Debian.yml
 						  when: ansible_os_family == 'Debian'
 						- name: Config dns server
 						  template:
@@ -1045,7 +1045,7 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 						  tags:
 						    - confs
 						  notify: restart "{{bind_daemon}}"
-				+ `tasks/setup-Debian.yml`:
+			+ `tasks/setup-Debian.yml`:
 
     					- name: Install bind package
 						  apt:
@@ -1054,7 +1054,7 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 					          - dnsutils
 					          - bind9-dnsutils
 						    state: present
-				+ `tasks/setup-RedHat.yml`:
+			+ `tasks/setup-RedHat.yml`:
 
 						- name: Install bind package
 						  yum:
@@ -1062,7 +1062,7 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 						      - bind
 						      - bind-utils
 						    state: present
-				+ `handlers/main.yml`:
+			+ `handlers/main.yml`:
 
     					- name: restart bind9
 					      service:
@@ -1073,7 +1073,7 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 						  service:
 						    name: named
 						    state: restarted
-				+ `templates/db.conf.j2`:
+			+ `templates/db.conf.j2`:
 
 						{% for zone in zones %}
 						zone "{{ zone.zone_name }}" IN {
@@ -1091,7 +1091,7 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 						{% endfor %}
 							
 						{% endfor %}
-				+ `templates/db.reverse_zone.j2`:
+			+ `templates/db.reverse_zone.j2`:
 
       					$TTL	604800
 					  @	IN	SOA	{{zone.zone_name}}.	root.{{zone.zone_name}}. (
@@ -1103,7 +1103,7 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 					  @	IN	NS	{{zone.zone_name}}.
 					  	IN	A	{{zone.ip[0]}}
 					  {{zone.last[0]}}	IN	PTR	{{zone.zone_name}}.
-   			  + `templates/db.zone.j2`:
+			+ `templates/db.zone.j2`:
 
 							$TTL	604800
 						  @	IN	SOA	{{zone.zone_name}}.	root.{{zone.zone_name}}. (
@@ -1114,7 +1114,7 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 						  				604800 ); Negative Cache TTL
 						  @	IN	NS	{{zone.zone_name}}.
 						  	IN	A	{{zone.ip[0]}}
-			  + `vars/main.yml`:
+			+ `vars/main.yml`:
 
 					zones:
 					  - name: test1
