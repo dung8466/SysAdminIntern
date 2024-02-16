@@ -1075,22 +1075,22 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 						    state: restarted
 				+ `templates/db.conf.j2`:
 
-		    				{% for zone in zones %}
-							zone "{{ zone.zone_name }}" IN {
-							    type master;
-							    file "forward.{{ zone.zone_name }}";
-							    allow-update { none; };
-							};
+						{% for zone in zones %}
+						zone "{{ zone.zone_name }}" IN {
+							type master;
+							file "forward.{{ zone.zone_name }}";
+							allow-update { none; };
+						};
 							
-							{% for reverse_entry in zone.reverse %}
-							zone "{{ reverse_entry }}.in-addr.arpa" IN {
-							    type master;
-							    file "reverse.{{ zone.zone_name }}";
-							    allow-update { none; };
-							};
-							{% endfor %}
+						{% for reverse_entry in zone.reverse %}
+						zone "{{ reverse_entry }}.in-addr.arpa" IN {
+							type master;
+							file "reverse.{{ zone.zone_name }}";
+							allow-update { none; };
+						};
+						{% endfor %}
 							
-							{% endfor %}
+						{% endfor %}
 				+ `templates/db.reverse_zone.j2`:
 
       					$TTL	604800
@@ -1116,37 +1116,37 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 						  	IN	A	{{zone.ip[0]}}
 			  + `vars/main.yml`:
 
-      					zones:
-					      - name: test1
-					        zone_name: test1.com
-					        ip: 
-					          - 1.2.3.4
-					        reverse: 
-					          - 3.2.1
-					        last:
-					          - 4
-					      - name: test2
-					        zone_name: test2.com
-					        ip: 
-					          - 1.2.3.4
-					        reverse: 
-					          - 3.2.1
-					        last:
-					          - 4
+					zones:
+					  - name: test1
+					    zone_name: test1.com
+					    ip: 
+					      - 1.2.3.4
+					    reverse: 
+					      - 3.2.1
+					    last:
+					      - 4
+					  - name: test2
+					    zone_name: test2.com
+					    ip: 
+					      - 1.2.3.4
+					    reverse: 
+					      - 3.2.1
+					    last:
+					      - 4
 					
-						bind_daemon: "{{ os_specific_vars[ansible_os_family].bind_daemon }}"
-						bind_main_config: "{{ os_specific_vars[ansible_os_family].bind_main_config }}"
-						bind_zone: "{{ os_specific_vars[ansible_os_family].bind_zone }}"
+					bind_daemon: "{{ os_specific_vars[ansible_os_family].bind_daemon }}"
+					bind_main_config: "{{ os_specific_vars[ansible_os_family].bind_main_config }}"
+					bind_zone: "{{ os_specific_vars[ansible_os_family].bind_zone }}"
 						
-						os_specific_vars:
-						  Debian:
-						    bind_daemon: "bind9"
-						    bind_main_config: "/etc/bind/named.conf.local"
-						    bind_zone: "/etc/bind"
-						  RedHat:
-						    bind_daemon: "named"
-						    bind_main_config: "/etc/named.conf"
-						    bind_zone: "/var/named"
+					os_specific_vars:
+					  Debian:
+					    bind_daemon: "bind9"
+					    bind_main_config: "/etc/bind/named.conf.local"
+					    bind_zone: "/etc/bind"
+					  RedHat:
+					    bind_daemon: "named"
+					    bind_main_config: "/etc/named.conf"
+					    bind_zone: "/var/named"
 
 ## Git
 
