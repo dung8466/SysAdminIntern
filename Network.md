@@ -34,8 +34,8 @@
 	    <li>
 		    <a href="#ansible">Ansible</a>
 		    <ul>
-			    <li><a href="lab5">LAB 5</a></li>
-			    <li><a href="lab6">LAB 6</a></li>
+			    <li><a href="#lab5">LAB 5</a></li>
+			    <li><a href="#lab6">LAB 6</a></li>
 		    </ul>
 	    </li>
 	    <li><a href="#git">Git</a></li>
