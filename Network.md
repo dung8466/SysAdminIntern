@@ -1308,7 +1308,7 @@ Thay đổi `timezone` tại `/etc/php/8.1/apache2/php.ini`:
 
 	date.timezone = "Asia/Kolkata"
 
-[Cài đặt `icinga2`](https://icinga.com/docs/icinga-2/latest/doc/02-installation/02-Ubuntu/), `monitoring-plugins`, `icinga2-ido-mysql`
+Cài đặt [`icinga2`](https://icinga.com/docs/icinga-2/latest/doc/02-installation/02-Ubuntu/), `monitoring-plugins`, `icinga2-ido-mysql`
 
 Tạo database cho `icinga2` với `sudo mysql -u root -p`:
 
