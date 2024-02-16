@@ -476,8 +476,8 @@ Là thiết bị/phần mềm mạng giám sát lưu lượng mạng đến và 
  	+ Cài đặt quy tắc filter mặc định
 
    			iptables -P INPUT DROP
-    			iptables -P OUTPUT DROP
-    			iptables -P FORWARD DROP
+			iptables -P OUTPUT DROP
+			iptables -P FORWARD DROP
     + Chấp nhận loopback (localhost)
 
 			iptables -A INPUT  -i lo -j ACCEPT
