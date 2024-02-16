@@ -4,7 +4,43 @@
 <details>
   <summary>Table of Contents</summary>
     <ol>
-	    <li>Tam</li>
+	    <li>
+		    <a href="#mô-hình-osi,-tcp/ip">Mô hình OSI, TCP/IP</a>
+		    <ul>
+			    <li><a href="#mô-hình-osi">Mô hình OSI</a></li>
+			    <li><a href="#mô-hình-tcp/ip">Mô hình TCP/IP</a></li>
+		    </ul>
+    	    </li>
+	    <li>
+		    <a href="#udp-và-tcp">UDP và TCP</a>
+		    <ul>
+			    <li><a href="#udp">UDP</a></li>
+			    <li><a href="#tcp">TCP/a></li>
+		    </ul>
+	    </li>
+	    <li>
+		    <a href="#ipv4-và-ipv6">IPv4 và IPv6</a>
+		    <ul>
+			    <li><a href="#ipv4">IPv4</a></li>
+			    <li><a href="#ipv6">IPv6</a></li>
+		    </ul>
+	    </li>
+	    <li><a href="#switching">Switching</a></li>
+	    <li><a href="#routing">Routing</a></li>
+	    <li><a href="#firewall">Firewall</a></li>
+	    <li><a href="#dhcp-và-dns">DHCP và DNS</a></li>
+	    <li><a href="#keepalived">Keepalived</a></li>
+	    <li><a href="#debug,-config-network">Debug và config network</a></li>
+	    <li>
+		    <a href="#ansible">Ansible</a>
+		    <ul>
+			    <li><a href="lab5">LAB 5</a></li>
+			    <li><a href="lab6">LAB 6</a></li>
+		    </ul>
+	    </li>
+	    <li><a href="#git">Git</a></li>
+	    <li><a href="#icinga2">Icinga2</a></li>
+	    <li><a href="#tig-stack">TIG stack</a></li>
     </ol>
 </details>
 
@@ -821,7 +857,7 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
           	+ Thay đổi mật khẩu của file mã hóa: `ansible-vault rekey <path/to/file.yml>`
 
 + LAB:
-	+ Lab 5: tạo user,  Disable ssh bằng password, cấp quyền sudo cho user,Add thêm public key  để user ssh đựợc bằng ssh-key
+	+ <p id="lab5">Lab 5: tạo user,  Disable ssh bằng password, cấp quyền sudo cho user,Add thêm public key  để user ssh đựợc bằng ssh-key</p>
 
 		+ Cấu trúc ansible playbooks:
 
@@ -897,7 +933,7 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
     			    - role: ssh
     	+ Chạy ansible playbooks sử dụng `ansible-playbook -i hosts main.yml -K`
 
-	+ LAB 6: Cài đặt DHCP, DNS trên Centos và Ubuntu
+	+ <p id="lab6">LAB 6: Cài đặt DHCP, DNS trên Centos và Ubuntu</p>
 
  		+ Cấu trúc ansible-playbook:
 
