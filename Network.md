@@ -357,23 +357,23 @@ Là kết hợp nhiều `network interfaces` (giao diện mạng) thành một g
 
 	+ Cấu hình `bond0` tại `/etc/netplan/*.yaml`:
 
- 			network:
-   				version: 2
-   				ethernets:
-   					ens33:
-   						dhcp4: false
-   					ens37:
-   						dhcp4: false
-   				bonds:
-   					bond0:
-   						interfaces: [ens33, ens37]
-   						dhcp4: false
-   						addresses: [172.16.47.100/24]
-   						nameservers:
-   							addresses: [8.8.8.8]
-   						parameters:
-   							mode: active-backup
-   							mii-monitor-interval: 100
+			network:
+			  version: 2
+			  ethernets:
+			    ens33:
+			      dhcp4: false
+			    ens37:
+			      dhcp4: false
+			    bonds:
+			      bond0:
+			        interfaces: [ens33, ens37]
+			        dhcp4: false
+			        addresses: [172.16.47.100/24]
+			        nameservers:
+			          addresses: [8.8.8.8]
+			        parameters:
+			          mode: active-backup
+			          mii-monitor-interval: 100
  	+ Áp dụng cấu hình sử dụng `sudo netplan apply`. 
   	
 ## Routing
