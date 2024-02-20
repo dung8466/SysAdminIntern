@@ -496,6 +496,10 @@ Là thiết bị/phần mềm mạng giám sát lưu lượng mạng đến và 
 	+ Khởi tạo lại quy tắc:
 
   			iptables -F
+	+ Chấp nhận loopback (localhost)
+
+			iptables -A INPUT  -i lo -j ACCEPT
+			iptables -A OUTPUT -o lo -j ACCEPT
  	+ Cho phép từ các nguồn:
 
   			iptables -A INPUT -p tcp -s <IP> --dport <ssh port> -j ACCEPT
