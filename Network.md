@@ -1280,7 +1280,7 @@ Giúp dễ dàng theo dõi lịch sử, cộng tác viết mã theo mã và xem 
    			git submodule add <git url> <path/to/submodule>
    	+ Phải clone submodule nếu clone dự án chính trên máy khác:
 
-      			git submodule update --init
+			git submodule update --init
    	  		git submodule update --recursive --remote
    	  		git pull --recurse-submodules
 	+ Xóa submodule:
