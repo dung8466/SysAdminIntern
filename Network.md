@@ -386,6 +386,7 @@ Phương pháp hoạt động:
 + các gói dữ liệu được gửi đến bộ định tuyến trước
 + Bộ định tuyến sau đó sẽ tra cứu gói có tiêu đề và xác định điểm đích của nó 
 + Tự tra cứu bảng nội bộ của nó và chuyển tiếp gói (đến bộ định tuyến tiếp theo hoặc thiết bị khác)
+
 Phân loại:
 + Định tuyến tĩnh: sử dụng bảng tĩnh để đặt cấu hình và chọn các tuyến mạng theo cách thủ công.
 + Định tuyến động: các bộ định tuyến tạo và cập nhật bảng định tuyến trong thời gian chạy dựa trên điều kiện mạng thực tế.
