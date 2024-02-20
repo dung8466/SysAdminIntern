@@ -602,10 +602,10 @@ Là thiết bị/phần mềm mạng giám sát lưu lượng mạng đến và 
    	+ Kiểm tra địa chỉ IP sử dụng `ip -c a`: đuọc địa chỉ `172.16.48.101/24` --> trong dải DHCP server đã cấu hình.
    	+ Kiểm tra hoạt động của DHCP server sử dụng `sudo nmap --script broadcast-dhcp-discover`:
 
-      		IP Offered: 172.16.48.102
-   	  		Server Identifier: 172.16.48.1
-   	  		Router: 172.16.48.1
-   	  		Broadcast Address: 172.16.48.255
+			IP Offered: 172.16.48.102
+			Server Identifier: 172.16.48.1
+			Router: 172.16.48.1
+			Broadcast Address: 172.16.48.255
   	+ Kiểm tra DNS server sử dụng `dig toilamlap.com`:
 
   			toilamlap.com. 7090 IN A 103.45.89.45
