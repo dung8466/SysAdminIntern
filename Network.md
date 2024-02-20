@@ -467,11 +467,11 @@ Là thiết bị/phần mềm mạng giám sát lưu lượng mạng đến và 
 
 		iptables -A <INPUT | OUTPUT> <-p tcp | -p udp> <-s IP | -d IP> <--dport port_number> -j DROP
 
-Trong đó:
-+ `-p`: giao thức mạng muốn chặn.
-+ `-s`: IP nguồn muốn chặn.
-+ `-d`: IP đích muốn chặn.
-+ `-dport`: port muốn chặn.
+	Trong đó:
+	+ `-p`: giao thức mạng muốn chặn.
+	+ `-s`: IP nguồn muốn chặn.
+	+ `-d`: IP đích muốn chặn.
+	+ `-dport`: port muốn chặn.
 
 Ngược lại, nếu muốn cho phép có thể thay thế `DROP` thành `ACCEPT`.
 
