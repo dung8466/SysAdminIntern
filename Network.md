@@ -600,7 +600,7 @@ Là thiết bị/phần mềm mạng giám sát lưu lượng mạng đến và 
    			    search: [toilamlap.com]
    			    addresses: [172.16.47.132] --địa chỉ IP ens33 tại server
    	+ Kiểm tra địa chỉ IP sử dụng `ip -c a`: đuọc địa chỉ `172.16.48.101/24` --> trong dải DHCP server đã cấu hình.
-   	+ Kiểm tra hoạt động của DHCP server sử dụng `sudo nmap --script broadcast-dhcp-discover`:
+   	+ Kiểm tra hoạt động của DHCP server sử dụng `sudo nmap --script broadcast-dhcp-discover` tại client:
 
 			IP Offered: 172.16.48.102
 			Server Identifier: 172.16.48.1
