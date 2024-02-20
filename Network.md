@@ -473,7 +473,7 @@ Là thiết bị/phần mềm mạng giám sát lưu lượng mạng đến và 
 	+ `-d`: IP đích muốn chặn.
 	+ `-dport`: port muốn chặn.
 
-Ngược lại, nếu muốn cho phép có thể thay thế `DROP` thành `ACCEPT`.
+	Ngược lại, nếu muốn cho phép có thể thay thế `DROP` thành `ACCEPT`.
 
 + Chặn toàn bộ port trừ 1 số port:
 	+ Khởi tạo lại các quy tắc
