@@ -1285,7 +1285,7 @@ Giúp dễ dàng theo dõi lịch sử, cộng tác viết mã theo mã và xem 
    	  		git pull --recurse-submodules
 	+ Xóa submodule:
 
-      			git submodule deinit <path/to/submodule> -f
+			git submodule deinit <path/to/submodule> -f
    			git rm <path/to/submodule>
    			git commit -m <commit message>
    			rm -rf .git/modules/<path_to_submodule_folder>
