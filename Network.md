@@ -428,6 +428,13 @@ Cài đặt định tuyến tĩnh:
 + Thêm định tuyến vĩnh viễn cho Ubuntu tại `/etc/network/interfaces`:
 
 		up route add -net <IP> netmask <mask> gw <gateway IP>
+
++ Thêm định tuyến vĩnh viễn cho cả Ubuntu, Fedora,... sử dụng file `.network` tại `/etc/systemd/network`:
+
+		[Route]
+  		Destination=<IP/mask>
+  		Gateway=<IP gateway>
+
 + Xóa định tuyến sử dụng `ip route`:
 
 		ip route del <IP/mask> via <gateway IP> [dev <network interface>]
