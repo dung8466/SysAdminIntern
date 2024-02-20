@@ -458,22 +458,22 @@ Là thiết bị/phần mềm mạng giám sát lưu lượng mạng đến và 
  	sudo iptables-save > /etc/iptables/rules.v4
    	sudo ip6tables-save > /etc/iptables/rules.v6
 
- + Kiểm tra quy tắc của `iptables`
++ Kiểm tra quy tắc của `iptables`
 
 		sudo iptables -L
 
 
- + Chặn 1 port có thể chặn đến/đi, giao thức tcp/udp, ...
++ Chặn 1 port có thể chặn đến/đi, giao thức tcp/udp, ...
 
 		iptables -A <INPUT | OUTPUT> <-p tcp | -p udp> <-s IP | -d IP> <--dport port_number> -j DROP
 
-	Trong đó:
+Trong đó:
 	+ `-p`: giao thức mạng muốn chặn.
-	 + `-s`: IP nguồn muốn chặn.
-	  + `-d`: IP đích muốn chặn.
-	   + `-dport`: port muốn chặn.
+	+ `-s`: IP nguồn muốn chặn.
+	+ `-d`: IP đích muốn chặn.
+	+ `-dport`: port muốn chặn.
 
-	Ngược lại, nếu muốn cho phép có thể thay thế `DROP` thành `ACCEPT`.
+Ngược lại, nếu muốn cho phép có thể thay thế `DROP` thành `ACCEPT`.
 
 + Chặn toàn bộ port trừ 1 số port:
 	+ Khởi tạo lại các quy tắc
