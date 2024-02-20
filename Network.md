@@ -478,14 +478,8 @@ Là thiết bị/phần mềm mạng giám sát lưu lượng mạng đến và 
 + Chặn toàn bộ port trừ 1 số port:
 	+ Khởi tạo lại các quy tắc
 
-			iptables -Z --zero-counter
- 			iptables -F --flush rules
-   			iptbales -X --delete all extra chains
- 	+ Cài đặt quy tắc filter mặc định
+ 			iptables -F
 
-   			iptables -P INPUT DROP
-			iptables -P OUTPUT DROP
-			iptables -P FORWARD DROP
     + Chấp nhận loopback (localhost)
 
 			iptables -A INPUT  -i lo -j ACCEPT
