@@ -455,17 +455,17 @@ Là thiết bị/phần mềm mạng giám sát lưu lượng mạng đến và 
 
  Lưu các quy tắc sử dụng `iptables-save` và `ip6tables-save`
 
- 		sudo iptables-save > /etc/iptables/rules.v4
-   		sudo ip6tables-save > /etc/iptables/rules.v6
+ 	sudo iptables-save > /etc/iptables/rules.v4
+   	sudo ip6tables-save > /etc/iptables/rules.v6
 
  + Kiểm tra quy tắc của `iptables`
 
- 		sudo iptables -L
+		sudo iptables -L
 
 
  + Chặn 1 port có thể chặn đến/đi, giao thức tcp/udp, ...
 
- 		iptables -A <INPUT | OUTPUT> <-p tcp | -p udp> <-s IP | -d IP> <--dport port_number> -j DROP
+		iptables -A <INPUT | OUTPUT> <-p tcp | -p udp> <-s IP | -d IP> <--dport port_number> -j DROP
 
 	Trong đó:
 	+ `-p`: giao thức mạng muốn chặn.
