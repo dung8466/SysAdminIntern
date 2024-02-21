@@ -773,6 +773,7 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
   + `-s`: chạy lệnh với quyền sudo
   + `-k`: ưu tiên sử dụng password hơn ssh key để xác thực server
   + `-u`: chạy lệnh với user nào của server
+  
   Ví dụ:
   	+ ping đến host_group "test-servers": `ansible -m ping test-servers`
   	+ ping đến toàn bộ server: `ansible -m ping all`
