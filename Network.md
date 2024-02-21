@@ -239,7 +239,7 @@ Phân lớp: Gồm 5 lớp A, B, C, D, E.
 + Tìm số đường mạng theo công thức `2^(số bit mượn)` (số đường mạng có thể phân ra từ mạng gốc).
 + Xác định mỗi đường mạng sẽ có bao nhiêu máy đặt trong đó theo công thức `2^(số bit host sau khi mượn) - 2` vì sẽ phải bỏ đi địa chỉ mạng và boardcast.
 + Tìm subnet mask mới. Dựa vào lớp mạng, mượn bao nhiêu bit sẽ phải bật lên bấy nhiêu bit 1 ở subnet mặc định.
-+ Tìm bước nhảy theo công thức `256 - (subnet mask mới)`. --> Số dải IP khả dụng trong mạng
++ Tìm bước nhảy theo công thức `256 - (subnet mask mới) = 2^bước nhảy`. --> Số dải IP khả dụng trong mạng
 
 Ví dụ: Từ 192.168.1.1/29 tìm phạm vi địa chỉ host nó thuộc về.
 
@@ -249,7 +249,7 @@ Ví dụ: Từ 192.168.1.1/29 tìm phạm vi địa chỉ host nó thuộc về.
 + Subnet mới:
 	+ subnet mặc định `/24`: `255.255.255.0` --> `11111111.11111111.1111111.00000000`
  	+ mượn 5bit --> `11111111.11111111.11111111.11111000` --> `255.255.255.248`
-+ Bước nhảy (độ lớn của mỗi đoạn) `256 - 248 = 32 = 2^8`
++ Bước nhảy `256 - 248 = 32 = 2^8`
 + Các dải IP khả dụng
 	+ `192.168.1.1` đến `192.168.1.6`, `192.168.1.0`: địa chỉ mạng, `192.168.1.7`: boardcast
 	+ `192.168.1.9` đến `192.168.1.14`, `192.168.1.8`: địa chỉ mạng, `192.168.1.15`: boardcast
