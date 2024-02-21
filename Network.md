@@ -858,10 +858,10 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 	+ Tạo file config mẫu: `ansible-config init --disabled > ansible.cfg` hoặc `ansible-config init --disabled -t all > ansible.cfg` để có sẵn các plugins
  	+ Để bảo mật password, key lưu tại các file `vars/main.yml`, `group_vars/`, `host_vars/`,... sử dụng `Vault`(chỉ mã hóa các file yaml).
   		+ Tạo file mã hóa: `ansible-vault create <path/to/file.yml>`
-      		+ Giải mã file: `ansible-vaulr decrypt <path/to/file.yml>`
-          	+ Giải mã 1 file mã hóa, sửa đổi rồi mã hóa lại: `ansible-vault edit <path/to/file.yml>`
-          	+ Mã hóa 1 file chưa mã hóa: `ansible-vault encrypt <path/to/file.yml>`
-          	+ Thay đổi mật khẩu của file mã hóa: `ansible-vault rekey <path/to/file.yml>`
+		+ Giải mã file: `ansible-vaulr decrypt <path/to/file.yml>`
+		+ Giải mã 1 file mã hóa, sửa đổi rồi mã hóa lại: `ansible-vault edit <path/to/file.yml>`
+		+ Mã hóa 1 file chưa mã hóa: `ansible-vault encrypt <path/to/file.yml>`
+		+ Thay đổi mật khẩu của file mã hóa: `ansible-vault rekey <path/to/file.yml>`
 
 + LAB:
 	+ <p id="lab5">Lab 5: tạo user,  Disable ssh bằng password, cấp quyền sudo cho user,Add thêm public key  để user ssh đựợc bằng ssh-key</p>
