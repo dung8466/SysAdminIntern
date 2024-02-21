@@ -781,7 +781,7 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
   	+ xem tổng quan của filesystem của toàn bộ server: `ansible -m command -a "df -h" all` hoặc `ansible -a "df -h" all`
      + Copy 1 file đến "test-servers": `ansible -m ansible.builtin.copy -a "src=path/to/src dest=path/to/dest" test-servers`
   	  
-+ Chạy nhiều lệnh sử dụng file ansible playbook, có thể lưu tại `/etc/ansible/*.yml` hoặc trong thư mục riêng tự.
++ Chạy nhiều lệnh sử dụng file ansible playbook, có thể lưu tại `/etc/ansible/*.yml` hoặc trong thư mục riêng tự tạo.
 
 	+ Cấu trúc thư mục ansible playbooks:
 
