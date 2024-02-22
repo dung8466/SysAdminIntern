@@ -1357,16 +1357,24 @@ Kết quá:
 
 [Cài đặt Grafana](https://grafana.com/docs/grafana/latest/setup-grafana/installation/debian/)
 
+	sudo systemctl enable grafana-server
+ 	sudo systemctl start grafana-server
+
 [Cài đặt InfluxDB](https://docs.influxdata.com/influxdb/v2/install/?t=Linux)
 
+	sudo systemctl enable influxdb
+ 	sudo systemctl start influxdb
 [Cài đặt Telegraf](https://www.influxdata.com/time-series-platform/telegraf/#)
+
+	sudo systemctl enable telegraf
+ 	sudo systemctl start telegraf
 
 Truy cập `http://<server-ip>:8086/`, lưu token được cấp và chọn `Quick start` để tạo `telegraf` rồi theo hường dẫn hiện lên:
 
 	export INFLUX_TOKEN=<INFLUX_TOKEN>
  	telegraf --config http://<server-ip>:8086/api/v2/telegrafs/<number>
 
-Truy cập `http://<server-ip>:3000` để tạo đồ thị `grafana`.
+Truy cập `http://<server-ip>:3000`, đăng nhập với tài khoản `admin` để tạo đồ thị `grafana`.
 
 Tại `data source`: lựa chọn `influxdb` với ngôn ngữ `flux` và kết nối tới `bucket` đã tạo tại `http://<server-ip>:8086`.
 
