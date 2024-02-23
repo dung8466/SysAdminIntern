@@ -1317,6 +1317,8 @@ Thay đổi `timezone` tại `/etc/php/8.1/apache2/php.ini`:
 
 Cài đặt [`icinga2`](https://icinga.com/docs/icinga-2/latest/doc/02-installation/02-Ubuntu/), `monitoring-plugins`, `icinga2-ido-mysql`
 
+	apt install monitoring-plugins icinga2-ido-mysql
+
 Tạo database cho `icinga2` với `sudo mysql -u root -p`:
 
 	> CREATE DATABASE icinga_ido_db;
