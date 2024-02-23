@@ -1305,8 +1305,8 @@ Cài đặt `apache2, mariadb, php`:
 
 Khởi động `apache2, mariadb` cùng hệ thống:
 
-	sudo apt start {apache2, mariadb}
-	sudo apt enable {apache2, mariadb}
+	sudo systemctl start {apache2, mariadb}
+	sudo systemctl enable {apache2, mariadb}
 
 Tạo tài khoản root mysql
 
