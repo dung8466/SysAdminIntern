@@ -1354,6 +1354,33 @@ Kết quá:
 
 ![result icinga2](pictures/icinga.png)
 
+Thêm remote client để theo dõi từ xa:
++ Sử dụng `icinga2 node wizard` tại `master` tạo node master.
++ Sử dung `icinga2 node wizard` tại client tạo node satellite.
++ Tại master, sử dụng `icinga2 pki ticket --cn <client name>` để tạo token kết nối tới client và nhập token tại client trong quá trình tạo node satellite.
++ Cấu hình client tại `/etc/icinga2/conf.d/<client name>.conf` ở master:
+
+		object Host "tig" {
+		        address = "172.16.47.137"
+		        check_command = "hostalive"
+		        vars.os = "Linux"
+		}
+
+		object Service "http" {
+		        host_name = "tig"
+		        check_command = "http"
+		}
+
+		object Service "disk" {
+		        host_name = "tig"
+		        check_command = "disk"
+		}
+		
+		object Service "disk/" {
+		        host_name = "tig"
+		        check_command = "disk"
+		}
+
 
 ## TIG stack
 
