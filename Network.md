@@ -1380,7 +1380,9 @@ Thêm remote client để theo dõi từ xa:
 		        host_name = "tig"
 		        check_command = "disk"
 		}
+![result icinga2 remote client](pictures/icinga-client.png)
 
+![result icinga2 remote client group](pictures/icinga-client-group.png)
 
 ## TIG stack
 
