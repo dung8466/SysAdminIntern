@@ -1358,6 +1358,7 @@ Thêm remote client để theo dõi từ xa:
 + Sử dụng `icinga2 node wizard` tại `master` tạo node master.
 + Sử dung `icinga2 node wizard` tại client tạo node satellite.
 + Tại master, sử dụng `icinga2 pki ticket --cn <client name>` để tạo token kết nối tới client và nhập token tại client trong quá trình tạo node satellite.
++ Kiểm tra client đã kết nối tới master sử dụng `netstat | grep :5665`.
 + Cấu hình client tại `/etc/icinga2/conf.d/<client name>.conf` ở master:
 
 		object Host "tig" {
