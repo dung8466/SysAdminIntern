@@ -444,7 +444,7 @@ Cài đặt định tuyến tĩnh:
 		route del -net <IP> netmask <mask> [gw <gateway IP>] [<network interface>]
 + Khóa route (tim route cho địa chỉ hoặc mạng sẽ tìm kiếm thất bại):
 
-		route add -net <IP/mask> reject
+		route add -net <IP> netmask <mask> reject
 
 ## Firewall
 
