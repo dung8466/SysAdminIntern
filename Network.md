@@ -635,7 +635,7 @@ Là chương trình cung cấp khả năng tạo độ sẵn sàng cao (High ava
 		sudo apt install keepalived
   		ln -s /etc/init.d/keepalived.init /etc/rc2.d/S99keepalived
 
-+ Cấu hình `keepalived` IP Failover:
++ Cấu hình `keepalived` IP Failover tại `/etc/keepalived/keepalived.conf`:
 
 	+ Tại server 1:
    
