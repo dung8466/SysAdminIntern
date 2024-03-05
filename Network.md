@@ -1072,17 +1072,17 @@ Là phần mềm giúp cấu hình hệ thống, triển khai phần mềm, đi�
 					  template:
 					    src: "db.zone.j2"
 					    dest: "{{bind_zone}}/forward.{{zone.zone_name}}"
-					    loop: "{{zones}}"
-					    loop_control:
-					      loop_var: zone
+					  loop: "{{zones}}"
+					  loop_control:
+					    loop_var: zone
 						
 					- name: Create reverse zone
 					  template:
 					    src: "db.reverse_zone.j2"
 					    dest: "{{bind_zone}}/reverse.{{zone.zone_name}}"
-					    loop: "{{zones}}"
-					    loop_control:
-					      loop_var: zone
+					  loop: "{{zones}}"
+					  loop_control:
+					    loop_var: zone
 					  notify: restart "{{bind_daemon}}"
 			+ `tasks/setup-Debian.yml`:
 
