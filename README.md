@@ -1553,6 +1553,10 @@ scp trên 2 máy khác nhau
 		scp -3 <user_name1>@<IP|domain of host 1>:<port_number>/path/to/source <user_name2>@<IP|domain of host 2>:<port_number>/path/to/dest
   Lưu ý đường dẫn là `path/to/source`, `path/to/dest` nếu muốn đường tuyệt đối sử dụng `<user_name1>@<IP|domain of host 1>:<port_number>//absolute/path`
 
+Sao lưu ổ cứng sử dụng `dd`:
+
+	dd if=/dev/<source> of=/dev/<dest> bs=64K conv=noerror,sync status=progress
+
 [back to top](#sysadminintern)
 
 
