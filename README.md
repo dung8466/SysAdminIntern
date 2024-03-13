@@ -1556,6 +1556,9 @@ scp trên 2 máy khác nhau
 Sao lưu ổ cứng sử dụng `dd`:
 
 	dd if=/dev/<source> of=/dev/<dest> bs=64K conv=noerror,sync status=progress
+Copy file từ ổ cứng này sang ổ cứng khác (bắt buộc phải có mount point):
+
+	rsync -av --progress /path/of/source /path/of/dest
 
 [back to top](#sysadminintern)
 
