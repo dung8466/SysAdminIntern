@@ -630,6 +630,8 @@ Là chương trình cung cấp khả năng tạo độ sẵn sàng cao (High ava
 	+ via `Direct Routing`: client gửi yêu cầu đến `VIP` trong cân bằng tải. Cân bằng tải sử dụng thuật toán phân phối chuyển yêu cầu đến server thực tương ứng, server phản hồi trực tiếp đến người dùng.
 + `keepalived` cung cấp dịch vụ cân bằng tải (load balancing) không mạnh mẽ, tùy biến linh hoạt như Nginx nên chủ yếu sử dụng tính năng IP Failover.
 
++ Tại cụm `keepalived`, các slave gửi gói tin quảng cáo (`advert`) bao gồm thông tin như độ ưu tiên, tình trạng, ... cho master. ( Các slave có thể gửi gói tin quảng cáo cho nhau nếu sử dụng unicast) và master gửi gói tin quảng cáo bao gồm thông tin như tình trạng, độ ưu tiên, VIP,... cho các slave. Điều này giúp cho master và slave biết được tình trạng của nhau, nếu master không gửi gói tin quảng cáo trong 1 thời gian thì slave sẽ tiến hành tiếp nhận VIP và trở thành master.
+
 + Cài đặt `keepalived`:
 
 		sudo apt install keepalived
