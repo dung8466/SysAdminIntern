@@ -29,9 +29,14 @@ Các địa chỉ tại "Foreign Address" thể hiện địa chỉ IP nào có 
 
 ## Keepalived protocol
 
-Mặc định, Keepalived sử dụng multicast để gửi gói tin advertiments. Master sẽ gửi gói tin VRRP advertiments đến các IP thuộc nhóm VRRP MULTICAST.
+Keepalived sử dụng VRRP (Virtual Router Redundancy Protocol) để bầu chọn master (sử dụng priority) để giữ địa chỉ ảo (Virtual IP) và khi các máy khác trở thành backup sẽ lắng nghe gói tin VRRP adverisement định kì từ master để biết master vẫn hoạt động.
 
-Có thể cấu hình Keepalived sử dụng unicast tại các mạng mà multicast không khả dụng.
+Cấu trúc gói tin VRRP advertisement:
+
++ Địa chỉ đích của các gói tin VRRP là địa chỉ multicast. Để tránh cấu hình multicast phức tạp, lưu lượng multicast cho VRRP sẽ trở thành broadcast trong phân đoạn mạng cục bộ và gửi tới các máy.
+
++ VRRP không sử dụng giao thức TCP hay UDP. VRRP sử dụng giao thức IP số 112 để hoạt động.
+
 
 ## TIG workflow
 
