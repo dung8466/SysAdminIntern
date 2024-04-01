@@ -78,3 +78,5 @@ Hệ thống monitoring sử dụng TIG stack bao gồm:
 + Alerter: Gửi thông báo khi có sự cố.
 
 --> Telegraf thu thập các thông tin hệ thống như network, cpu, ram,... và lưu vào InfluxDB. Grafana sử dụng dữ liệu trong InfluxDb để biểu diễn bảng, biểu đồ. Khi có sự cố (cpu quá tải,...) grafana có thể gửi email, slack,... tới người dùng.
+
+[TIG workflow](pictures/TIG.png)
