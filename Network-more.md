@@ -27,16 +27,43 @@ Các địa chỉ tại "Foreign Address" thể hiện địa chỉ IP nào có 
 
 `0.0.0.0:*`: máy tính lắng nghe từ mọi địa chỉ IP và từ bất kỳ cổng nào của IP đó.
 
+## Iptables rule
+
+Bảng quy tắc chia ra nhiều `chain` như `INPUT`, `OUTPUT`, `FOWWARD`,.... (các gói tin gửi đến máy sẽ được lọc bởi `chain INPUT`, gói tin gửi đi sẽ được lọc bởi `chain OUTPUT` và gói tin chuyển tiếp được lọc bởi `chain FORWARD`...).
+
+Với mỗi `chain`, gói tin sẽ đi lần lượt các quy định trong `chain`. Nếu quy định không khớp với gói tin, gói tin sẽ tiếp tục chuyển sang quy tắc tiếp theo. Nếu quy định khớp với gói tin, quy định sẽ được áp dụng với gói tin.
+
+Ví dụ:
+
+```
+Chain INPUT (policy ACCEPT)
+ACCEPT  tcp  --  172.16.47.140  anywhere  tcp dpt:ssh
+DROP    tcp  --  anywhere       anywhere
+
+Chain OUTPUT (policy ACCEPT)
+ACCEPT  tcp --  anywhere  anywhere
+DROP    tcp --  anywhere  anywhere
+```
+Đối với các gói tin được chuyển đến: Xét theo `chain INPUT`
+
+  + Các gói tin chuyển đến từ địa chỉ `172.16.47.140` qua cổng 22, sử dụng giao thức `tcp` khớp với quy định đầu tiên -> ACCEPT.
+
+  + Các gói tin đến từ địa chỉ `172.16.47.140` qua các cổng khác, sử dụng giao thức `tcp` không khớp với quy định đầu -> xét tiếp quy định tiếp theo -> khớp với quy định thứ 2 -> DROP.
+
+  + Các gới tin đến từ các địa chỉ khác, sử dụng giao thức `tcp` không khớp với quy định đầu -> xét quy định tiếp theo -> khớp với quy định thứ 2 -> DROP.
+
+Đối với các gói tin gửi đi: Xét theo `chain OUTPUT`
+
+  + Các gói tin gửi đi đến bất kỳ sử dụng giao thức `tcp` đều khớp với quy định đầu tiên -> ACCEPT
+  + Quy định thứ 2 sẽ không được xét đến.
+
 ## Keepalived protocol
 
-Keepalived sử dụng VRRP (Virtual Router Redundancy Protocol) để bầu chọn master (sử dụng priority) để giữ địa chỉ ảo (Virtual IP) và khi các máy khác trở thành backup sẽ lắng nghe gói tin VRRP adverisement định kì từ master để biết master vẫn hoạt động.
-
-Cấu trúc gói tin VRRP advertisement:
-
-+ Địa chỉ đích của các gói tin VRRP là địa chỉ multicast. Để tránh cấu hình multicast phức tạp, lưu lượng multicast cho VRRP sẽ trở thành broadcast trong phân đoạn mạng cục bộ và gửi tới các máy.
+Keepalived sử dụng VRRP (Virtual Router Redundancy Protocol) để giao tiếp giữa master và backup.
 
 + VRRP không sử dụng giao thức TCP hay UDP. VRRP sử dụng giao thức IP số 112 để hoạt động.
 
++ Các gói tin VRRP advertisement có địa chỉ đích đến là IP multicast.
 
 ## TIG workflow
 
