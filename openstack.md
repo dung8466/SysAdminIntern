@@ -26,7 +26,33 @@ Mỗi dịch vụ Openstack cần 1 entry tương ứng với endpoint lưu tron
   
   - Việc tích hợp các module trung gian và thành phần của Openstack sử dụng giao diện Python Web Server gateway. 
 
-2. Các bước xác thực
+2. Các chức năng 
+
++ Identity: 
+
+- nhận diện người dùng đang muốn truy cập vào tài nguyên cloud.
+
+- identity của người dùng thường được lưu trữ trong database của keystone, có thể lưu tại external identity provider.
+
++ Authentication:
+
+- xác thực thông tin dùng để nhận định người dùng.
+
+- thường sử dụng password cho việc xác thực người dùng. Đối với các dịch vụ thì sử dụng tokens tạo ra.
+
+- token có giới hạn về thời gian sử dụng. Khi hết hạn thì người dùng được keystone cấp token mới.
+
+- bất kỳ ai có token đều có khả năng truy cập vào tài nguyên cloud.
+
++ Authorization:
+
+- xác định những tài nguyên mà người dùng được phép truy cập.
+
+- keystone kết nối người dùng với projects, domains bằng cách gán role cho người dùng vào projects, domains đó.
+
+- các project như Nova, Cinder,... sẽ kiểm tra role và project của người dùng và xác định giá trị của những thông tin theo cơ chế quy định (policy engine).
+  
+3. Các bước xác thực
 
 + Người dùng gửi thông tin nhận dạng (phương thức nhận dạng, domain, tên người dùng, mật khẩu, project, ...) tới dịch vụ nhận dạng.
 
