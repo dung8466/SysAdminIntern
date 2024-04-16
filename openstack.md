@@ -64,6 +64,26 @@ Mỗi dịch vụ Openstack cần 1 entry tương ứng với endpoint lưu tron
 
 + Dịch vụ gửi lại hồi đáp cho người dùng.
 
+## Glance (Image service)
+
+Cho phép người dùng khám phá, đăng ký và truy xuất image máy ảo.
+
+Các image dùng như một template để tạo instance/vm.
+
+Cung cấp API cho phép truy vấn metadata của image máy ảo và truy xuất image đó.
+
+Có thể lưu image thông qua dịch vụ ảnh tại nhiều nơi, từ file hệ thống đến hệ thống lưu trữ Openstack.
+
+1. Thành phần
+
++ `glance-api`: Cho phép Image API để khám phá, truy xuất và lưu trữ.
+
++ `database`: lưu trữ metadata và có thể chọn database phụ thuộc vào sở thích.
+
++ `storage repository for image files`: hỗ trợ nhiều loại kho lưu trữ như filesystems, object storage, HTTP,...
+
++ `metadata definition service`: API chung cho nhà cung cấp, admins, người dùng để định nghĩa metadata riêng. Metadata đó có thể dùng trên nhiều loại tài nguyên như image, volume, flavor. Định nghĩa bao gồm khóa, mô tả, ràng buộc và các loại tài nguyên có thể liên kết.
+
 ## Nova (Compute service) 
 
 Dùng để lưu và quản lý hệ thống điện toán đám mây.
