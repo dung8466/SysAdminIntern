@@ -64,6 +64,8 @@ Mỗi dịch vụ Openstack cần 1 entry tương ứng với endpoint lưu tron
 
 + Dịch vụ gửi lại hồi đáp cho người dùng.
 
+![keystone auth](pictures/keystone.png)
+
 ## Glance (Image service)
 
 Cho phép người dùng khám phá, đăng ký và truy xuất image máy ảo.
@@ -197,6 +199,8 @@ Bổ sung dung lượng bộ nhớ vào máy ảo. Dịch vụ quản lý volume
 + `cinder-api` nhận thông báo phản hồi từ hàng chờ và gửi đến người dùng.
 
 + Người dùng nhận thông tin bao gồm trạng thái yêu cầu tạo, UUID volume,...
+
+![volume create](pictures/volume-create.png)
 
 3. Các bước gán volume
 
