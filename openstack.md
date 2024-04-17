@@ -200,7 +200,7 @@ Bổ sung dung lượng bộ nhớ vào máy ảo. Dịch vụ quản lý volume
 
 + Người dùng nhận thông tin bao gồm trạng thái yêu cầu tạo, UUID volume,...
 
-![volume create](pictures/volume-create.png)
+![volume create](pictures/create-volume.png)
 
 3. Các bước gán volume
 
