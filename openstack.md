@@ -186,7 +186,7 @@ Bổ sung dung lượng bộ nhớ vào máy ảo. Dịch vụ quản lý volume
 
 + `cinder-volume` lấy thông tin từ hàng chờ, gửi thông báo tới `cinder-scheduler` để quyết định backend nào sẽ cung cấp volume.
 
-+ `cinder-scheduler` lấy thông tin từ hàng chờ, xây dựng danh sách ứng viên dựa trên trạng thái hiwwnj tại và tiêu chí yêu cầu volume (kích thước, availability zone, loại volume). 
++ `cinder-scheduler` lấy thông tin từ hàng chờ, xây dựng danh sách ứng viên dựa trên trạng thái hiện tại và tiêu chí yêu cầu volume (kích thước, availability zone, loại volume). 
 
 + `cinder-volume` nhận thông báo phản hồi từ `cinder-scheduler` từ hàng chờ, lặp qua danh sách ứng viên thông qua cách gọi backend driver đến khi thành công.
 
