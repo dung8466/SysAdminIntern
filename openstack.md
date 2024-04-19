@@ -268,4 +268,4 @@ Bổ sung dung lượng bộ nhớ vào máy ảo. Dịch vụ quản lý volume
 
 + `cinder-api` nhận thông báo phản hồi từ `cinder-backup` và gửi kết quả trong phản hồi  RESTful đến người dùng.
 
-![restore volume](restore-volume.png)
+![restore volume](pictures/restore-volume.png)
