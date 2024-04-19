@@ -164,6 +164,8 @@ Tương tác với dịch vụ compute để cung cấp mạng và kết nối t
   
   - Cũng là database để lưu trạng thái mạng của các plug-in.
 
+![cấu trúc network](pictures/neutron-network.png)
+
 ## Cinder (block storage service)
 
 Bổ sung dung lượng bộ nhớ vào máy ảo. Dịch vụ quản lý volumes, tương tác với Openstack Compute để bổ sung volumes cho instances và đồng thời cho phép quản lý volume snapshots và loại volume.
