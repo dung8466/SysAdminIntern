@@ -140,6 +140,8 @@ Dùng để lưu và quản lý hệ thống điện toán đám mây.
 
 + `nova-compute` tạo dữ liệu cho hypervisor driver và xử lý yêu cầu trên hypervisor sử dụng libvirt hoặc API. Instance/Vm được tạo trên hypervisor. 
 
+![create instance](pictures/create-instance.png)
+
 ## Neutron (network service)
 
 Cho phép tạo và gán giao diện thiết bị quản lý bởi các dịch vụ Openstack khác với mạng.
@@ -222,6 +224,8 @@ Bổ sung dung lượng bộ nhớ vào máy ảo. Dịch vụ quản lý volume
 
 + Nova truyền thiết bị/file volume tới hypervisor, gán volume vào máy ảo như là một thiết bị block thực tế hoặc ảo hóa (dựa vào giao thức bộ lưu trữ).
 
+![attach volume](pictures/attach-volume.png)
+
 4. Các bước sao lưu
 
 + Người dùng yêu cầu sao lưu volume bằng cách gọi REST API.
@@ -242,6 +246,8 @@ Bổ sung dung lượng bộ nhớ vào máy ảo. Dịch vụ quản lý volume
 
 + `cinder-api` nhận thông báo phản hồi từ hàng chờ và chuyển kết quả trong phản hồi RESTful tới người dùng.
 
+![backup volume](pictures/backup-volume.png)
+
 5. Các bước khôi phục volume
 
 + Người dùng gửi yêu cầu khôi phục đến Cinder volume bằng cách gọi REST API.
@@ -261,3 +267,5 @@ Bổ sung dung lượng bộ nhớ vào máy ảo. Dịch vụ quản lý volume
 + Dịch vụ sao lưu gửi thông tin phản hồi đến `cinder-api` qua hàng chờ.
 
 + `cinder-api` nhận thông báo phản hồi từ `cinder-backup` và gửi kết quả trong phản hồi  RESTful đến người dùng.
+
+![restore volume](restore-volume.png)
