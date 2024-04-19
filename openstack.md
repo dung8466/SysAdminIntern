@@ -86,6 +86,8 @@ Có thể lưu image thông qua dịch vụ ảnh tại nhiều nơi, từ file 
 
 + `metadata definition service`: API chung cho nhà cung cấp, admins, người dùng để định nghĩa metadata riêng. Metadata đó có thể dùng trên nhiều loại tài nguyên như image, volume, flavor. Định nghĩa bao gồm khóa, mô tả, ràng buộc và các loại tài nguyên có thể liên kết.
 
+![glance](pictures/glance.png)
+
 ## Nova (Compute service) 
 
 Dùng để lưu và quản lý hệ thống điện toán đám mây.
