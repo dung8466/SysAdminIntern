@@ -166,6 +166,21 @@ Tương tác với dịch vụ compute để cung cấp mạng và kết nối t
 
 ![cấu trúc network](pictures/neutron-network.png)
 
+2. Phân loại
+
++ `provider`:
+  - instance sử dụng mạng ngoài được cấp để kết nối hạ tầng mạng thông qua lớp 2 (bridging/switching).
+  - Bao gồm cả DHCP server để cấp IP cho instance.
+
+ ![overview](pictures/network1-overview.png)
+
++ `selfservice`:
+  - kết nối với hạ tầng mạng qua NAT.
+  -  Bao gồm DHCP server để cấp IP cho instance.
+  -  Có thể tự động kết nối với mạng ngoài.
+  -  Nếu từ ngoài muốn kết nối vào, cần `floating IP`.
+
+![overview](pictures/network2-overview.png)
 ## Cinder (block storage service)
 
 Bổ sung dung lượng bộ nhớ vào máy ảo. Dịch vụ quản lý volumes, tương tác với Openstack Compute để bổ sung volumes cho instances và đồng thời cho phép quản lý volume snapshots và loại volume.
