@@ -215,7 +215,7 @@ Bổ sung dung lượng bộ nhớ vào máy ảo. Dịch vụ quản lý volume
 
 + `cinder-volume` nhận thông báo phản hồi từ `cinder-scheduler` từ hàng chờ, lặp qua danh sách ứng viên thông qua cách gọi backend driver đến khi thành công.
 
-+ NetApp Cinder tạo volume yêu cầu thông qua tương tác với hệ thống con lưu trữ (dựa trên cấu hình và giao thức).
++ Cinder driver tạo volume yêu cầu thông qua tương tác với hệ thống con lưu trữ (dựa trên cấu hình và giao thức).
 
 + `cinder-volume` thu thập metadata volume và thông tin kết nối, gửi thông báo phản hồi đến hàng chờ.
 
@@ -235,7 +235,7 @@ Bổ sung dung lượng bộ nhớ vào máy ảo. Dịch vụ quản lý volume
 
 + `cinder-volume` nhận thông báo từ hàng chờ, gọi Cinder driver ứng với volume cần gán.
 
-+ NetApp Cinder driver chuẩn bị volume gán.
++ Cinder driver chuẩn bị volume gán.
 
 + `cinder-volume` gửi thông tin phản hồi đến `cinder-api` thông qua hàng chờ.
 
