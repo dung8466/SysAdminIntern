@@ -9,13 +9,15 @@ Tạo server từ volume
     openstack server create --volume fc8655e3-85e9-4099-b441-abc45822f77b --flavor cc589efb-b986-4b7b-aa90-e6eb92186997 --network e1b7e892-8832-4fe4-b7a7-bc29219f7c98 --availability-zone VC-HaNoi-HN2 --password Rb2arGATpXfaRA2JRHx4cX2 ops-dungnt-test-server
 
 --> ID server: `ff3930c2-b0f0-4b2e-8b1f-cae260930a72`
-Task: Thực hiện tăng dung lượng ổ rootdisk nodowntime thêm 10GB
+Task: fsck ổ cứng
 
-Chạy script `map_disk.sh` với lệnh `sudo -E /opt/cephtools/map_disk.sh fc8655e3-85e9-4099-b441-abc45822f77b` 
++ Chạy script `map_disk.sh` với lệnh `sudo -E /opt/cephtools/map_disk.sh fc8655e3-85e9-4099-b441-abc45822f77b` 
 
 --> volume mount vào `/dev/nbd0`
 
-Chạy lệnh `sudo e2fsck /dev/nbd0p1`
++ Chạy lệnh `sudo e2fsck /dev/nbd0p1`
+
+Task: Thực hiện tăng dung lượng ổ rootdisk nodowntime thêm 10GB
 
 + Lấy ID của volume cần tăng dung lượng
 
