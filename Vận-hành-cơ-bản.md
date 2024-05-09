@@ -69,7 +69,31 @@
 + Restore sử dụng snapshot đã tạo: `rbd snap rollback SSD3/volume-fc8655e3-85e9-4099-b441-abc45822f77b@ops-dungnt-snapshot-test`
 + Khởi động lại server: `openstack server start ff3930c2-b0f0-4b2e-8b1f-cae260930a72` và kiểm tra
 
-6. Task: Thực hiện tăng dung lượng ổ rootdisk nodowntime thêm 10GB
+5. Task: Tạo VIP cho 2 server
+
++ Tạo port VIP:
+
+        openstack port create --network e1b7e892-8832-4fe4-b7a7-bc29219f7c98 VIP_10.5.9.164_10.5.9.54_dungntops_test
+
+--> port VIP: c191f593-fd15-43f2-973d-f024d6229b3d | VIP_10.5.9.164_10.5.9.54_dungntops_test | fa:16:3e:73:b5:68 | ip_address='10.5.8.106', subnet_id='a618f837-00b2-4f95-b0fd-580ef1c0f426'                  
+
++ Liệt kê các port của 2 server
+
+        openstack port list --server ff3930c2-b0f0-4b2e-8b1f-cae260930a72
+        openstack port list --server 22a6155c-197f-4218-b82b-9df7f25b52f2
+
+--> port ID: `13cee214-e201-4479-a500-a774e92d5bb0` và `360cefee-0211-4397-bbcb-d541a96ad98b`
+
++ Cho phép VIP vào port
+
+        openstack port set --allowed-address ip-address=10.5.8.106 13cee214-e201-4479-a500-a774e92d5bb0
+        openstack port set --allowed-address ip-address=10.5.8.106 360cefee-0211-4397-bbcb-d541a96ad98b
++ Thêm mô tả VIP cho server
+
+        openstack server set --property server_have_VIP='10.5.8.106' ff3930c2-b0f0-4b2e-8b1f-cae260930a72
+        openstack server set --property server_have_VIP='10.5.8.106' 22a6155c-197f-4218-b82b-9df7f25b52f2
+
+7. Task: Thực hiện tăng dung lượng ổ rootdisk nodowntime thêm 10GB
 
 + Thực hiện tăng dung lượng từ 20GB
 
