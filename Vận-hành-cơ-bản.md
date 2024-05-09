@@ -1,15 +1,44 @@
-Tạo volume boot sử dụng SSD3
+### Tạo server 1 sử dụng SSD3
 
-    openstack volume create --size 20 --type SSD3 --image 954b96ca-ad41-45df-9cae-40cbe03654f7 --availability-zone VC-HaNoi-HN2 --bootable ops-dungnt-test-volume
++ Tạo volume boot
+
+        openstack volume create --size 20 --type SSD3 --image 954b96ca-ad41-45df-9cae-40cbe03654f7 --availability-zone VC-HaNoi-HN2 --bootable ops-dungnt-test-volume
 
 --> ID volume: `fc8655e3-85e9-4099-b441-abc45822f77b`
 
-Tạo server từ volume
++ Tạo server từ volume
 
-    openstack server create --volume fc8655e3-85e9-4099-b441-abc45822f77b --flavor cc589efb-b986-4b7b-aa90-e6eb92186997 --network e1b7e892-8832-4fe4-b7a7-bc29219f7c98 --availability-zone VC-HaNoi-HN2 --password Rb2arGATpXfaRA2JRHx4cX2 ops-dungnt-test-server
+        openstack server create --volume fc8655e3-85e9-4099-b441-abc45822f77b --flavor cc589efb-b986-4b7b-aa90-e6eb92186997 --network e1b7e892-8832-4fe4-b7a7-bc29219f7c98 --availability-zone VC-HaNoi-HN2 --password Rb2arGATpXfaRA2JRHx4cX2 ops-dungnt-test-server
 
 --> ID server: `ff3930c2-b0f0-4b2e-8b1f-cae260930a72`
-Task: fsck ổ cứng
+
+### Tạo server 2 sử dụng SSD3
+
++ Tạo volume boot
+
+        openstack volume create --size 30 --type SSD3 --image 954b96ca-ad41-45df-9cae-40cbe03654f7 --availability-zone VC-HaNoi-HN2 --bootable ops-dungnt-test-volume
+
+--> ID volume: `f426365c-5671-44fc-b5ae-47a6c33f2fb2`
+
++ Tạo server từ volume
+
+        openstack server create --volume f426365c-5671-44fc-b5ae-47a6c33f2fb2 --flavor cc589efb-b986-4b7b-aa90-e6eb92186997 --network e1b7e892-8832-4fe4-b7a7-bc29219f7c98 --availability-zone VC-HaNoi-HN2 --password Rb2arGATpXfaRA2JRHx4cX2 ops-dungnt-test-server2
+
+--> ID server: `22a6155c-197f-4218-b82b-9df7f25b52f2`
+### Tạo server 3 sử dụng HDD3
+
++ Tạo volume boot
+
+        openstack volume create --size 30 --type HDD3 --image 954b96ca-ad41-45df-9cae-40cbe03654f7 --availability-zone VC-HaNoi-HN2 --bootable ops-dungnt-test-volume3
+
+--> ID volume: `745e11ed-71b1-477e-a83c-8205c00e696c`
++ Tạo server từ volume
+
+        openstack server create --volume 745e11ed-71b1-477e-a83c-8205c00e696c --flavor cc589efb-b986-4b7b-aa90-e6eb92186997 --network e1b7e892-8832-4fe4-b7a7-bc29219f7c98 --availability-zone VC-HaNoi-HN2 --password Rb2arGATpXfaRA2JRHx4cX2 ops-dungnt-test-server3
+
+--> ID volume: `5a17a11c-4a38-4dc3-aa8e-615842af4bad`
+
+1. Task: fsck ổ cứng
 
 + Chạy script `map_disk.sh` với lệnh `sudo -E /opt/cephtools/map_disk.sh fc8655e3-85e9-4099-b441-abc45822f77b` 
 
@@ -17,7 +46,7 @@ Task: fsck ổ cứng
 
 + Chạy lệnh `sudo e2fsck /dev/nbd0p1`
 
-Task: reset passwd
+2. Task: reset passwd
 
 + Volume device `/dev/nbd0`
 + Mount volume vào `/data`: `sudo mount /dev/nbd0p1 /data`
@@ -28,7 +57,19 @@ Task: reset passwd
 + Khởi động server: `openstack server start ff3930c2-b0f0-4b2e-8b1f-cae260930a72`
 + Vào console `openstack console url show ff3930c2-b0f0-4b2e-8b1f-cae260930a72` và thử mật khẩu
 
-Task: Thực hiện tăng dung lượng ổ rootdisk nodowntime thêm 10GB
+4. Task: Tạo snapshot và restore
+
++ Tạo snapshot: `rbd snap create SSD3/volume-fc8655e3-85e9-4099-b441-abc45822f77b@ops-dungnt-snapshot-test`
++ Kiểm tra snapshot vừa tạo: `rbd snap ls SSD3/volume-fc8655e3-85e9-4099-b441-abc45822f77b`
+
+        SNAPID   NAME                      SIZE    PROTECTED  TIMESTAMP
+        1509249  ops-dungnt-snapshot-test  30 GiB             Thu May  9 14:25:41 2024
++ Tạo thay đổi trên server
++ Tắt server: `openstack server stop ff3930c2-b0f0-4b2e-8b1f-cae260930a72`
++ Restore sử dụng snapshot đã tạo: `rbd snap rollback SSD3/volume-fc8655e3-85e9-4099-b441-abc45822f77b@ops-dungnt-snapshot-test`
++ Khởi động lại server: `openstack server start ff3930c2-b0f0-4b2e-8b1f-cae260930a72` và kiểm tra
+
+6. Task: Thực hiện tăng dung lượng ổ rootdisk nodowntime thêm 10GB
 
 + Thực hiện tăng dung lượng từ 20GB
 
@@ -43,7 +84,7 @@ Task: Thực hiện tăng dung lượng ổ rootdisk nodowntime thêm 10GB
  
         resize2fs /dev/vda1
 
-Task: học lệnh check log, vào VNC console của một VM để thao tác khi không SSH được
+7. Task: học lệnh check log, vào VNC console của một VM để thao tác khi không SSH được
 
 + Lấy ID server:
 
