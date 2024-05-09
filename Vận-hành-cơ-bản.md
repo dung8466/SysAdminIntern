@@ -57,7 +57,25 @@
 + Khởi động server: `openstack server start ff3930c2-b0f0-4b2e-8b1f-cae260930a72`
 + Vào console `openstack console url show ff3930c2-b0f0-4b2e-8b1f-cae260930a72` và thử mật khẩu
 
-4. Task: Tạo snapshot và restore
+3. Đổi IP của 2 server
+
++ Liệt kê port của 2 server
+
+        openstack port list --server ff3930c2-b0f0-4b2e-8b1f-cae260930a72
+        openstack port list --server 22a6155c-197f-4218-b82b-9df7f25b52f2
+
+--> port ID: `13cee214-e201-4479-a500-a774e92d5bb0` và `360cefee-0211-4397-bbcb-d541a96ad98b`
++ Tháo port của 2 server
+
+        openstack server remove port ff3930c2-b0f0-4b2e-8b1f-cae260930a72 13cee214-e201-4479-a500-a774e92d5bb0
+        openstack server remove port 22a6155c-197f-4218-b82b-9df7f25b52f2 360cefee-0211-4397-bbcb-d541a96ad98b
+
++ Gán lại port cho 2 server
+
+        openstack server add port ff3930c2-b0f0-4b2e-8b1f-cae260930a72 360cefee-0211-4397-bbcb-d541a96ad98b
+        openstack server add port 22a6155c-197f-4218-b82b-9df7f25b52f2 13cee214-e201-4479-a500-a774e92d5bb0
+
+5. Task: Tạo snapshot và restore
 
 + Tạo snapshot: `rbd snap create SSD3/volume-fc8655e3-85e9-4099-b441-abc45822f77b@ops-dungnt-snapshot-test`
 + Kiểm tra snapshot vừa tạo: `rbd snap ls SSD3/volume-fc8655e3-85e9-4099-b441-abc45822f77b`
