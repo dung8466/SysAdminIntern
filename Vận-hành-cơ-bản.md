@@ -93,7 +93,7 @@
         openstack server set --property server_have_VIP='10.5.8.106' ff3930c2-b0f0-4b2e-8b1f-cae260930a72
         openstack server set --property server_have_VIP='10.5.8.106' 22a6155c-197f-4218-b82b-9df7f25b52f2
 
-7. Task: Thực hiện tăng dung lượng ổ rootdisk nodowntime thêm 10GB
+6. Task: Thực hiện tăng dung lượng ổ rootdisk nodowntime thêm 10GB
 
 + Thực hiện tăng dung lượng từ 20GB
 
