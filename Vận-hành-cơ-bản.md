@@ -121,3 +121,24 @@
 + Vào VNC console:
 
       openstack console url show ff3930c2-b0f0-4b2e-8b1f-cae260930a72
+
+8. Clone cùng loại ổ
+
++ Tạo snapshot volume server 1
+
+        rbd snap create SSD3/volume-fc8655e3-85e9-4099-b441-abc45822f77b@dungntops-snap2 -c /etc/ceph/ceph.conf -n client.autobackup
++ Shutdown server 2
+
+        openstack server stop 22a6155c-197f-4218-b82b-9df7f25b52f2
++ Đổi tên volume server 2
+
+        rbd rename SSD3/volume-f426365c-5671-44fc-b5ae-47a6c33f2fb2 SSD3/volume-f426365c-5671-44fc-b5ae-47a6c33f2fb2-RES -n client.autobackup -c /etc/ceph/ceph.conf
++ Clone volume server 2 từ snapshot đã tạo trên
+
+        rbd clone SSD3/volume-fc8655e3-85e9-4099-b441-abc45822f77b@dungntops-snap2 SSD3/volume-f426365c-5671-44fc-b5ae-47a6c33f2fb2 -n client.autobackup -c /etc/ceph/ceph.conf
++ Loại bỏ snapshot liên kết với volume server 2
+
+        rbd flatten SSD3/volume-f426365c-5671-44fc-b5ae-47a6c33f2fb2 -n client.autobackup -c /etc/ceph/ceph.conf
++ Khởi động lại server 2 và kiểm tra
+
+        openstack server start 22a6155c-197f-4218-b82b-9df7f25b52f2 && openstack console url show 22a6155c-197f-4218-b82b-9df7f25b52f2
