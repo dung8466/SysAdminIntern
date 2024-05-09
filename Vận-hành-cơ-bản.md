@@ -13,35 +13,46 @@ Task: fsck ổ cứng
 
 + Chạy script `map_disk.sh` với lệnh `sudo -E /opt/cephtools/map_disk.sh fc8655e3-85e9-4099-b441-abc45822f77b` 
 
---> volume mount vào `/dev/nbd0`
+--> volume device `/dev/nbd0`
 
 + Chạy lệnh `sudo e2fsck /dev/nbd0p1`
 
+Task: reset passwd
+
++ Volume device `/dev/nbd0`
++ Mount volume vào `/data`: `sudo mount /dev/nbd0p1 /data`
++ Vào thư mục root của server: `sudo chroot /data`
++ Đổi mật khẩu: `passwd root` và thoát ra `exit`
++ Unmount volume `sudo umount /data`
++ Chạy script `unmap_disk.sh` với lệnh `sudo -E /opt/cephtools/unmap_disk.sh fc8655e3-85e9-4099-b441-abc45822f77b`
++ Khởi động server: `openstack server start ff3930c2-b0f0-4b2e-8b1f-cae260930a72`
++ Vào console `openstack console url show ff3930c2-b0f0-4b2e-8b1f-cae260930a72` và thử mật khẩu
+
 Task: Thực hiện tăng dung lượng ổ rootdisk nodowntime thêm 10GB
 
-+ Lấy ID của volume cần tăng dung lượng
++ Thực hiện tăng dung lượng từ 20GB
 
-      openstack volume list
-
---> ID: `f5e6c5c6-f587-4117-89cd-a3fe159a094e` và dung lượng hiện tại 40GB
-+ Thực hiện tăng dung lượng
-
-      openstack volume set --os-volume-api-version 3.42 f5e6c5c6-f587-4117-89cd-a3fe159a094e --size 50
+      openstack volume set --os-volume-api-version 3.42 fc8655e3-85e9-4099-b441-abc45822f77b --size 30
 
 + Kiểm tra dung lượng sau khi tăng
 
-      openstack volume show f5e6c5c6-f587-4117-89cd-a3fe159a094e
+      openstack volume show fc8655e3-85e9-4099-b441-abc45822f77b
++ Tăng dung lương trong server
+
+        growpart /dev/vda 1   
+ 
+        resize2fs /dev/vda1
 
 Task: học lệnh check log, vào VNC console của một VM để thao tác khi không SSH được
 
 + Lấy ID server:
 
       openstack server list
---> ID: `bc8efd20-8b5e-40ee-a6f5-0d8d1b07afbb`
+--> ID: `ff3930c2-b0f0-4b2e-8b1f-cae260930a72`
 + Check log:
 
-      openstack console log show bc8efd20-8b5e-40ee-a6f5-0d8d1b07afbb
+      openstack console log show ff3930c2-b0f0-4b2e-8b1f-cae260930a72
 
 + Vào VNC console:
 
-      openstack console url show bc8efd20-8b5e-40ee-a6f5-0d8d1b07afbb
+      openstack console url show ff3930c2-b0f0-4b2e-8b1f-cae260930a72
