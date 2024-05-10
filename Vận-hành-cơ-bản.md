@@ -215,6 +215,8 @@
 
 #### Task 10: Liệt kê tài nguyên server và instance
 
+
+
 #### Task 11: Restore volume từ trash
 
 + Xóa server
