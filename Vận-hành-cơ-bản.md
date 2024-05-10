@@ -40,7 +40,7 @@
 
     --> ID volume: `5a17a11c-4a38-4dc3-aa8e-615842af4bad`
 
-1. Task: fsck ổ cứng
+#### Task 1: fsck ổ cứng
 
 + Chạy script `map_disk.sh` với lệnh `sudo -E /opt/cephtools/map_disk.sh fc8655e3-85e9-4099-b441-abc45822f77b`
 
@@ -50,7 +50,7 @@
 
 + Chạy lệnh `sudo e2fsck /dev/nbd0p1`
 
-2. Task: reset passwd
+#### Task 2: reset passwd
 
 + Volume device `/dev/nbd0`
 
@@ -70,7 +70,7 @@
 
 + Vào console `openstack console url show ff3930c2-b0f0-4b2e-8b1f-cae260930a72` và thử mật khẩu
 
-3. Đổi IP của 2 server
+#### Task 3: Đổi IP của 2 server
 
 + Liệt kê port của 2 server
 
@@ -89,7 +89,7 @@
         openstack server add port ff3930c2-b0f0-4b2e-8b1f-cae260930a72 360cefee-0211-4397-bbcb-d541a96ad98b
         openstack server add port 22a6155c-197f-4218-b82b-9df7f25b52f2 13cee214-e201-4479-a500-a774e92d5bb0
 
-4. Task: Tạo snapshot và restore
+#### Task 4: Tạo snapshot và restore
 
 + Tạo snapshot: `rbd snap create SSD3/volume-fc8655e3-85e9-4099-b441-abc45822f77b@ops-dungnt-snapshot-test`
 
@@ -106,7 +106,7 @@
 
 + Khởi động lại server: `openstack server start ff3930c2-b0f0-4b2e-8b1f-cae260930a72` và kiểm tra
 
-5. Task: Tạo VIP cho 2 server
+#### Task 5: Tạo VIP cho 2 server
 
 + Tạo port VIP:
 
@@ -130,7 +130,7 @@
         openstack server set --property server_have_VIP='10.5.8.106' ff3930c2-b0f0-4b2e-8b1f-cae260930a72
         openstack server set --property server_have_VIP='10.5.8.106' 22a6155c-197f-4218-b82b-9df7f25b52f2
 
-6. Task: Thực hiện tăng dung lượng ổ rootdisk nodowntime thêm 10GB
+#### Task 6: Thực hiện tăng dung lượng ổ rootdisk nodowntime thêm 10GB
 
 + Thực hiện tăng dung lượng từ 20GB
 
@@ -146,7 +146,7 @@
  
         resize2fs /dev/vda1
 
-7. Task: học lệnh check log, vào VNC console của một VM để thao tác khi không SSH được
+#### Task 7: học lệnh check log, vào VNC console của một VM để thao tác khi không SSH được
 
 + Lấy ID server:
 
@@ -162,7 +162,7 @@
 
       openstack console url show ff3930c2-b0f0-4b2e-8b1f-cae260930a72
 
-8. Clone cùng loại ổ
+#### Task 8: Clone cùng loại ổ
 
 + Tạo snapshot volume server 1
 
@@ -188,7 +188,7 @@
 
         openstack server start 22a6155c-197f-4218-b82b-9df7f25b52f2 && openstack console url show 22a6155c-197f-4218-b82b-9df7f25b52f2
 
-9. Clone khác loại ổ
+#### Task 9: Clone khác loại ổ
 
 + Tắt server 3
 
@@ -212,7 +212,9 @@
 
         openstack server start 5a17a11c-4a38-4dc3-aa8e-615842af4bad && openstack console url show 5a17a11c-4a38-4dc3-aa8e-615842af4bad
 
-11. Restore volume từ trash
+#### Task 10: Liệt kê tài nguyên server và instance
+
+#### Task 11: Restore volume từ trash
 
 + Xóa server
 
