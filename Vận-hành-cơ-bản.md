@@ -215,7 +215,9 @@
 
 #### Task 10: Liệt kê tài nguyên server và instance
 
+Instance `ff3930c2-b0f0-4b2e-8b1f-cae260930a72`
 
+![instance picture](pictures/1_002.png)
 
 #### Task 11: Restore volume từ trash
 
