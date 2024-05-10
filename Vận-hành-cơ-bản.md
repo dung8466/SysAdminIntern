@@ -38,13 +38,15 @@
 
         openstack server create --volume 745e11ed-71b1-477e-a83c-8205c00e696c --flavor cc589efb-b986-4b7b-aa90-e6eb92186997 --network e1b7e892-8832-4fe4-b7a7-bc29219f7c98 --availability-zone VC-HaNoi-HN2 --password Rb2arGATpXfaRA2JRHx4cX2 ops-dungnt-test-server3
 
---> ID volume: `5a17a11c-4a38-4dc3-aa8e-615842af4bad`
+    --> ID volume: `5a17a11c-4a38-4dc3-aa8e-615842af4bad`
 
 1. Task: fsck ổ cứng
 
-+ Chạy script `map_disk.sh` với lệnh `sudo -E /opt/cephtools/map_disk.sh fc8655e3-85e9-4099-b441-abc45822f77b` 
++ Chạy script `map_disk.sh` với lệnh `sudo -E /opt/cephtools/map_disk.sh fc8655e3-85e9-4099-b441-abc45822f77b`
 
---> volume device `/dev/nbd0`
+hoặc sử dụng lệnh `rbd-ndb map SSD3/volume-fc8655e3-85e9-4099-b441-abc45822f77b -c /etc/ceph/ceph.conf -n client.autobackup`
+
+  --> volume device `/dev/nbd0`
 
 + Chạy lệnh `sudo e2fsck /dev/nbd0p1`
 
@@ -62,6 +64,8 @@
 
 + Chạy script `unmap_disk.sh` với lệnh `sudo -E /opt/cephtools/unmap_disk.sh fc8655e3-85e9-4099-b441-abc45822f77b`
 
+hoặc sử dụng lệnh `rbd-ndb unmap SSD3/volume-fc8655e3-85e9-4099-b441-abc45822f77b -c /etc/ceph/ceph.conf -n client.autobackup`
+
 + Khởi động server: `openstack server start ff3930c2-b0f0-4b2e-8b1f-cae260930a72`
 
 + Vào console `openstack console url show ff3930c2-b0f0-4b2e-8b1f-cae260930a72` và thử mật khẩu
@@ -73,7 +77,7 @@
         openstack port list --server ff3930c2-b0f0-4b2e-8b1f-cae260930a72
         openstack port list --server 22a6155c-197f-4218-b82b-9df7f25b52f2
 
---> port ID: `13cee214-e201-4479-a500-a774e92d5bb0` và `360cefee-0211-4397-bbcb-d541a96ad98b`
+  --> port ID: `13cee214-e201-4479-a500-a774e92d5bb0` và `360cefee-0211-4397-bbcb-d541a96ad98b`
 
 + Tháo port của 2 server
 
@@ -108,14 +112,14 @@
 
         openstack port create --network e1b7e892-8832-4fe4-b7a7-bc29219f7c98 VIP_10.5.9.164_10.5.9.54_dungntops_test
 
---> port VIP: c191f593-fd15-43f2-973d-f024d6229b3d | VIP_10.5.9.164_10.5.9.54_dungntops_test | fa:16:3e:73:b5:68 | ip_address='10.5.8.106', subnet_id='a618f837-00b2-4f95-b0fd-580ef1c0f426'                  
+  --> port VIP: c191f593-fd15-43f2-973d-f024d6229b3d | VIP_10.5.9.164_10.5.9.54_dungntops_test | fa:16:3e:73:b5:68 | ip_address='10.5.8.106', subnet_id='a618f837-00b2-4f95-b0fd-580ef1c0f426'                  
 
 + Liệt kê các port của 2 server
 
         openstack port list --server ff3930c2-b0f0-4b2e-8b1f-cae260930a72
         openstack port list --server 22a6155c-197f-4218-b82b-9df7f25b52f2
 
---> port ID: `13cee214-e201-4479-a500-a774e92d5bb0` và `360cefee-0211-4397-bbcb-d541a96ad98b`
+  --> port ID: `13cee214-e201-4479-a500-a774e92d5bb0` và `360cefee-0211-4397-bbcb-d541a96ad98b`
 
 + Cho phép VIP vào port
 
@@ -148,7 +152,7 @@
 
       openstack server list
 
---> ID: `ff3930c2-b0f0-4b2e-8b1f-cae260930a72`
+  --> ID: `ff3930c2-b0f0-4b2e-8b1f-cae260930a72`
 
 + Check log:
 
@@ -222,13 +226,13 @@
 
         rbd trash ls SSD3 -c /etc/ceph/ceph.conf -n client.autobackup | grep f426365c-5671-44fc-b5ae-47a6c33f2fb2
 
---> Output `8751fb6271a537 volume-f426365c-5671-44fc-b5ae-47a6c33f2fb2`
+  --> Output `8751fb6271a537 volume-f426365c-5671-44fc-b5ae-47a6c33f2fb2`
 
 + Tạo 1 volume mới
 
         openstack volume create --size 30 --type SSD3 --availability-zone VC-HaNoi-HN2 --bootable ops-dungnt-test-volume-restore
 
---> ID volume: `6e7fc030-feb6-4280-96d9-dfec19866068`
+  --> ID volume: `6e7fc030-feb6-4280-96d9-dfec19866068`
 
 + Restore volume từ trash sang volume khác
 
@@ -246,6 +250,6 @@
 
         openstack server create --volume 6e7fc030-feb6-4280-96d9-dfec19866068 --flavor cc589efb-b986-4b7b-aa90-e6eb92186997 --network e1b7e892-8832-4fe4-b7a7-bc29219f7c98 --availability-zone VC-HaNoi-HN2 --password Rb2arGATpXfaRA2JRHx4cX2 ops-dungnt-test-server2-res
 
---> ID server: `549c4cae-270d-46d5-917b-d10a3a9384a2`
+  --> ID server: `549c4cae-270d-46d5-917b-d10a3a9384a2`
 
         openstack console url show 549c4cae-270d-46d5-917b-d10a3a9384a2
