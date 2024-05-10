@@ -218,33 +218,158 @@
 ##### Các tài nguyên 1 compute node
 
 1. Uptime
+
+Thời gian server hoạt động
+
 2. LA Medium
+
+Trung bình các giá trị Load Average
+
 3. Zombies
+
+Số tiến trình đã hoàn thành công việc nhưng vẫn còn tồn tại
+
 4. Processes
+
+Số tiến trình đang chạy
+
 5. Threads
+
+Tổng số luồng của các tiến trình
+
 6. CPU
+
++ CPU Usage: Thông số liên quan đến CPU như idle (không dùng), softirq (interupt tạo bởi kernel), iowait (chờ I/O hoàn thành), user usage(thực thi tiến trình user level), nice(thực thi tiến trình độ ưu tiên thấp), system usage (thực thi tiến trình không gian kernel)
+
++ Load averages: Đo lường trung bình số tiến trình trong hàng chờ của hệ thống trong thời gian ngắn, trung bình và dài.
+
++ Memory usage: Bộ nhớ trong hệ thống bao gồm tổng, sử dụng, có thể sử dụng, còn trống, cached, bộ nhớ đệm.
+
++ CPU IRQ: yêu cầu interupt CPU nhận được từ thiết bị ngoại vi của từng core CPU.
+
++ CPU used: lưu lượng từng core CPU.
+
++ Processes: Thông số chi tiết tiến trình đang chạy, bị chặn, chờ thực hiện, tổng luồng.
+
 7. Disk IOPS for /dev/$disk
-8. Network interface stats for $netif
-9. Kernel
-10. Interrupts
-11. Conntrack
-12. Network stack (TCP)
-13. Network stack (UDP)
-14. Swap
-15. Disk space usage for /
-16. Metrics velocity
+
++ Write I/O requests for /dev/$disk: yêu cầu ghi I/O của từng phân vùng.
+
++ Read I/O requests for /dev/$disk: yêu cầu đọc I/O của từng phân vùng.
+
++ Write I/O bytes for /dev/$disk: số byte ghi I/O
+
++ Read I/O bytes: số byte đọc I/O
+
++ Write I/O time: thời gian ghi I/O
+
++ Read I/O time: thời gian đọc I/O
+
+7. Network interface stats for $netif
+
++ Network TX: đo lường lưu lượng dữ liệu được gửi từ một thiết bị mạng ra ngoài
+
++ Network RX: đo lường lưu lượng dữ liệu một thiết bị mạng nhận từ ngoài
+
++ Network Packets TX: đo tốc độ truyền dữ liệu của gói tin mạng đã được gửi đi từ một thiết bị mạng
+
++ Network Packets RX: đo tốc độ truyền dữ liệu của gói tin mạng một thiết bị mạng nhận
+
++ Network errors TX: đo lường số lượng lỗi xảy ra trong quá trình gửi dữ liệu từ một thiết bị mạng
+
++ Network errors RX: đo lường số lượng lỗi xảy ra trong quá trình nhận dữ liệu của một thiết bị mạng
+
++ Network drops TX: đo lường số lượng dữ liệu bị bỏ trong quá trình gửi từ một thiết bị mạng
+
++ Network drops RX: đo lường số lượng dữ liệu bị bỏ trong quá trình nhận của một thiết bị mạng
+
+8. Kernel
+
++ Context switches: số tiến trình thay đổi trạng thái 
+
++ Forks: số tiến trình bản sao được tạo
+  
++ File descriptors: liên quan đến tiến trình mở file và tạo kết nối mạng
+
+9. Interrupts
+
++ Interrupts: CPU xử lý các yêu cầu soft irq.
+
++ Netfilter conntrack usage: số lượng các mục conntrack (trong tường lửa và NAT) hiện đang được sử dụng trong hệ thống
+
+10. Conntrack
+
++ Conntrack: số lượng tối đa, tối thiểu số mục entry contrack
+
+11. Network stack (TCP)
+
++ TCP connections: Kết nối TCP đã kết nối, chờ đợi, thiết lập kết nối và đóng kết nối
+
++ TCP aborts: hủy kết nối hoặc kết nối không thành công
+
++ TCP handshake issues: số lượng kết nối TCP đã cố gắng thiết lập, chấp nhận, đã đặt trong trạng thái thành công nhưng bị reset, muốn đặt lại TCP đã kết nối.
+
++ TCP SYN cookies: sử dụng cookies để xác thực kết nối hợp lệ không trước khi phản hồi
+
++ ICMP packets: gói tin ICMP gửi hoặc nhận
+
++ ICMP errors: gói tin ICMP báo lỗi 
+
++ IPv4 errors: lỗi liên quan đến IPv4
+
++ IPv6 errors: lỗi liên quan đến IPv6
+
+12. Network stack (UDP)
+
++ UDP datagrams: lưu lượng giao tiếp UDP nhận và gửi
+
++ UDP buffer errors: lỗi bộ nhớ đệm
+
++ UDP errors: lỗi UDP
+
+13. Swap
+
++ Swap I/O bytes: số lượng byte trao đổi giữa ram và vùng swap
+
++ Swap usage (bytes): số bytes swap tổng và được sử dụng
+
+14. Disk space usage for /
+
++ Disk usage for /: tổng dung lượng bộ nhớ và đã sử dụng
+
++ Disk inodes for /: tổng số inode và đã sử dụng
+
+15. Metrics velocity
+
++ Delivery time
+
++ Gather time
+
++ Written metrics
+
++ Error rate
 
 ##### Căc tài nguyên instance
 
-1. CPU
-2. Memory
-3. IOPS
-4. DISK
-5. NETWORK_TX
-6. NETWORK_RX
-7. TX Packets
-8. RX Packets
-9. CPU Steal
+1. CPU: Phần trăm CPU sử dụng
+
+2. Memory: Tổng số bộ nhớ có trong hệ thống và bộ nhớ đã sử dụng
+
+3. IOPS: tổng lưu lượng đọc ghi I/O của từng ổ đĩa
+
+4. DISK: chi tiết lưu lượng đọc ghi I/O của từng ổ đĩa
+
+5. NETWORK_TX: lưu lượng dữ liệu được gửi từ từng thiết bị mạng ra ngoài
+
+6. NETWORK_RX: lưu lượng dữ liệu nhận của từng thiết bị mạng 
+
+7. TX Packets: số lượng packet gửi từ từng thiết bị mạng ra ngoài
+
+8. RX Packets: số lượng packet nhận của từng thiết bị mạng
+
+9. CPU Steal: phần trăm CPU đánh cắp hoặc bị đánh từ các instance trong cụm
+
+   --> thể hiện thời gian chờ để CPU vậy lý phân bổ, nếu quá cao cần tối ưu cấu hình hệ thống ảo hóa hoặc tăng tài nguyên CPU.
 
 #### Task 11: Restore volume từ trash
 
