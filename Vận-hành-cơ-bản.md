@@ -4,13 +4,13 @@
 
         openstack volume create --size 20 --type SSD3 --image 954b96ca-ad41-45df-9cae-40cbe03654f7 --availability-zone VC-HaNoi-HN2 --bootable ops-dungnt-test-volume
 
---> ID volume: `fc8655e3-85e9-4099-b441-abc45822f77b`
+  --> ID volume: `fc8655e3-85e9-4099-b441-abc45822f77b`
 
 + Tạo server từ volume
 
         openstack server create --volume fc8655e3-85e9-4099-b441-abc45822f77b --flavor cc589efb-b986-4b7b-aa90-e6eb92186997 --network e1b7e892-8832-4fe4-b7a7-bc29219f7c98 --availability-zone VC-HaNoi-HN2 --password Rb2arGATpXfaRA2JRHx4cX2 ops-dungnt-test-server
 
---> ID server: `ff3930c2-b0f0-4b2e-8b1f-cae260930a72`
+  --> ID server: `ff3930c2-b0f0-4b2e-8b1f-cae260930a72`
 
 ### Tạo server 2 sử dụng SSD3
 
@@ -18,13 +18,13 @@
 
         openstack volume create --size 30 --type SSD3 --image 954b96ca-ad41-45df-9cae-40cbe03654f7 --availability-zone VC-HaNoi-HN2 --bootable ops-dungnt-test-volume
 
---> ID volume: `f426365c-5671-44fc-b5ae-47a6c33f2fb2`
+  --> ID volume: `f426365c-5671-44fc-b5ae-47a6c33f2fb2`
 
 + Tạo server từ volume
 
         openstack server create --volume f426365c-5671-44fc-b5ae-47a6c33f2fb2 --flavor cc589efb-b986-4b7b-aa90-e6eb92186997 --network e1b7e892-8832-4fe4-b7a7-bc29219f7c98 --availability-zone VC-HaNoi-HN2 --password Rb2arGATpXfaRA2JRHx4cX2 ops-dungnt-test-server2
 
---> ID server: `22a6155c-197f-4218-b82b-9df7f25b52f2`
+  --> ID server: `22a6155c-197f-4218-b82b-9df7f25b52f2`
 
 ### Tạo server 3 sử dụng HDD3
 
@@ -32,7 +32,7 @@
 
         openstack volume create --size 30 --type HDD3 --image 954b96ca-ad41-45df-9cae-40cbe03654f7 --availability-zone VC-HaNoi-HN2 --bootable ops-dungnt-test-volume3
 
---> ID volume: `745e11ed-71b1-477e-a83c-8205c00e696c`
+  --> ID volume: `745e11ed-71b1-477e-a83c-8205c00e696c`
 
 + Tạo server từ volume
 
@@ -44,7 +44,7 @@
 
 + Chạy script `map_disk.sh` với lệnh `sudo -E /opt/cephtools/map_disk.sh fc8655e3-85e9-4099-b441-abc45822f77b`
 
-hoặc sử dụng lệnh `rbd-ndb map SSD3/volume-fc8655e3-85e9-4099-b441-abc45822f77b -c /etc/ceph/ceph.conf -n client.autobackup`
+  hoặc sử dụng lệnh `rbd-ndb map SSD3/volume-fc8655e3-85e9-4099-b441-abc45822f77b -c /etc/ceph/ceph.conf -n client.autobackup`
 
   --> volume device `/dev/nbd0`
 
@@ -64,7 +64,7 @@ hoặc sử dụng lệnh `rbd-ndb map SSD3/volume-fc8655e3-85e9-4099-b441-abc45
 
 + Chạy script `unmap_disk.sh` với lệnh `sudo -E /opt/cephtools/unmap_disk.sh fc8655e3-85e9-4099-b441-abc45822f77b`
 
-hoặc sử dụng lệnh `rbd-ndb unmap SSD3/volume-fc8655e3-85e9-4099-b441-abc45822f77b -c /etc/ceph/ceph.conf -n client.autobackup`
+  hoặc sử dụng lệnh `rbd-ndb unmap SSD3/volume-fc8655e3-85e9-4099-b441-abc45822f77b -c /etc/ceph/ceph.conf -n client.autobackup`
 
 + Khởi động server: `openstack server start ff3930c2-b0f0-4b2e-8b1f-cae260930a72`
 
