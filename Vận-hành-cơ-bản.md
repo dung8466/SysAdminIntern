@@ -215,9 +215,36 @@
 
 #### Task 10: Liệt kê tài nguyên server và instance
 
-Instance `ff3930c2-b0f0-4b2e-8b1f-cae260930a72`
+##### Các tài nguyên 1 compute node
 
-![instance picture](pictures/1_002.png)
+1. Uptime
+2. LA Medium
+3. Zombies
+4. Processes
+5. Threads
+6. CPU
+7. Disk IOPS for /dev/$disk
+8. Network interface stats for $netif
+9. Kernel
+10. Interrupts
+11. Conntrack
+12. Network stack (TCP)
+13. Network stack (UDP)
+14. Swap
+15. Disk space usage for /
+16. Metrics velocity
+
+##### Căc tài nguyên instance
+
+1. CPU
+2. Memory
+3. IOPS
+4. DISK
+5. NETWORK_TX
+6. NETWORK_RX
+7. TX Packets
+8. RX Packets
+9. CPU Steal
 
 #### Task 11: Restore volume từ trash
 
