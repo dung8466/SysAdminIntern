@@ -207,3 +207,45 @@
 + Khởi động lại server 3 và kiểm tra
 
         openstack server start 5a17a11c-4a38-4dc3-aa8e-615842af4bad && openstack console url show 5a17a11c-4a38-4dc3-aa8e-615842af4bad
+
+11. Restore volume từ trash
+
++ Xóa server
+
+        openstack server delete 22a6155c-197f-4218-b82b-9df7f25b52f2
+
++ Chuyển volume sang trash tại ceph
+
+        rbd trash mv SSD3/volume-f426365c-5671-44fc-b5ae-47a6c33f2fb2
+
++ Kiểm tra volume tại trash
+
+        rbd trash ls SSD3 -c /etc/ceph/ceph.conf -n client.autobackup | grep f426365c-5671-44fc-b5ae-47a6c33f2fb2
+
+--> Output `8751fb6271a537 volume-f426365c-5671-44fc-b5ae-47a6c33f2fb2`
+
++ Tạo 1 volume mới
+
+        openstack volume create --size 30 --type SSD3 --availability-zone VC-HaNoi-HN2 --bootable ops-dungnt-test-volume-restore
+
+--> ID volume: `6e7fc030-feb6-4280-96d9-dfec19866068`
+
++ Restore volume từ trash sang volume khác
+
+        rbd trash restore SSD3/8751fb6271a537 --image volume-f426365c-5671-44fc-b5ae-47a6c33f2fb2-REStest -c /etc/ceph/ceph.conf -n client.autobackup
+
++ Đổi tên volume server mới
+
+        rbd mv SSD3/volume-6e7fc030-feb6-4280-96d9-dfec19866068 SSD3/volume-6e7fc030-feb6-4280-96d9-dfec19866068-ERRtest -c /etc/ceph/ceph.conf -n client.autobackup
+
++ Đổi tên volume restore từ trash về volume server mới
+
+        rbd mv SSD3/volume-f426365c-5671-44fc-b5ae-47a6c33f2fb2-REStest SSD3/volume-6e7fc030-feb6-4280-96d9-dfec19866068 -c /etc/ceph/ceph.conf -n client.autobackup
+
++ Tạo server mới với volume và kiểm tra dữ liệu
+
+        openstack server create --volume 6e7fc030-feb6-4280-96d9-dfec19866068 --flavor cc589efb-b986-4b7b-aa90-e6eb92186997 --network e1b7e892-8832-4fe4-b7a7-bc29219f7c98 --availability-zone VC-HaNoi-HN2 --password Rb2arGATpXfaRA2JRHx4cX2 ops-dungnt-test-server2-res
+
+--> ID server: `549c4cae-270d-46d5-917b-d10a3a9384a2`
+
+        openstack console url show 549c4cae-270d-46d5-917b-d10a3a9384a2
