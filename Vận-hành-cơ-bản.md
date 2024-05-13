@@ -217,25 +217,15 @@
 
 ##### Các tài nguyên 1 compute node
 
-1. Uptime
+1. Uptime: Thời gian server hoạt động
 
-Thời gian server hoạt động
+2. LA Medium: Trung bình các giá trị Load Average
 
-2. LA Medium
+3. Zombies: Số tiến trình đã hoàn thành công việc nhưng vẫn còn tồn tại
 
-Trung bình các giá trị Load Average
+4. Processes: Số tiến trình đang chạy
 
-3. Zombies
-
-Số tiến trình đã hoàn thành công việc nhưng vẫn còn tồn tại
-
-4. Processes
-
-Số tiến trình đang chạy
-
-5. Threads
-
-Tổng số luồng của các tiến trình
+5. Threads: Tổng số luồng của các tiến trình
 
 6. CPU
 
