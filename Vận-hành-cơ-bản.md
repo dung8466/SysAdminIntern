@@ -425,4 +425,20 @@
 
   --> Node mới `iron-compute-078`
 
-        
+#### Task 13: Tăng quota cho CS-Production
+
++ Tìm kiếm project cần tăng
+
+        openstack project list | grep CS-Production
+
+  --> Project `af3263d460c442d5a26f79132c915926 | cloudprivate@vccloud.vn_[CS-Production]_production `
+
++ Kiểm tra quota của project
+
+        openstack quota show af3263d460c442d5a26f79132c915926
+
+    --> ` gigabytes_HDD2           | 19990`, `instances                | 10010`
+
++ Tăng thêm 10 instance, 100GB loại ổ HDD2
+
+        openstack quota set --gigabytes 20090 --volume-type HDD2 --instances 10020 af3263d460c442d5a26f79132c915926
