@@ -442,3 +442,19 @@
 + Tăng thêm 10 instance, 100GB loại ổ HDD2
 
         openstack quota set --gigabytes 20090 --volume-type HDD2 --instances 10020 af3263d460c442d5a26f79132c915926
+
+#### Task 14: Boot vào iso của server
+
++ Stop server
+
+        openstack server stop ff3930c2-b0f0-4b2e-8b1f-cae260930a72
+
++ Lấy instance của server
+
+        openstack server show ff3930c2-b0f0-4b2e-8b1f-cae260930a72
+
+  --> `instance-0000b44d`
+
++ Tải image về máy
+
+        sudo wget http://mirror.bizflycloud.vn/centos/7.9.2009/isos/x86_64/CentOS-7-x86_64-Minimal-2009.iso
