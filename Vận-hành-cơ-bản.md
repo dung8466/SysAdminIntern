@@ -402,3 +402,27 @@
   --> ID server: `549c4cae-270d-46d5-917b-d10a3a9384a2`
 
         openstack console url show 549c4cae-270d-46d5-917b-d10a3a9384a2
+
+#### Task 12: Cold/Live migrate server sang node khác
+
++ Kiểm tra server đang ở node nào
+
+        openstack server show ff3930c2-b0f0-4b2e-8b1f-cae260930a72
+
+  --> Node `iron-compute-018`
+
++ Kiểm tra node phù hợp qua [grafana](https://metrics.vccloud.vn)
+
+  --> Node `iron-compute-078`
+
++ Live migrate
+
+        openstack server migrate --live-migration --host iron-compute-078 --os-compute-api-version 2.30 ff3930c2-b0f0-4b2e-8b1f-cae260930a72
+
++ Kiểm tra server sau quá trình
+
+        openstack server show ff3930c2-b0f0-4b2e-8b1f-cae260930a72
+
+  --> Node mới `iron-compute-078`
+
+        
