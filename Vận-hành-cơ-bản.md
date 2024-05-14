@@ -447,13 +447,13 @@
 
 + Stop server
 
-        openstack server stop ff3930c2-b0f0-4b2e-8b1f-cae260930a72
+        openstack server stop 54ea7504-ec0e-4ad3-8880-03c8e7b7e76c
 
 + Lấy instance của server
 
-        openstack server show ff3930c2-b0f0-4b2e-8b1f-cae260930a72
+        openstack server show 54ea7504-ec0e-4ad3-8880-03c8e7b7e76c
 
-  --> `instance-0000b44d`
+  --> `instance-0000b4f8`
 
 + Tải image về máy
 
