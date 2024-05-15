@@ -497,9 +497,9 @@
 
 Nếu có vấn đề xảy ra với node compute, có thể `evacuate` (sơ tán) các instance trên node sang các node còn hoạt động.
 
-Server `evacuate` sẽ được `rebuild` trên node mới, để bảo toàn dữ liệu trên ổ cừng cần cấu hình `shared storage`.
+Server `evacuate` sẽ được `rebuild` trên node mới, dữ liệu trên volume cấu hình `shared storage` sẽ được bảo toàn.
 
-Nếu không cấu hình `shared storage`, server sẽ được `rebuild` sử dụng `image` gốc, vẫn giữ lại `port`.
+Nếu server được tạo từ `image`, volume không cấu hình `shared storage`, server sẽ được `rebuild` sử dụng `image` gốc, vẫn giữ lại `port`.
 
 Nếu server sử dụng volume để boot, volume sẽ được tái sử dụng cho server rebuild.
 
