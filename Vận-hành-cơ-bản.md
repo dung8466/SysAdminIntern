@@ -484,9 +484,9 @@
   </os>
   ```
 
-+ Khởi động lại server từ admin hoặc compute
++ Set start server sang active và khởi động sử dụng `virsh`
 
-        openstack server start 54ea7504-ec0e-4ad3-8880-03c8e7b7e76c
+        openstack server set --state active 54ea7504-ec0e-4ad3-8880-03c8e7b7e76c
         virsh start instance-0000b4f8
 
 + Vào VNC kiểm tra
