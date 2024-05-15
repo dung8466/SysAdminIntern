@@ -445,7 +445,7 @@
 
 #### Task 14: Boot vào iso của server
 
-+ Stop server
++ Stop server tại admin
 
         openstack server stop 54ea7504-ec0e-4ad3-8880-03c8e7b7e76c
 
@@ -457,4 +457,38 @@
 
 + Tải image về máy
 
-        sudo wget http://mirror.bizflycloud.vn/centos/7.9.2009/isos/x86_64/CentOS-7-x86_64-Minimal-2009.iso
+        wget http://mirror.bizflycloud.vn/centos/7.9.2009/isos/x86_64/CentOS-7-x86_64-Minimal-2009.iso
+
++ Edit `instance-0000b4f8`
+
+        virsh edit instance-0000b4f8
+
+  Nội dung:
+
+  ```
+    <disk type='file' device='cdrom'>
+      <driver name='qemu' type='raw'/>
+      <source file='/home/ansibledeploy/CentOS-7-x86_64-Minimal-2009.iso'/>
+      <target dev='hdd' bus='ide'/>
+      <readonly/>
+      <address type='drive' controller='0' bus='1' target='0' unit='1'/>
+    </disk>
+  ```
+
+  ```
+  <os>
+  <type arch='x86_64' machine='pc-i440fx-trusty'>hvm</type>
+  <boot dev='cdrom'/>
+  <boot dev='hd'/>
+  <smbios mode='sysinfo'/>
+  </os>
+  ```
+
++ Khởi động lại server từ admin hoặc compute
+
+        openstack server start 54ea7504-ec0e-4ad3-8880-03c8e7b7e76c
+        virsh start instance-0000b4f8
+
++ Vào VNC kiểm tra
+
+        openstack console url show 54ea7504-ec0e-4ad3-8880-03c8e7b7e76c
