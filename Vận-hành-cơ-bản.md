@@ -495,6 +495,10 @@
 
 #### Task 15: Evacuate
 
+Nếu có vấn đề xảy ra với node compute, có thể `evacuate` (sơ tán) các instance trên node sang các node còn hoạt động.
+
+Server `evacuate` sẽ được `rebuild` trên node mới, để bảo toàn dữ liệu trên ổ cừng cần cấu hình `shared storage`.
+
 + Kiểm tra trạng thái `nova-compute` trên `hulk-compute-025`
 
         openstack compute service list | grep hulk-compute-025
@@ -507,7 +511,6 @@
 
         nova host-evacuate hulk-compute-025
 
-        dungnt@iron-admin-1:/opt$ ./evacuate.sh hulk-compute-025
         +--------------------------------------+----------------------------+--------+----------------------------+--------------------------+-----------+
         | ID                                   | Name                       | Status | Networks                   | Image                    | Flavor    |
         +--------------------------------------+----------------------------+--------+----------------------------+--------------------------+-----------+
@@ -525,3 +528,7 @@
         openstack server show 1a416870-5402-44f7-8368-e4b58e6e9c19
 
   --> Node mới `hulk-compute-076`
+
++ Tại node cũ, kiểm tra instance còn chạy không. Tắt instance còn chạy.
+
+        virsh destroy instance-0000b504
