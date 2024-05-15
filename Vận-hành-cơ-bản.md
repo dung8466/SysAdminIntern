@@ -499,6 +499,10 @@ Nếu có vấn đề xảy ra với node compute, có thể `evacuate` (sơ tá
 
 Server `evacuate` sẽ được `rebuild` trên node mới, để bảo toàn dữ liệu trên ổ cừng cần cấu hình `shared storage`.
 
+Nếu không cấu hình `shared storage`, server sẽ được `rebuild` sử dụng `image` gốc, vẫn giữ lại `port`.
+
+Nếu server sử dụng volume để boot, volume sẽ được tái sử dụng cho server rebuild.
+
 + Kiểm tra trạng thái `nova-compute` trên `hulk-compute-025`
 
         openstack compute service list | grep hulk-compute-025
