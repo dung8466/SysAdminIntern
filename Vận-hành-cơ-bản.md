@@ -492,3 +492,36 @@
 + Vào VNC kiểm tra
 
         openstack console url show 54ea7504-ec0e-4ad3-8880-03c8e7b7e76c
+
+#### Task 15: Evacuate
+
++ Kiểm tra trạng thái `nova-compute` trên `hulk-compute-025`
+
+        openstack compute service list | grep hulk-compute-025
+
++ Set `nova-compute` down
+
+        openstack compute service set --down hulk-compute-025 nova-compute
+
++ Evacuate server trên node
+
+        nova host-evacuate hulk-compute-025
+
+        dungnt@iron-admin-1:/opt$ ./evacuate.sh hulk-compute-025
+        +--------------------------------------+----------------------------+--------+----------------------------+--------------------------+-----------+
+        | ID                                   | Name                       | Status | Networks                   | Image                    | Flavor    |
+        +--------------------------------------+----------------------------+--------+----------------------------+--------------------------+-----------+
+        | 1a416870-5402-44f7-8368-e4b58e6e9c19 | ops-dungnt-evacuate-server | ACTIVE | CS_Labs_LAN_HN1=10.3.54.21 | N/A (booted from volume) | nix.2c_2g |
+        +--------------------------------------+----------------------------+--------+----------------------------+--------------------------+-----------+
+        nova CLI is deprecated and will be a removed in a future release
+        +--------------------------------------+-------------------+---------------+
+        | Server UUID                          | Evacuate Accepted | Error Message |
+        +--------------------------------------+-------------------+---------------+
+        | 1a416870-5402-44f7-8368-e4b58e6e9c19 | True              |               |
+        +--------------------------------------+-------------------+---------------+
+
++ Kiểm tra lại server
+
+        openstack server show 1a416870-5402-44f7-8368-e4b58e6e9c19
+
+  --> Node mới `hulk-compute-076`
