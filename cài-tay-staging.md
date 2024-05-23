@@ -540,14 +540,50 @@ Cấu hình `/opt/splunkforwarder/etc/system/local/inputs.conf`
 [default]
 
 [monitor:///var/log/messages]
+disabled = 0
+sourcetype = OS_LOG
+blacklist = \.(?:txt|gz)
+index = VCCL_XXXXX
 [monitor:///var/log/boot.log]
+disabled = 0
+sourcetype = OS_LOG
+blacklist = \.(?:txt|gz)
+index = VCCL_XXXXX
 [monitor:///var/log/dmesg]
+disabled = 0
+sourcetype = OS_LOG
+blacklist = \.(?:txt|gz)
+index = VCCL_XXXXX
 [monitor:///var/log/secure]
+disabled = 0
+sourcetype = OS_LOG
+blacklist = \.(?:txt|gz)
+index = VCCL_XXXXX
 [monitor:///var/log/yum.log]
+disabled = 0
+sourcetype = OS_LOG
+blacklist = \.(?:txt|gz)
+index = VCCL_XXXXX
 [monitor:///var/log/kern.log]
+disabled = 0
+sourcetype = OS_LOG
+blacklist = \.(?:txt|gz)
+index = VCCL_XXXXX
 [monitor:///var/log/syslog]
+disabled = 0
+sourcetype = OS_LOG
+blacklist = \.(?:txt|gz)
+index = VCCL_XXXXX
 [monitor:///var/log/dpkg.log]
+disabled = 0
+sourcetype = OS_LOG
+blacklist = \.(?:txt|gz)
+index = VCCL_XXXXX
 [monitor:///var/log/dmesg]
+disabled = 0
+sourcetype = OS_LOG
+blacklist = \.(?:txt|gz)
+index = VCCL_XXXXX
 [monitor:///var/log/auth.log]
 disabled = 0
 sourcetype = OS_LOG
