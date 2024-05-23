@@ -431,7 +431,7 @@ output.redis:
   timeout: 5
 ```
 
-Chạy ansible tag filebeat để lấy đầy đủ mk
+logstash có trong `group_vars`
 
        sudo systemctl enable filebeat
 
@@ -591,8 +591,6 @@ blacklist = \.(?:txt|gz)
 index = VCCL_XXXXX
 
 ```
-
-Chạy ansible tag splunk_forwarder để lấy index
 
        sudo systemctl restart SplunkForwarder
 
