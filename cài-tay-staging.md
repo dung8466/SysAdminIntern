@@ -194,5 +194,103 @@ Tạo file `/opt/cloudv2/docker-compose.yml` theo `docker-compose.yml.j2`
 
 
 #### splunk_forwarder
+
+       sudo rsync -azv roles/splunk_forwarder/files/splunkforwarder-8.0.2.1-f002026bad55-linux-2.6-amd64.deb ansibledeploy@<ip>://tmp/
+       sudo dpkg -i splunkforwarder-8.0.2.1-f002026bad55-linux-2.6-amd64.deb
+
+Cấu hình `/opt/splunkforwarder/etc/splunk-launch.conf`
+
+       SPLUNK_SERVER_NAME=SplunkForwarder
+
+Cấu hình `/etc/systemd/system/SplunkForwarder.service`
+
+```
+[Unit]
+After=network.target
+
+[Service]
+Type=simple
+Restart=always
+ExecStart=/opt/splunkforwarder/bin/splunk _internal_launch_under_systemd
+LimitNOFILE=65536
+SuccessExitStatus=51 52
+RestartPreventExitStatus=51
+RestartForceExitStatus=52
+KillMode=mixed
+KillSignal=SIGINT
+TimeoutStopSec=10min
+User=root
+Delegate=true
+CPUShares=1024
+PermissionsStartOnly=true
+
+[Install]
+WantedBy=multi-user.target
+```
+
+       sudo systemctl daemon-reload
+       sudo /opt/splunkforwarder/bin/splunk start --accept-license --no-prompt --answer-yes
+       sudo /opt/splunkforwarder/bin/splunk enable boot-start -user root
+
+Cấu hình `/opt/splunkforwarder/etc/system/local/inputs.conf`
+
+```
+[default]
+
+[monitor:///var/log/messages]
+[monitor:///var/log/boot.log]
+[monitor:///var/log/dmesg]
+[monitor:///var/log/secure]
+[monitor:///var/log/yum.log]
+[monitor:///var/log/kern.log]
+[monitor:///var/log/syslog]
+[monitor:///var/log/dpkg.log]
+[monitor:///var/log/dmesg]
+[monitor:///var/log/auth.log]
+disabled = 0
+sourcetype = OS_LOG
+blacklist = \.(?:txt|gz)
+index = VCCL_XXXXX
+
+```
+
+Chạy ansible tag splunk_forwarder để lấy index
+
+       sudo systemctl restart SplunkForwarder
+
+Cấu hình `/opt/splunkforwarder/etc/system/local/outputs.conf`
+
+```
+[tcpout]
+defaultGroup = vccloud-lb
+indexAndForward = false
+useACK = true
+maxQueueSize = auto
+compressed = false
+autoLBFrequency = 40
+
+[tcpout:vccloud-lb]
+server = <ip>,<ip>,...
+```
+
+       sudo systemctl restart SplunkForwarder
+
+Cấu hình `/opt/splunkforwarder/etc/system/local/server.conf`
+
+```
+[httpServer]
+disableDefaultPort=true
+```
+
+       sudo mkdir /opt/splunkforwarder/etc/apps/SplunkUniversalForwarder/local
+
+Cấu hình `/opt/splunkforwarder/etc/apps/SplunkUniversalForwarder/local/limits.conf`
+
+```
+[thruput]
+maxKBps = 20480
+```
+
+       sudo systemctl restart SplunkForwarder
 #### telegraf
 #### Enable login notify
