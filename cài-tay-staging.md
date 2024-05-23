@@ -187,12 +187,313 @@ Tạo file `/opt/cloudv2/docker-compose.yml` theo `docker-compose.yml.j2`
 
 #### filebeat
 
+       sudo rsync -azv roles/filebeat/files/filebeat-7.15.1-amd64.deb ansibledeploy@<ip>://tmp/
+       sudo dpkg -i filebeat-7.15.1-amd64.deb
 
+Cấu hình `/etc/filebeat/filebeat.yml`
+
+```
+filebeat.inputs:
+- type: log
+  paths:
+    - /var/log/apache2/*.log
+  document_type: apache
+- type: log
+  paths:
+    - /var/log/auth.log
+    - /var/log/secure
+  document_type: auth
+- type: log
+  paths:
+    - /var/log/boot.log
+  document_type: boot
+- type: log
+  paths:
+    - /var/log/btmp
+  document_type: btmp
+- type: log
+  paths:
+    - /var/log/ceilometer/*.log
+  document_type: ceilometer
+- type: log
+  paths:
+    - /var/log/ceph/*.log
+  document_type: ceph
+- type: log
+  paths:
+    - /var/log/cinder/*.log
+  document_type: cinder
+- type: log
+  paths:
+    - /opt/cloud-email-service/log/production.log
+  document_type: cloud-mail
+- type: log
+  paths:
+    - /var/log/cron
+  document_type: cron
+- type: log
+  paths:
+    - /opt/billing/log/*.log
+  document_type: dashboard-billing
+- type: log
+  paths:
+    - /opt/server/log/*.log
+  document_type: dashboard-server
+- type: log
+  paths:
+    - /var/log/dmesg
+  document_type: dmsg
+- type: log
+  paths:
+    - /var/log/dpkg.log
+  document_type: dpkg
+- type: log
+  paths:
+    - /var/log/thor-event/*.log
+  document_type: thor-event
+- type: log
+  paths:
+    - /var/log/vm-datatransfer-staging/*.log
+  document_type: vm-datatransfer-staging
+- type: log
+  paths:
+    - /var/log/vm-datatransfer/*.log
+  document_type: vm-datatransfer
+- type: log
+  paths:
+    - /var/log/loadbalancer/*.log
+  document_type: loadbalancer
+- type: log
+  paths:
+    - /var/log/lb-staging/*.log
+  document_type: lb-staging
+- type: log
+  paths:
+    - var/log/fsck/*
+  document_type: fsck
+- type: log
+  paths:
+    - /var/log/glance/*.log
+  document_type: glance
+- type: log
+  paths:
+    - /var/log/haproxy.log
+  document_type: haproxy
+- type: log
+  paths:
+    - /var/log/heat/*.log
+  document_type: heat
+- type: log
+  paths:
+    - /var/log/kern.log
+  document_type: kern
+- type: log
+  paths:
+    - /var/log/keystone/*.log
+  document_type: keystone
+- type: log
+  paths:
+    - /var/log/libvirt/*.log
+    - /var/log/libvirt/qemu/*.log
+  document_type: libvirt
+- type: log
+  paths:
+    - /var/log/mail.log
+  document_type: mail
+- type: log
+  paths:
+    - /var/log/mcollective.log
+  document_type: mcollective
+- type: log
+  paths:
+    - /var/log/messages
+  document_type: syslog
+- type: log
+  paths:
+    - /var/log/mistral/*.log
+  document_type: mistral
+- type: log
+  paths:
+    - /var/log/mongodb/*.log
+  document_type: mongo
+- type: log
+  paths:
+    - /var/log/mysql/*.log
+  document_type: mysql
+- type: log
+  paths:
+    - /var/log/neutron/*.log
+  document_type: neutron
+  tags: ["neutron"]
+- type: log
+  paths:
+    - /var/log/nova/*.log
+  document_type: nova
+- type: log
+  paths:
+    - /var/log/octavia/*.log
+  document_type: octavia
+- type: log
+  paths:
+    - /var/log/openvswitch/*.log
+  document_type: openvswitch
+- type: log
+  paths:
+    - /var/log/mysqld.log
+  document_type: mysql-percona
+- type: log
+  paths:
+    - /var/log/rabbitmq/*.log
+    - /var/log/rabbitmq/startup_err
+  document_type: rabbitmq
+- type: log
+  paths:
+    - /opt/emc/scaleio/gateway/logs/api_operations.log
+    - /opt/emc/scaleio/gateway/logs/scaleio.log
+    - /opt/emc/scaleio/gateway/logs/operations.log
+  document_type: scaleio_gateway
+- type: log
+  paths:
+    - /opt/emc/scaleio/mdm/logs/trc.0
+    - /opt/emc/scaleio/mdm/logs/exp.0
+  document_type: scaleio_mdm
+- type: log
+  paths:
+    - /var/log/senlin/*.log
+  document_type: senlin
+- type: log
+  paths:
+    - /var/log/syslog
+  document_type: syslog
+- type: log
+  paths:
+    - /var/log/trove/*.log
+  document_type: trove
+- type: log
+  paths:
+    - /var/log/upstart/*.log
+  document_type: upstart
+- type: log
+  paths:
+    - /var/log/openvpn/openvpn-auth.log
+  document_type: vpnstaff
+- type: log
+  paths:
+    - /opt/webmail/logs/*.log
+  document_type: webmail
+- type: log
+  paths:
+    - /opt/webmail/log/*.log
+  document_type: webmail_a
+- type: log
+  paths:
+    - /opt/webmail_b/*.logs
+  document_type: webmail_b
+- type: log
+  paths:
+    - /var/log/wtmp
+  document_type: wtmp
+- type: log
+  paths:
+    - /var/log/yum.log
+  document_type: yum
+- type: log
+  paths:
+    - /var/log/zookeeper/zookeeper.log
+  document_type: zookeeper
+- type: log
+  paths:
+    - /var/log/apache2/keystone_access.log
+  document_type: apache
+  tags: ["keystone_access"]
+
+processors:
+  - drop_fields:
+      fields: ["host"]
+  - copy_fields:
+      fields:
+        - from: "agent.hostname"
+          to: "agent.host"
+      fail_on_error: false
+      ignore_missing: true
+  - rename:
+      fields:
+        - from: "agent.host"
+          to: "host"
+      ignore_missing: false
+      fail_on_error: true
+
+output.redis:
+  hosts: {{ logstash_redis_host }}
+  password: "{{ logstash_redis_password }}"
+  key: "{{ logstash_namespace }}"
+  db: 0
+  timeout: 5
+```
+
+Chạy ansible tag filebeat để lấy đầy đủ mk
+
+       sudo systemctl enable filebeat
 
 #### nagios_nrpe
 
+       sudo apt install monitoring-plugins nagios-plugins nagios-nrpe-server sysstat python2
+       sudo rsync -azv roles/nagios_nrpe/files/get-pip.py ansibledeploy@<pip>://tmp/
+       python2 get-pip.py
+       ~/.local/bin/pip2 install requests
+       python2 -m pip install psutil redis
+       sudo mkdir /opt/vccloud_check
+       sudo rsync -azv roles/nagios_nrpe/files/plugins/* ansibledeploy@<ip>://opt/vccloud_check
+       sudo chown nagios:nagios /opt/vccloud_check && sudo chmod 0750 /opt/vccloud_check
 
+Cấu hình `/etc/sudoers.d/nagios_sudoers`
 
+```
+Defaults:nagios !requiretty
+nagios ALL = (root) NOPASSWD: /usr/sbin/conntrack
+nagios ALL = (root) NOPASSWD: /usr/sbin/service
+```
+
+Cấu hình `/etc/nagios/nrpe.cfg`
+
+```
+log_facility=daemon
+pid_file=/var/run/nagios/nrpe.pid
+server_port=5666
+nrpe_user=nagios
+# The adm group is only good for viewing all the log files in /var/log
+nrpe_group=adm
+allowed_hosts=<ip>,<ip>,...
+
+dont_blame_nrpe=0
+
+allow_bash_command_substitution=0
+
+debug=0
+command_timeout={{ command_timeout }}
+connection_timeout=300
+include=/etc/nagios/nrpe_local.cfg
+include_dir=/etc/nagios/nrpe.d/
+
+command[check_users]=/opt/vccloud_check/check_users -w 5 -c 10
+command[check_zombie_procs]=/opt/vccloud_check/check_procs -w 5 -c 10 -s Z
+command[check_server_load]=/opt/vccloud_check/check_server_load.py -w 1.0,0.8,0.75  -c 1.2,0.9,0.85
+command[check_ram]=/opt/vccloud_check/check_mem.pl -w 10 -c 5 -F -A
+command[check_rootdisk]=/opt/vccloud_check/check_disk -w 20% -c 10% -p /
+command[check_logdisk]=/opt/vccloud_check/check_disk -w 20% -c 10% -p /var/log
+command[check_swap]=/opt/vccloud_check/check_swap -a -w 80% -c 50%
+command[check_cpu]=/opt/vccloud_check/check_cpu.sh -w 70 -c 80 -iw 20 -ic 30
+command[check_total_threads]=/opt/vccloud_check/check_total_threads.sh -C 5000
+```
+
+Cấu hình `/etc/sudoers.d/nagios`
+
+```
+Defaults:nagios !requiretty
+nagios ALL = (root) NOPASSWD: /usr/sbin/conntrack
+nagios ALL = (root) NOPASSWD: /usr/sbin/service
+```
+       sudo systemctl start nagios-nrpe-server
 #### splunk_forwarder
 
        sudo rsync -azv roles/splunk_forwarder/files/splunkforwarder-8.0.2.1-f002026bad55-linux-2.6-amd64.deb ansibledeploy@<ip>://tmp/
