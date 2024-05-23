@@ -494,6 +494,7 @@ nagios ALL = (root) NOPASSWD: /usr/sbin/conntrack
 nagios ALL = (root) NOPASSWD: /usr/sbin/service
 ```
        sudo systemctl start nagios-nrpe-server
+       
 #### splunk_forwarder
 
        sudo rsync -azv roles/splunk_forwarder/files/splunkforwarder-8.0.2.1-f002026bad55-linux-2.6-amd64.deb ansibledeploy@<ip>://tmp/
@@ -594,4 +595,58 @@ maxKBps = 20480
 
        sudo systemctl restart SplunkForwarder
 #### telegraf
+
+       sudo apt install libguestfs-tools
+       sudo rsync -azv roles/telegraf/files/kvmtop_2.1.3_linux_amd64.deb  ansibledeploy@<ip>://tmp/
+       sudo apt install libncurses5
+       sudo dpkg -i kvmtop_2.1.3_linux_amd64.deb
+       sudo systemctl restart kvmtop
+       sudo rsync -azv roles/telegraf/files/telegraf.compute ansibledeploy@<ip>://usr/bin/telegraf
+
+Cấu hình `/etc/systemd/system/telegraf.service`
+
+```
+[Unit]
+Description=telegraf - A system statistics collector
+[Service]
+ExecStart=/usr/bin/telegraf --config /etc/telegraf/telegraf.conf --config-directory /etc/telegraf/teleg
+raf.d ${TELEGRAF_OPTS}
+Restart=always
+RestartSec=60
+[Install]
+WantedBy=multi-user.target
+```
+
+Chạy ansible tag telegraf để đầy đủ cấu hình
+
+       sudo systemctl daemon-reload
+       sudo mkdir -p /etc/telegraf /etc/telegraf/telegraf.d /var/log/telegraf 
+
+Cấu hình `/etc/telegraf/telegraf.conf`v
+
+```
+[global_tags]
+
+# Configuration for telegraf agent
+[agent]
+  interval = "30s"
+  round_interval = true
+  metric_batch_size = 5000
+  metric_buffer_limit = 50000
+  collection_jitter = "0s"
+  flush_interval = "30s"
+  flush_jitter = "0s"
+  precision = ""
+  quiet = false
+  logfile = "/var/log/telegraf/telegraf.log"
+```
+
+Cấu hình `/etc/telegraf/telegraf.d/telegraf_infra.conf`
+
+Cấu hình `/etc/telegraf/telegraf.d/telegraf_cloud.conf`
+
+Chạy ansible :v
+
 #### Enable login notify
+
+Chạy ansible tag post_tasks
