@@ -53,7 +53,7 @@ Mật khẩu các dịch vụ tại `group_vars`
 
    Dọn thư mục `sudo rm -r /tmp/packages_ceph/*`
 
-   Copy file từ ansible `sudo rsync -azv roles/public-nova-compute-ubuntu20/files/* ansibledeploy@<ip>://tmp/packages_ceph/`
+   Copy file từ ansible `sudo rsync -azv roles/public-nova-compute-ubuntu20/files/qemu-block-extra_1%3a4.2-3ubuntu6.21_amd64.deb,qemu-utils_1%3a4.2-3ubuntu6.21_amd64.deb,qemu-system-common_1%3a4.2-3ubuntu6.21_amd64.deb,qemu-system-x86_1%3a4.2-3ubuntu6.21_amd64.deb,qemu-kvm_1%3a4.2-3ubuntu6.21_amd64.deb,libvirt0_6.0.0-0ubuntu8.16_amd64.deb,libvirt-clients_6.0.0-0ubuntu8.16_amd64.deb,libvirt-daemon-driver-qemu_6.0.0-0ubuntu8.16_amd64.deb,libvirt-daemon-driver-storage-rbd_6.0.0-0ubuntu8.16_amd64.deb,libvirt-daemon_6.0.0-0ubuntu8.16_amd64.deb,libvirt-daemon-system-systemd_6.0.0-0ubuntu8.16_amd64.deb,libvirt-daemon-system_6.0.0-0ubuntu8.16_amd64.deb,libvirt-dev_6.0.0-0ubuntu8.16_amd64.deb,python3-libvirt_6.1.0-1_amd64.deb,virt-top_1.0.9-1_amd64.deb,dnsmasq-base_2.80-1.1ubuntu1.5_amd64.deb,nova-common_3%3a23.1.0-0ubuntu1~cloud0_all.deb,python3-nova_3%3a23.1.0-0ubuntu1~cloud0_all.deb,nova-compute-libvirt_3%3a23.1.0-0ubuntu1~cloud0_all.deb,nova-compute-kvm_3%3a23.1.0-0ubuntu1~cloud0_all.deb,nova-compute_3%3a23.1.0-0ubuntu1~cloud0_all.deb ansibledeploy@<ip>://tmp/packages_ceph/`
 
    Install missing dependency `sudo wget https://download.ceph.com/debian-16.2.13/pool/main/c/ceph/libjaeger_16.2.13-1focal_amd64.deb`
 
