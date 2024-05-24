@@ -1,5 +1,5 @@
 ### Openvswitch architecture
 
-![pictures/openvswitch.jpg](openvswitch architecture)
+![openvswitch architecture](pictures/openvswitch.jpg)
 
 
