@@ -37,3 +37,62 @@
 3. Nếu không có flow entry phù hợp, gói tin được gửi đến ovs-vswitchd để xử lý, cài đặt thêm flow entry mới nếu cần
 4. Gói tin được xử lý theo hành động trong flow entry (Forward, Drop, Modify, Encapsulate)
 5. Gói tin được chuyển tới cổng đích và rời khỏi hệ thống qua NIC đích
+
+### Cài đặt openvswitch Ubuntu 16.04
+
+    sudo apt install openvswitch-switch
+
+1. Liệt kê các switch
+
+        ovs-vsctl show
+   hoặc
+
+        ovs-vsctl list-br
+
+2. Tạo switch mới
+
+        ovs-vsctl add-br <bridge_name>
+
+3. Xóa switch
+
+        ovs-vsctl del-br <bridge_name>
+
+4. Thêm một port vào switch
+
+        ovs-vsctl add-port <bridge_name> <net interface>
+
+5. Xóa port khỏi switch
+
+        ovs-vsctl del-port <bridge_name> <net interface>
+
+6. Liệt kê thông tin port numbers
+
+        ovs-ofctl dump-ports <bridge_name>
+
+7. Liệt kê thông tin các port trong switch
+
+        ovs-vsctl list-ports <bridge_name>
+
+8. Liệt kê toàn bộ thông tin switch
+
+        ovs-ofctl show <bridge_name>
+
+9. Set kiểu cho port
+
+        ovs-vsctl set interface <net interface> type=<type_name>
+
+10. On/Off giao thức STP
+
+        ovs-vsctl set Bridge <vswitch> stp_enable=<{true|flase}>
+
+11. Kiểm tra trạng thái STP của switch
+
+        ovs-vsctl get bridge <bridge_name> stp_enable
+
+12. Thiết lập bridge priority để chọn root bridge
+
+        ovs-vsctl set bridge <bridge_name> other-config:stp-priority=<priority_value>
+
+13. Thiết lập port priority để chọn root bridge
+
+        ovs-vsctl set port <port_name> other-config:stp-port-priority=<priority_value>
