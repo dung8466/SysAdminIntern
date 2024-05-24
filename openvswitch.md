@@ -6,6 +6,8 @@
   - daemon chính của Openvswitch
   - chịu trách nhiệm thực hiện chuyển mạch dữ liệu
   - Xử lý các `flow table` và chuyển tiếp gói tin dựa vào rule trong table
++ SDN (Software Defined Networking)
+  - tương tác trực tiếp với các tầng chuyển mạch (switch) và định tuyến (router) của mạng
 + ovs-dpctl:
   - công cụ để tạo, sửa và xóa datapath
 + ovs-ofctl
