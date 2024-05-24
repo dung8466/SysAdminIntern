@@ -28,16 +28,16 @@ Mật khẩu các dịch vụ tại `group_vars`
 
    Cấu hình `/etc/sysctl.conf`
 
-          net.ipv4.conf.all.rp_filter=0
-         net.ipv4.conf.default.rp_filter=0
-         net.netfilter.nf_conntrack_max=2000000
-         vm.swappiness=10
+       net.ipv4.conf.all.rp_filter=0
+       net.ipv4.conf.default.rp_filter=0
+       net.netfilter.nf_conntrack_max=2000000
+       vm.swappiness=10
 
 2. libvirt
 
        sudo apt install ca-certificates
        wget -qO - https://download.ceph.com/keys/release.asc | sudo apt-key add -
-       sudo apt-add-reposity 'deb https://download.ceph.com/debian-pacific/ focal main'
+       sudo apt-add-repositorory 'deb https://download.ceph.com/debian-pacific/ focal main'
        sudo mkdir /tmp/packages_ceph
 
    Tạo script install `/tmp/packages_ceph/install_ceph_ubuntu.sh
