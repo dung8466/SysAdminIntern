@@ -30,3 +30,10 @@
   - bao gồm openvswitch.ko (chuyển mạch gói tin, xử lý các bảng flow) 
   - datapath (sử dụng các cấu trúc dữ liệu như các bảng hash để quản lý các flow và thực hiện các hành động tương ứng trên các gói tin)
 
+### Flow gói tin 
+
+1. Gói tin đi vào NIC (Network Interface Card) của hệ thống
+2. Gói tin chuyển tới openvswitch.ko trong kernel, kiểm tra flow entries trong datapath
+3. Nếu không có flow entry phù hợp, gói tin được gửi đến ovs-vswitchd để xử lý, cài đặt thêm flow entry mới nếu cần
+4. Gói tin được xử lý theo hành động trong flow entry (Forward, Drop, Modify, Encapsulate)
+5. Gói tin được chuyển tới cổng đích và rời khỏi hệ thống qua NIC đích
