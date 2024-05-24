@@ -45,7 +45,7 @@ Mật khẩu các dịch vụ tại `group_vars`
        wget https://download.ceph.com/debian-16.2.13/pool/main/c/ceph/
        for i in `cat index.html |grep 16.2.13-1focal | awk -F ">" '{print $2}' | awk
         -F "<" '{print $1}' | grep "librbd1\|librados2" | grep -v "dbg\|arm64"`;do wget https://download.ceph.
-       com/debian-16.2.13focal/pool/main/c/ceph/${i};done
+       com/debian-16.2.13/pool/main/c/ceph/${i};done
 
    Chạy script `sudo bash /tmp/packages_ceph/install_ceph_ubuntu.sh`
 
