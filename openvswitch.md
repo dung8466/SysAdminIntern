@@ -13,13 +13,20 @@
   - liệt kê các luồng đã triển khai trên OVS kernel
 + ovs-appctl
   - giao tiếp và điều khiển các daemon của OVS
++ ovsdb
+  - lưu trữ cấu hình về bridge, port, interface, địa chỉ của OpenFlow controller
+  - tổ chức dưới dạng bảng và hàng, tương tự như một cơ sở dữ liệu quan hệ
 + ovsdb-server
   - daemon quản lý cơ sở dữ liệu của OVS
-  - lưu trữ cấu hình switch và các cấu hình mạng liên quan
+  - cung cấp giao diện RPC(remote procedure call) gọi tới ovsdb
+  - có thể chạy như backup server hoặc active server
   - hỗ trợ giao thức OVSDB (Open vSwitch Database Management Protocol) để thực hiện thao tác thêm, sửa, xóa,... trên cơ sở dữ 
-+ ovsdb
-  - 
 + ovs-vsctl
   - truy vấn và cập nhật cấu hình của ovs-vswitchd (với sự giúp đỡ của ovsdb-server)
 + ovs-dbtool
+  - quản lý các cơ sở dữ liệu OVSDB
+  - dùng để tạo, kiểm tra, và sửa các file cơ sở dữ liệu
 + Linux kernel module
+  - bao gồm openvswitch.ko (chuyển mạch gói tin, xử lý các bảng flow) 
+  - datapath (sử dụng các cấu trúc dữ liệu như các bảng hash để quản lý các flow và thực hiện các hành động tương ứng trên các gói tin)
+
