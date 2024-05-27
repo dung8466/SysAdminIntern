@@ -187,7 +187,7 @@ Tạo file `/opt/cloudv2/docker-compose.yml` theo `docker-compose.yml.j2`
 
        sudo systemctl stop nova-compute
        sudo systemctl disable nova-compute
-       sudo mask nova-compute
+       sudo systemctl mask nova-compute
 
 #### start_services
 
