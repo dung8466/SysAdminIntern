@@ -645,8 +645,8 @@ maxKBps = 20480
        sudo apt install libncurses5
        sudo dpkg -i kvmtop_2.1.3_linux_amd64.deb
        sudo systemctl restart kvmtop
-       sudo rsync -azv roles/telegraf/files/telegraf.compute ansibledeploy@<ip>://usr/bin/
-       mv /usr/bin/telegraf.compute /usr/bin/telegraf
+       sudo rsync -azv roles/telegraf/files/telegraf.compute ansibledeploy@<ip>://tmp
+       mv /tmp/telegraf.compute /usr/bin/telegraf
 
 Cấu hình `/etc/systemd/system/telegraf.service`
 
