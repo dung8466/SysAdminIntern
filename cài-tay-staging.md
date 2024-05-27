@@ -125,6 +125,8 @@ Install package `sudo apt install neutron-openvswitch-agent`
 
 Cấu hình `/etc/neutron/neutron.conf` theo `neutron.conf.new.j2`
 
+Chạy ansible lấy mk 
+
 Cấu hình `/etc/neutron/plugins/ml2/openvswitch_agent.ini` theo `openvswitch_agent.ini.j2`
 
 #### ovs-bridge
