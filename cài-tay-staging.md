@@ -129,6 +129,8 @@ Chạy ansible lấy mk
 
 Cấu hình `/etc/neutron/plugins/ml2/openvswitch_agent.ini` theo `openvswitch_agent.ini.j2`
 
+chạy ansible lấy management_address
+
 #### ovs-bridge
 
 Thêm bridge `sudo ovs-vsctl add-br br-prv`
