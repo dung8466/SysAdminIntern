@@ -111,6 +111,10 @@ openvswitch_version: 2.8.0
 
 Copy file `sudo rsync -azv roles/openvswitch/files/* ansibledeploy@<ip>://tmp/`
 
+Tải thêm packagepackage `sudo wget https://ftp.debian.org/debian/pool/main/s/six/python-six_1.12.0-1_all.deb`
+
+Install package `sudo dpkg -i python-six_1.12.0-1_all.deb`
+
 Install package `sudo dpkg -i *_2.8.0.deb`
 
 #### ocata-neutron-compute
