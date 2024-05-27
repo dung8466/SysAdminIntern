@@ -441,7 +441,7 @@ output.redis:
   timeout: 5
 ```
 
-logstash có trong `group_vars`
+chạy ansible lấy password
 
        sudo systemctl enable filebeat
 
