@@ -167,3 +167,30 @@
 
           # Khởi động mạng
           virsh net-start br0
+
+### Tap interface và uplink port
+
+1. Tap interface
+
+sử dụng trong Open vSwitch để xử lý và định tuyến các gói tin
+
+Tap interface hoạt động ở lớp liên kết dữ liệu (Layer 2) của mô hình OSI
+
+cho phép các gói tin Ethernet đi qua và có thể được sử dụng để kết nối các máy ảo hoặc container với mạng vật lý hoặc mạng ảo khác
+
++ Tạo tap interface
+  
+      ip tuntap add dev tap0 mode tap
+
+2. Uplink port
+
+thường được sử dụng để kết nối switch ảo với mạng vật lý
+
+Uplink port hoạt động ở lớp mạng (Layer 3) hoặc lớp liên kết dữ liệu (Layer 2) của mô hình OSI
+
+cấu hình chuyển tiếp lưu lượng mạng từ switch nội bộ đến mạng bên ngoài hoặc ngược lại
+
++ Uplink port
+
+      ovs-vsctl add-br br0
+      ovs-vsctl add-port br0 eth0
