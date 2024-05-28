@@ -44,6 +44,8 @@
 
     sudo apt install openvswitch-switch
 
+### Các lệnh vswitch
+
 1. Liệt kê các switch
 
         ovs-vsctl show
@@ -98,3 +100,61 @@
 13. Thiết lập port priority để chọn root bridge
 
         ovs-vsctl set port <port_name> other-config:stp-port-priority=<priority_value>
+
+### Tạo vswitch
+
+1. Bằng lệnh
+
++ Tạo bridge mới
+
+        sudo ovs-vsctl add-br br0
+
++ Thêm port vào bridge
+
+        sudo ovs-vsctl add-port br0 eth1
+
++ Thêm cổng nội bộ (internal port) để sử dụng trong các máy ảo hoặc container
+
+        sudo ovs-vsctl add-port br0 int-port -- set Interface int-port type=internal
+
++ Cấu hình IP cho cổng nội bộ
+
+        sudo ip addr add <ip> dev int-port
+        sudo ip link set int-port up
+
+2. Bằng file .xml
+
++ Tạo bridge mới và thêm port
+
+        <network>
+          <name>br0</name>
+          <forward mode='bridge'/>
+          <bridge name='br0'/>
+          <interface type='bridge'>
+            <source bridge='br0'/>
+            <target dev='eth1'/>
+          </interface>
+        </network>
+
++ Tạo máy ảo sử dụng cổng nội
+  - Cấu hình máy ảo sử dụng bridge
+
+        <devices>
+          <interface type='bridge'>
+            <mac address='địa chỉ mac'/>
+            <source bridge='br0'/>
+            <model type='virtio'/>
+            <address type='pci' domain='0x0000' bus='0x00' slot='0x03' function='0x0'/>
+          </interface>
+        </devices>
+    - Cấu hình IP ch cổng nội bộ sử dụng câu lệnh
+    - Sử dụng `virsh` quản lý mạng
+
+          # Định nghĩa mạng từ tệp XML
+          virsh net-define br0.xml
+
+          # Tự động khởi động mạng khi host khởi động
+          virsh net-autostart br0
+
+          # Khởi động mạng
+          virsh net-start br0
