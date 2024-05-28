@@ -34,11 +34,20 @@
 
 ### Flow gói tin 
 
-1. Gói tin đi vào NIC (Network Interface Card) của hệ thống
-2. Gói tin chuyển tới openvswitch.ko trong kernel, kiểm tra flow entries trong datapath
-3. Nếu không có flow entry phù hợp, gói tin được gửi đến ovs-vswitchd để xử lý, cài đặt thêm flow entry mới nếu cần
-4. Gói tin được xử lý theo hành động trong flow entry (Forward, Drop, Modify, Encapsulate)
-5. Gói tin được chuyển tới cổng đích và rời khỏi hệ thống qua NIC đích
+1. Ingress (Đầu vào): Khi một gói tin đến cổng OVS, nó sẽ đi vào datapath của OVS.
+2. Classification (Phân loại): Gói tin được phân loại dựa trên các header của nó. Quá trình phân loại này bao gồm việc trích xuất các trường như địa chỉ MAC nguồn và đích, VLAN tags, địa chỉ IP và cổng.
+3. Lookup (Tra cứu): Module kernel của OVS thực hiện tra cứu trong bảng flow để xác định cách gói tin nên được xử lý. Bảng flow gồm các entry (mục) flow xác định điều kiện khớp và các hành động liên quan.
+4. Action Execution (Thực thi hành động): Nếu tìm thấy entry flow khớp, các hành động định nghĩa trong entry đó sẽ được áp dụng cho gói tin. Các hành động này có thể bao gồm chuyển tiếp đến cổng khác, sửa đổi header của gói tin hoặc loại bỏ gói tin.
+5. Miss Handling (Xử lý khi không khớp): Nếu không tìm thấy entry flow nào khớp, gói tin sẽ được gửi lên userspace của OVS để xử lý thêm. Điều này có thể bao gồm tra cứu các bảng flow cấp cao hơn, truy vấn controller hoặc cài đặt các entry flow mới.
+6. Forwarding (Chuyển tiếp): Sau khi xử lý, gói tin được chuyển tiếp đến cổng ra hoặc các cổng thích hợp.
+
+### Cấu trúc bảng flow
+
+| Priority | Match Conditions | Actions |
+| -------- | ---------------- | ------- |
+| 100      | in_port=1, dl_dst=00:00:00:00:01 | output:2 |
+| 50      | in_port=1 | mod_dl_dst=00:00:00:00:02, output:3 |
+| 1     | in_port=2 | drop |
 
 ### Cài đặt openvswitch Ubuntu 16.04
 
