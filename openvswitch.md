@@ -182,6 +182,9 @@ cho phép các gói tin Ethernet đi qua và có thể được sử dụng đ�
   
       ip tuntap add dev tap0 mode tap
 
++ Xóa tap interface
+
+      ip link delete tap0
 2. Uplink port
 
 thường được sử dụng để kết nối switch ảo với mạng vật lý
