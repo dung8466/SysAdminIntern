@@ -197,3 +197,45 @@ cấu hình chuyển tiếp lưu lượng mạng từ switch nội bộ đến m
 
       ovs-vsctl add-br br0
       ovs-vsctl add-port br0 eth0
+
+### Cấu hình bride trên Ubuntu 16.04
+
+1. Tạo bridge
+
+        ovs-vsctl add-br0
+
+2. Xóa địa chỉ IP từ `ens33`
+
+        ip addr flush dev ens33
+
+3. Thêm `ens33` vào `br0`
+
+        ovs-vsctl add-port br0 ens33
+
+4. Chuyển cấu hình mạng từ `ens33` sang `br0` tại `/etc/network/interfaces`
+
+        source /etc/network/interfaces.d/*
+
+        # The loopback network interface
+        auto lo
+        iface lo inet loopback
+        
+        # The primary network interface
+        auto ens33
+        iface ens33 inet manual
+        
+        auto br0
+        iface br0 inet static
+            address 172.16.47.161
+            netmask 255.255.255.0
+            gateway 172.16.47.2
+            dns-nameservers 8.8.8.8 8.8.4.4
+            bridge_ports ens33
+
+5. Khởi động lại dịch vụ
+
+        ifdown ens33 && ifup br0
+
+6. Kiểm tra lại cấu hình
+
+        ovs-vsctl show
