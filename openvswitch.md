@@ -168,6 +168,9 @@
           # Khởi động mạng
           virsh net-start br0
 
+          # Kiểm tra các mạng
+          virsh net-list --all
+
 ### Tap interface và uplink port
 
 1. Tap interface
