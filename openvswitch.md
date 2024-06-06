@@ -205,7 +205,7 @@ cấu hình chuyển tiếp lưu lượng mạng từ switch nội bộ đến m
 
 1. Tạo bridge
 
-        ovs-vsctl add-br0
+        ovs-vsctl add-br br0
 
 2. Xóa địa chỉ IP từ `ens33`
 
