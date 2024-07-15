@@ -18,8 +18,9 @@ Hoạt động bằng cách tạo ra một kết nối an toàn và mã hóa gi�
 
 + VPN client-to-site: cho phép người dùng có thể kết nối đến 1 mạng riêng ở xa thông qua 1 VPN server
 
-![pictures/test](client to site)
+![client to site](pictures/test)
+
 - 
 + VPN site-to-site:
 
-![pictures/site2site-help.png](site to site)
+![site to site](pictures/site2site-help.png)
