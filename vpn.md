@@ -44,6 +44,10 @@ SSTP chỉ hoạt động tốt nếu có đủ băng thông trên liên kết m
   - Sử dụng chứng chỉ máy chủ để xác thực.
  
   - Bảo mật: Cung cấp tính bảo mật cao (mã hóa AES 256-bit)
+
+![secure socket tunneling](pictures/sstp.png)
+
+
 + Internet Key Exchange Version 2 (IKEv2)
 + OpenVPN
 
