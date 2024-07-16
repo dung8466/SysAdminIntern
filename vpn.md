@@ -48,7 +48,7 @@ SSTP chỉ hoạt động tốt nếu có đủ băng thông trên liên kết m
 ![secure socket tunneling](pictures/sstp.png)
 
 
-+ Internet Key Exchange Version 2 (IKEv2)
++ Internet Key Exchange Version 2 (IKEv2): 
 + OpenVPN
 
 3. Cách VPN hoạt động
