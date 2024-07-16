@@ -32,6 +32,8 @@
   - Một vị trí trống trong tunnel mạng được chỉ định và yêu cầu sau đó được chuyển đến LNS. Khi kết nối được xác thực và chấp nhận hoàn toàn, một giao diện PPP ảo sẽ được tạo.
 
   - Bảo mật: L2TP chỉ tạo đường hầm mà không mã hóa nên thường được sử dụng với Internet Protocol security (IPsec).
+
+![layer 2 tunneling](pictures/l2tp.jpg)
 + Secure Socket Tunneling Protocol (SSTP)
 + Internet Key Exchange Version 2 (IKEv2)
 + OpenVPN
