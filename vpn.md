@@ -34,7 +34,16 @@
   - Bảo mật: L2TP chỉ tạo đường hầm mà không mã hóa nên thường được sử dụng với Internet Protocol security (IPsec).
 
 ![layer 2 tunneling](pictures/l2tp.jpg)
-+ Secure Socket Tunneling Protocol (SSTP)
+
++ Secure Socket Tunneling Protocol (SSTP): là một loại VPN tunnel sử dụng kênh SSL 3.0 (cho phép truyền tải và mã hóa dữ liệu, cũng như kiểm tra tính toàn vẹn của lưu lượng) để gửi lưu lượng PPP hoặc L2TP.
+
+SSTP chỉ hoạt động tốt nếu có đủ băng thông trên liên kết mạng không được tạo tunnel. Nếu không có đủ băng thông, TCP timer sẽ hết hạn.
+
+  - SSL sử dụng cổng 443 để kết nối với máy chủ.
+  - Để xác nhận kết nối, nó yêu cầu xác thực người dùng và thường được xác thực bởi client.
+  - Sử dụng chứng chỉ máy chủ để xác thực.
+ 
+  - Bảo mật: Cung cấp tính bảo mật cao (mã hóa AES 256-bit)
 + Internet Key Exchange Version 2 (IKEv2)
 + OpenVPN
 
