@@ -48,12 +48,21 @@ SSTP chỉ hoạt động tốt nếu có đủ băng thông trên liên kết m
 ![secure socket tunneling](pictures/sstp.png)
 
 
-+ Internet Key Exchange Version 2 (IKEv2):
++ Internet Key Exchange Version 2 (IKEv2): là một giao thức tunnelling dựa trên IPSec, cung cấp một kênh giao tiếp VPN bảo mật và xác định các phương tiện kết nối và xác thực tự động cho các liên kết bảo mật IPSec theo cách chúng được bảo vệ.
+
+  - Chịu trách nhiệm thiết lập Security Association (SA) đảm bảo liên kết giữa VPN client và VPN server trong IPSec.
+  - Tự động khôi phục kết nối khi có sự cố mạng.
+
+  - Bảo mật: sử dụng xác thực chứng chỉ server (không thực hiện bất kỳ hành động nào cho đến khi xác định được danh tính của người yêu cầu)
 
 
 ![IKEv2](pictures/IKEv2.png)
 
-+ OpenVPN
++ OpenVPN: là một giải pháp mã nguồn mở và linh hoạt cho mạng riêng ảo (VPN), sử dụng giao thức OpenVPN.
+
+  - Sử dụng SSL (Secure Socket Tunneling protocol)/TLS (Transport Layer Security) để thiết lập kênh bảo mật giữa client và server.
+  - Sau khi thiết lập kênh bảo mật, OpenVPN sử dụng giao thức Diffie-Hellman để trao đổi các khóa mã hóa.
+  - Khóa mã hóa được sử dụng để tạo một kênh mã hóa bảo mật cho việc truyền dữ liệu. Tất cả dữ liệu truyền qua kênh này đều được mã hóa.
 
 3. Cách VPN hoạt động
 
