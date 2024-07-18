@@ -79,3 +79,5 @@ Hoạt động bằng cách tạo ra một kết nối an toàn và mã hóa gi�
 + VPN site-to-site:
 
 ![site to site](pictures/site2site-help.png)
+
+![vpc](pictures/vpc-vpn.png)
