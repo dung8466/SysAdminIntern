@@ -64,6 +64,8 @@ SSTP chỉ hoạt động tốt nếu có đủ băng thông trên liên kết m
   - Sau khi thiết lập kênh bảo mật, OpenVPN sử dụng giao thức Diffie-Hellman để trao đổi các khóa mã hóa.
   - Khóa mã hóa được sử dụng để tạo một kênh mã hóa bảo mật cho việc truyền dữ liệu. Tất cả dữ liệu truyền qua kênh này đều được mã hóa.
 
+![openvpn](pictures/OPENVPN.jpg)
+
 3. Cách VPN hoạt động
 
 Hoạt động bằng cách tạo ra một kết nối an toàn và mã hóa giữa thiết bị của người dùng và máy chủ VPN thông qua một đường hầm bảo mật.
