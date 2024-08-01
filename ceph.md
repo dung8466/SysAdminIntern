@@ -73,6 +73,8 @@
 
   + RAID 01: Striped RAID 1.
 
+## Filesystem
+
     - Cần tối thiểu 4 ổ cứng.
     - Ngược lại với RAID 10, dữ liệu được striping rồi mirror.
 
