@@ -58,4 +58,4 @@
 
     - Cần tối thiểu 4 ổ cứng.
 
-![raid 10 picture](raid10.jpeg)
+![raid 10 picture](pictures/raid10.jpeg)
