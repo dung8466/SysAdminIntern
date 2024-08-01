@@ -38,8 +38,18 @@
    + RAID 5: Striped & Parity blocks.
   
      - Cần ít nhất 3 ổ cứng.
-     - Dữ liệu chia đều ra 3 ổ và mỗi ổ có thêm 1 khối parity (XOR của các ổ cứng khác để khôi phục dữ liệu)
+     - Dữ liệu chia đều ra 3 ổ và mỗi ổ có thêm 1 khối parity (XOR của các ổ cứng khác để khôi phục dữ liệu).
+     - Trong 3 ổ có 2 ổ fail thì không thể khôi phục dữ liệu.
     
 ![raid 5 picture](pictures/raid5.jpg)
      
 ![raid xor picture](pictures/xor.png)
+
+
+   + RAID 6: Striped & Parity blocks.
+
+     - Giống RAID 5.
+     - Cần tối thiểu 4 ổ cứng.
+     - Thêm 1 partiy => có thể khôi phục dữ liệu từ 2 ổ fail.
+
+![raid 6 picture](pictures/raid6.png)
