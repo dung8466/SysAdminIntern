@@ -83,9 +83,98 @@
 ## Filesystem
 
 1. Format
-2. Ổ, partition
-3. LVM
-4. NTFS
+
+1, etx3:
+
+- Là hệ thống tệp tin ghi nhật ký.
+- Cho phép mở rộng hệ thống tệp mà không cần dừng hệ thống.
+- Sử dụng HTree Indexing dễ truy cập và quản lý các thư mục lớn.
+
+2, ext4:
+
+- Tương thích với ext2, ext3. Cho phép nâng cấp hệ thống mà không mất dữ liệu.
+- Hỗ trợ Pre-allocation dữ liệu: phân bổ trước không gian cho các tệp, đảm bảo rằng không gian sẽ được duy trì sẵn sàng cho tệp đó trong tương lai.
+- Số thư mục con không giới hạn.
+- Hỗ trợ checksum cho metadata để phát hiện và sửa lỗi và checksum cho journal.
+- Hỗ trợ kích thước tệp lên đến 16 TB và hệ thống tệp kích thước 1 EB (Exabyte).
+
+3, xfs:
+
+- Là một hệ thống tệp 64-bit ghi nhật ký (journaling).
+- Hỗ trợ snapshot, tạo 'hình ảnh' của hệ thống tại 1 thời điểm.
+- Cho phép phân mảnh và tối ưu hóa hệ thống tệp mà không cần phải dừng hoạt động hệ thống.
+- Cho phép các tệp có không gian không liên tục, chỉ tiêu thụ không gian đĩa khi thực sự cần thiết.
+- Hỗ trợ hệ thống tệp có kích thước lên đến 8 exabytes và tệp có kích thước lên đến 8 exabytes.
+- Tối ưu hóa cho các hoạt động I/O song song, cho phép nhiều luồng truy cập hệ thống tệp cùng lúc.
+3. Ổ, partition
+
+- Sử dụng `fdisk`:
+  + Liệt kê disk và partition: `fdisk -l`
+  + Chọn disk: `fdisk /dev/disk`
+  + Tạo partition mới: sử dụng `n` để tạo và `w` để ghi vào disk
+- Sử dụng `parted`:
+  + Liệt kê disk và partition: `parted -l`
+  + Chọn disk: `parted /dev/disk`
+  + Tạo partition table: `mklabel [partition-table-type]`
+  + Kiểm tra table: `print`
+  + Tạo partition: `mkpart [partition-type] [file-system] [disk-start] [disk-end]`
+  + Ghi vào disk: `quit`
+
+- Format partition:
+  + `mkfs.[file-system] [partition]`
+4. LVM (Logical Volume Manager)
+
+- Là một công cụ mạnh mẽ cho phép quản lý không gian đĩa một cách linh hoạt và động trên hệ thống Linux.
+- Cho phép tạo, thay đổi kích thước, và quản lý các phân vùng đĩa một cách dễ dàng mà không cần phải tắt máy.
+
+1, Physical Volume (PV): Là các thiết bị lưu trữ vật lý như ổ cứng, phân vùng hoặc mảng RAID
+
+ - Xác định PV: `lsblk`
+ - Tạo PV: `pvcreate /dev/partition1`
+ - Xóa PV: `pvremove /dev/partition1`
+
+2, Volume Group (VG): Là một tập hợp các PV, tạo thành một không gian lưu trữ chung để tạo ra các Logical Volume.
+
+ - Tạo VG từ PV: `vgcreate my_vg /dev/partition1`
+ - Xóa VG: `vgremove my_vg`
+ - Thêm PV mới vào VG: `vgextend my_vg /dev/partition2`
+ - Xóa PV khỏi VG:
+   + `pvmove /dev/partition2`
+   + `vgreduce my_vg /dev/partition2`
+ - Kiểm tra VG: `vgdisplay`
+
+3, Logical Volume (LV): Là các phân vùng động được tạo ra từ VG. Các LV này có thể được mở rộng hoặc thu nhỏ một cách linh hoạt.
+
+ - Tạo LV từ VG: `lvcreate -L [size] -n my_lv my_vg`
+ - Mở rộng LV:
+   + `lvextend -L +[size] /dev/my_vg/my_lv`
+   + `resize2fs /dev/my_vg/my_lv`
+ - Thu nhỏ LV:
+   + `umount /dev/my_vg/my_lv`
+   + `e2fsck -f /dev/my_vg/my_lv`
+   + `resize2fs /dev/my_vg/my_lv [size]`
+   + `lvreduce -L [size] /dev/my_vg/my_lv`
+ - Xóa LV: `lvremove /dev/my_vg/my_lv`
+ - Kiểm tra LV: `lvdisplay`
+
+4, Logical Extent (LE) và Physical Extent (PE): LE là các khối dữ liệu của LV và PE là các khối dữ liệu của PV. Các LE và PE có cùng kích thước và được ánh xạ với nhau trong VG.
+
+5. NTFS
+
+- Được Microsoft phát triển để thay thế FAT, FAT32.
+- Hỗ trợ tệp và phân vùng lớn hơn so với FAT32 (4GB và 2TB).
+- Hỗ trợ quyền truy cập và mã hóa tệp tin.
+- Hỗ trợ ghi nhật ký (journaling), quản lý phân mảnh tự động,...
+
+1, Format disk partition: 
+
+    mkfs -t ntfs /dev/disk
+
+2, Tạo, xóa phân vùng: sử dụng `fdisk` và `parted`.
+
+3, Thay đổi kích thước phân vùng NTFS:
+
+- 
 
 ## Ceph
 
