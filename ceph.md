@@ -40,6 +40,6 @@
      - Cần ít nhất 3 ổ cứng.
      - Dữ liệu chia đều ra 3 ổ và mỗi ổ có thêm 1 khối parity (XOR của các ổ cứng khác để khôi phục dữ liệu)
     
-![raid 5 picture](pictures/raid5.jpeg)
+![raid 5 picture](pictures/raid5.jpg)
      
 ![raid xor picture](pictures/xor.png)
