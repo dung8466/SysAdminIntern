@@ -53,3 +53,9 @@
      - Thêm 1 partiy => có thể khôi phục dữ liệu từ 2 ổ fail.
 
 ![raid 6 picture](pictures/raid6.jpg)
+
+  + RAID 10: Mirrored RAID 0.
+
+    - Cần tối thiểu 4 ổ cứng.
+
+![raid 10 picture](raid10.jpeg)
