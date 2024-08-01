@@ -59,3 +59,10 @@
     - Cần tối thiểu 4 ổ cứng.
 
 ![raid 10 picture](pictures/raid10.jpeg)
+
+
+  + RAID 01: Striped RAID 1.
+
+    - Cần tối thiểu 4 ổ cứng.
+
+![raid 01 picture](pictures/raid01.png)
