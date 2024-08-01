@@ -26,19 +26,20 @@
       - Cần ít nhất 2 ổ cứng.
       - Dữ liệu chia đều vào 2 ổ.
      
-    ![pictures/raid0.png](raid 0 picture)
+![pictures/raid0.png](raid 0 picture)
 
    + RAID 1: Mirrored blocks.
   
      - Cần ít nhất 2 ổ cứng.
      - Dữ liệu trên 2 ổ giống nhau.
     
-     ![pictures/raid1.jpeg](raid 1 picture)
+![pictures/raid1.jpeg](raid 1 picture)
 
    + RAID 5: Striped & Parity blocks.
   
      - Cần ít nhất 3 ổ cứng.
      - Dữ liệu chia đều ra 3 ổ và mỗi ổ có thêm 1 khối parity (XOR của các ổ cứng khác để khôi phục dữ liệu)
     
-     ![pictures/raid5.png](raid 5 picture)
-     ![pictures/xor.png](raid xor picture)
+![pictures/raid5.png](raid 5 picture)
+     
+![pictures/xor.png](raid xor picture)
