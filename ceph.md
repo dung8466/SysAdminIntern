@@ -217,6 +217,8 @@ Sử dụng thuật toán CRUSH, Ceph tính toán Placement Group (PG) nào nên
 - Mỗi object lưu ở OSD.
 - Ceph OSD Daemon lưu dữ liệu như object trong 1 không gian phẳng (flat namespace). Object bao gồm ID, binary và metadata bao gồm cặp name/value.
 
+![metadata](pictures/obj.png)
+
 2. Thành phần của Ceph Cluster:
 
 - Để Ceph Cluster có thể hoạt động cần tối thiểu 1 Ceph Monitor, 1 Ceph Manager và cần ít nhất số lượng OSD bằng số lượng bản sao obj lưu trong cluster.
