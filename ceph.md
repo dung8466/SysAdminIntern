@@ -184,6 +184,24 @@ Sử dụng thuật toán CRUSH, Ceph tính toán Placement Group (PG) nào nên
 
 1. Cấu trúc của Ceph:
 
+- Librados:
+  + Cung cấp giao diện API để các ứng dụng có thể thực hiện các hoạt động lưu trữ như đọc, ghi và xóa đối tượng.
+  + Là cầu nối giữa các ứng dụng và RADOS, giúp xử lý các yêu cầu lưu trữ mà không cần tương tác trực tiếp với các OSDs.
+- Rados:
+  + Quản lý lưu trữ đối tượng, bao gồm các chức năng như sao chép, phục hồi, và cân bằng tải.
+  + Cung cấp nền tảng cho các dịch vụ lưu trữ khác như RADOS Block Device (RBD), Ceph File System (CephFS), và RADOS Gateway (RGW).
+  + Bao gồm OSD Daemon và các CRUSH map - quản lý cách phân phối các đối tượng đến các OSDs.
+- Rados Gateway: dịch vụ lưu trữ đối tượng của Ceph
+  + Tương thích với S3 của Amazon và Swift của Openstack.
+  + Cung cấp các dịch vụ lưu trữ đối tượng qua API, cho phép các ứng dụng lưu trữ và truy xuất dữ liệu đối tượng.
+  + Hỗ trợ các tính năng như bucket-nhóm các obj với nhau, object versioning, và object lifecycle management-tự động sao chép,xóa,....
+- Ceph Block Device: dịch vụ lưu trữ khối của Ceph
+  + Cung cấp các thiết bị lưu trữ khối cho các máy ảo, hệ thống tệp, và các ứng dụng khác yêu cầu lưu trữ khối.
+  + Hỗ trợ các tính năng như snapshot, cloning và việc mở rộng khối.
+- Ceph FileSystem: hệ thống tệp phân tán của Ceph
+  + Cung cấp dịch vụ lưu trữ tệp với khả năng mở rộng và phân tán trên nhiều máy chủ.
+  + Sử dụng các OSD (Object Storage Daemons) để lưu trữ dữ liệu và MDS (Metadata Servers) để quản lý siêu dữ liệu.
+
 ![ceph architecture](pictures/ceph-kt.png)
 
 2. Thành phần của Ceph Cluster:
