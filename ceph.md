@@ -184,7 +184,7 @@ Sử dụng thuật toán CRUSH, Ceph tính toán Placement Group (PG) nào nên
 
 1. Cấu trúc của Ceph:
 
-
+![ceph architecture](pictures/ceph-kt.png)
 
 2. Thành phần của Ceph Cluster:
 
