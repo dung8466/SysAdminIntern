@@ -174,8 +174,36 @@
 
 3, Thay đổi kích thước phân vùng NTFS:
 
-- 
+    ntfsresize --size SIZE /dev/disk
 
 ## Ceph
 
+Ceph lưu dữ liệu dưới dạng object.
+
+Sử dụng thuật toán CRUSH, Ceph tính toán Placement Group (PG) nào nên chứa đối tượng, OSD nào nên chứa PG.
+
+1. Cấu trúc của Ceph:
+
+
+
+2. Thành phần của Ceph Cluster:
+
+- Để Ceph Cluster có thể hoạt động cần tối thiểu 1 Ceph Monitor, 1 Ceph Manager và cần ít nhất số lượng OSD bằng số lượng bản sao obj lưu trong cluster.
+
+- Cấu trúc:
+  + Ceph Monitor (MON):
+    - Duy trì các đồ thị trạng thái của cluster, bao gồm monitor map, manager map, OSD map, MDS map, và CRUSH map.
+    - Các đồ thị này cần thiết để các Ceph daemons phối hợp với nhau, quản lý xác thực giữa daemons và clients.
+    - Cần ít nhất 3 MON để đảm bảo HA.
+  + Ceph Manager (Mgr):
+    - Chịu trách nhiệm theo dõi các số liệu thời gian chạy và trạng thái hiện tại của cụm Ceph, bao gồm việc sử dụng bộ nhớ, số liệu hiệu suất hiện tại và tải hệ thống.
+    - Chứa python-based module để quản lý và expose thông tin cụm Ceph.
+    - Cần ít nhất 2 Mgr để đảm bảo bảo HA.
+  + Ceph OSDs (OSD):
+    - Lưu trữ dữ liệu, xử lý sao chép, phục hồi, cân bằng lại dữ liệu.
+    - Cung cấp thông tin giám sát cho MONs và Mgrs bằng cách kiểm tra heartbeat các OSD khác.
+    - Thường cần 3 OSD để đảm bảo HA.
+  + Ceph Metadata Server (MDS):
+    - Cần thiết nếu sử dụng CephFS.
+    - Cho phép CephFS chạy các lệnh như ls, find,... mà không đặt gánh nặng lên Ceph Cluster.
 
