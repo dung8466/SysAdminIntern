@@ -187,40 +187,57 @@ Sử dụng thuật toán CRUSH, Ceph tính toán Placement Group (PG) nào nên
 - Librados:
   + Cung cấp giao diện API để các ứng dụng có thể thực hiện các hoạt động lưu trữ như đọc, ghi và xóa đối tượng.
   + Là cầu nối giữa các ứng dụng và RADOS, giúp xử lý các yêu cầu lưu trữ mà không cần tương tác trực tiếp với các OSDs.
+
 - Rados:
   + Quản lý lưu trữ đối tượng, bao gồm các chức năng như sao chép, phục hồi, và cân bằng tải.
   + Cung cấp nền tảng cho các dịch vụ lưu trữ khác như RADOS Block Device (RBD), Ceph File System (CephFS), và RADOS Gateway (RGW).
   + Bao gồm OSD Daemon và các CRUSH map - quản lý cách phân phối các đối tượng đến các OSDs.
-- Rados Gateway: dịch vụ lưu trữ đối tượng của Ceph
+
+- Rados Gateway (RGW): dịch vụ lưu trữ đối tượng của Ceph
   + Tương thích với S3 của Amazon và Swift của Openstack.
   + Cung cấp các dịch vụ lưu trữ đối tượng qua API, cho phép các ứng dụng lưu trữ và truy xuất dữ liệu đối tượng.
   + Hỗ trợ các tính năng như bucket-nhóm các obj với nhau, object versioning, và object lifecycle management-tự động sao chép,xóa,....
-- Ceph Block Device: dịch vụ lưu trữ khối của Ceph
+
+--> Ceph Object Storage bao gồm Ceph Cluster và Rados Gateway.
+
+- Ceph Block Device (RBD): dịch vụ lưu trữ khối của Ceph
   + Cung cấp các thiết bị lưu trữ khối cho các máy ảo, hệ thống tệp, và các ứng dụng khác yêu cầu lưu trữ khối.
   + Hỗ trợ các tính năng như snapshot, cloning và việc mở rộng khối.
-- Ceph FileSystem: hệ thống tệp phân tán của Ceph
+
+- Ceph FileSystem (CephFS): hệ thống tệp phân tán của Ceph
   + Cung cấp dịch vụ lưu trữ tệp với khả năng mở rộng và phân tán trên nhiều máy chủ.
   + Sử dụng các OSD (Object Storage Daemons) để lưu trữ dữ liệu và MDS (Metadata Servers) để quản lý siêu dữ liệu.
 
 ![ceph architecture](pictures/ceph-kt.png)
+
+2. Lưu dữ liệu
+
+- Ceph Cluster nhận dữ liệu từ Ceph Client - dữ liệu có thể đến từ RBD, CephFS, Ceph Object Storage hoặc tự triển khai bằng librados.
+- Dữ liệu này được lưu dưới dạng RADOS object.
+- Mỗi object lưu ở OSD.
+- Ceph OSD Daemon lưu dữ liệu như object trong 1 không gian phẳng (flat namespace). Object bao gồm ID, binary và metadata bao gồm cặp name/value.
 
 2. Thành phần của Ceph Cluster:
 
 - Để Ceph Cluster có thể hoạt động cần tối thiểu 1 Ceph Monitor, 1 Ceph Manager và cần ít nhất số lượng OSD bằng số lượng bản sao obj lưu trong cluster.
 
 - Cấu trúc:
+
   + Ceph Monitor (MON):
     - Duy trì các đồ thị trạng thái của cluster, bao gồm monitor map, manager map, OSD map, MDS map, và CRUSH map.
     - Các đồ thị này cần thiết để các Ceph daemons phối hợp với nhau, quản lý xác thực giữa daemons và clients.
     - Cần ít nhất 3 MON để đảm bảo HA.
+
   + Ceph Manager (Mgr):
     - Chịu trách nhiệm theo dõi các số liệu thời gian chạy và trạng thái hiện tại của cụm Ceph, bao gồm việc sử dụng bộ nhớ, số liệu hiệu suất hiện tại và tải hệ thống.
     - Chứa python-based module để quản lý và expose thông tin cụm Ceph.
     - Cần ít nhất 2 Mgr để đảm bảo bảo HA.
+
   + Ceph OSDs (OSD):
     - Lưu trữ dữ liệu, xử lý sao chép, phục hồi, cân bằng lại dữ liệu.
     - Cung cấp thông tin giám sát cho MONs và Mgrs bằng cách kiểm tra heartbeat các OSD khác.
     - Thường cần 3 OSD để đảm bảo HA.
+
   + Ceph Metadata Server (MDS):
     - Cần thiết nếu sử dụng CephFS.
     - Cho phép CephFS chạy các lệnh như ls, find,... mà không đặt gánh nặng lên Ceph Cluster.
