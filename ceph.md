@@ -189,7 +189,7 @@ Sử dụng thuật toán CRUSH, Ceph tính toán Placement Group (PG) nào nên
   + Là cầu nối giữa các ứng dụng và RADOS, giúp xử lý các yêu cầu lưu trữ mà không cần tương tác trực tiếp với các OSDs.
 
 - Rados:
-  + Quản lý lưu trữ đối tượng, bao gồm các chức năng như sao chép, phục hồi, và cân bằng tải.
+  + Quản lý lưu trữ đối tượng, bao gồm các chức năng như sao chép, phát hiện lỗi, phục hồi, và cân bằng tải.
   + Cung cấp nền tảng cho các dịch vụ lưu trữ khác như RADOS Block Device (RBD), Ceph File System (CephFS), và RADOS Gateway (RGW).
   + Bao gồm OSD Daemon và các CRUSH map - quản lý cách phân phối các đối tượng đến các OSDs.
 
