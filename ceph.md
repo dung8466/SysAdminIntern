@@ -216,6 +216,9 @@ Sử dụng thuật toán CRUSH, Ceph tính toán Placement Group (PG) nào nên
 - Dữ liệu này được lưu dưới dạng RADOS object.
 - Mỗi object lưu ở OSD.
 - Ceph OSD Daemon lưu dữ liệu như object trong 1 không gian phẳng (flat namespace). Object bao gồm ID, binary và metadata bao gồm cặp name/value.
+  + ID: định danh duy nhất trong toàn bộ cluster.
+  + Binary: Dữ liệu nhị phân mà đối tượng lưu trữ.
+  + Metadata: Cung cấp các thông tin như loại đối tượng, ngày tạo, người tạo, ...
 
 ![metadata](pictures/obj.png)
 
