@@ -282,3 +282,28 @@ Sử dụng thuật toán CRUSH, Ceph tính toán Placement Group (PG) nào nên
 
 - Cung cấp:
   + Khả năng chịu lỗi: bằng cách cho phép thiết lập số lượng OSD có thể hỏng mà không làm mất dữ liệu.
+      - Nếu sử dụng replicated pool thì số OSD có thể fail mà không mất dữ liệu bằng với số bản sao.
+  + Placement Groups: autoscaler cài số PG trong 1 pool. Trong cấu hình thông thường 100 PG/pool.
+  + Crush rules: Khi dữ liệu lưu trong 1 pool, vị trí của object và bản sao của nó trong cluster được xác định bởi CRUSH rules.
+  + Snapshots: Tạo snapshot của 1 pool.
+
+6. PG:
+
+- Giúp phân phối và quản lý dữ liệu trên OSD 1 cách hiệu quả.
+- Dữ liệu được ánh xạ vào PG, các PG được ánh xạ vào OSD. --> Gộp được các object, giảm metadata mỗi object cần theo dõi và lượng quy trình cần chạy.
+- Tăng số lượng PG có thể giảm sai lệch về tải mỗi OSD trong cluster nhưng cần nhiều CPU và memory hơn.
+- Tính: PGs=(OSDs×100)/replica size
+- Trạng thái của PG:
+
+| status | Chi tiết |
+| --- | --- |
+| active | PG active sẵn sàng xử lý các request của client đọc ghi cập nhật ... |
+| clean | Các bản ghi replicate đúng vị trí và đủ số lượng |
+| down | bản sao với dữ liệu quan trọng down, PG không sẵn sàng xử lý các request |
+| peering | PG đang trong quá trình phối hợp giữa các OSD để đảm bảo sự nhất quán của dữ liệu |
+| degraded | thiếu bản sao của 1 số object trong PG, có thể do OSD bị lỗi |
+| inconsistent | bản sao của PG không đồng nhất (kích thước của object sai, thiếu object từ 1 bản sao sau quá trình khôi phục |
+| repair | đang kiểm tra PG và sẽ sửa không đồng nhất nếu có thể |
+| recovering | các object đang được migrate/đồng bộ hóa với các bản sao |
+| incomplete | PG thiếu 1 phần lịch sử của log, nếu gặp có thể khởi động lại OSD chứa thông tin cần thiết |
+| stale | PG ở trạng thái không biết- monitor không nhận được cập nhật từ khi PG mapping thay đổi |
