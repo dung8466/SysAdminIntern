@@ -222,7 +222,7 @@ Sử dụng thuật toán CRUSH, Ceph tính toán Placement Group (PG) nào nên
 
 ![metadata](pictures/obj.png)
 
-2. Thành phần của Ceph Cluster:
+3. Thành phần của Ceph Cluster:
 
 - Để Ceph Cluster có thể hoạt động cần tối thiểu 1 Ceph Monitor, 1 Ceph Manager và cần ít nhất số lượng OSD bằng số lượng bản sao obj lưu trong cluster.
 
@@ -247,3 +247,38 @@ Sử dụng thuật toán CRUSH, Ceph tính toán Placement Group (PG) nào nên
     - Cần thiết nếu sử dụng CephFS.
     - Cho phép CephFS chạy các lệnh như ls, find,... mà không đặt gánh nặng lên Ceph Cluster.
 
+4. Cluster Map:
+
+- Để Ceph Cluster hoạt động bình thường, Ceph Clients và OSDs phải biết được thông tin tình trạng cluster. Thông tin đó được lưu trũ trong Cluster Map.
+
+- Bao gồm:
+  + Monitor Map:
+    - Chứa fsid của cluster, vị trí, tên, địa chỉ, TCP port của mỗi monitor.
+    - Chứa thông tin epoch (kỷ nguyên), thời gian tạo và lần cuối chỉnh sửa monitor map.
+    - `ceph mon dump`
+  + OSD Map:
+    - Chứa fsid của cluster.
+    - Chứa thời gian tạo và lần cuối chỉnh sửa OSD map.
+    - Chứa danh sách pool, kích thước bản sao, số lượng PG, OSDs và trạng thái (`up`, `in`).
+    - `ceph osd dump`
+  + PG Map:
+    - Chứa phiên bản PG và mốc thời gian.
+    - Chứa epoch gần nhất của OSD map.
+    - Chứa tỷ lệ đầy đủ, chi tiết của từng PG - ID, Up Set, Acting Set, trạng thái của PG và thống kê sử dụng dữ liệu của từng pool.
+  + CRUSH Map:
+    - Chứa danh sách thiết bị lưu trữ, cấu trúc phân cấp của domain lỗi và các quy tắc để duyệt qua cấu trúc phân cấp khi lưu trữ dữ liệu.
+    - `ceph osd getcrushmap -o {filename}`, `crushtool -d {comp-crushmap-filename} -o {decomp-crushmap-filename}`
+  + MDS Map:
+    - epoch hiện tại của MDS Map, thời gian tạo và lần cuối chỉnh sủa của nó.
+    - Chứa pool để lưu thông tin metadata, danh sách metadata servers, và metadata servers `up` hay `in`.
+    - `ceph fs dump`
+
+- Mỗi map chứa lịch sử thay đổi trạng thái của nó.
+- Ceph Monitors có bản copy master của Cluster Map - bao gồm cluster members, trạng thái của cluster, thay đổi của cluster, thông tin tổng quan về health của Ceph Storage Cluster.
+
+5. Pool:
+
+- Là các phân vùng logic để lưu trữ object.
+
+- Cung cấp:
+  + Khả năng chịu lỗi: bằng cách cho phép thiết lập số lượng OSD có thể hỏng mà không làm mất dữ liệu.
