@@ -294,16 +294,40 @@ Sử dụng thuật toán CRUSH, Ceph tính toán Placement Group (PG) nào nên
 - Tăng số lượng PG có thể giảm sai lệch về tải mỗi OSD trong cluster nhưng cần nhiều CPU và memory hơn.
 - Tính: PGs=(OSDs×100)/replica size
 - Trạng thái của PG:
+*"backfill" là một quá trình dùng để đảm bảo tính dư thừa và cân bằng dữ liệu trên toàn bộ cụm lưu trữ
 
 | status | Chi tiết |
 | --- | --- |
+| creating | PG đang được tạo |
 | active | PG active sẵn sàng xử lý các request của client đọc ghi cập nhật ... |
+| activating | PG đang peer nhưng chưa active |
 | clean | Các bản ghi replicate đúng vị trí và đủ số lượng |
 | down | bản sao với dữ liệu quan trọng down, PG không sẵn sàng xử lý các request |
 | peering | PG đang trong quá trình phối hợp giữa các OSD để đảm bảo sự nhất quán của dữ liệu |
 | degraded | thiếu bản sao của 1 số object trong PG, có thể do OSD bị lỗi |
 | inconsistent | bản sao của PG không đồng nhất (kích thước của object sai, thiếu object từ 1 bản sao sau quá trình khôi phục |
 | repair | đang kiểm tra PG và sẽ sửa không đồng nhất nếu có thể |
+| failed_repair | nỗ lực sửa chữa PG đã thất bại. Cần có sự can thiệp thủ công |
 | recovering | các object đang được migrate/đồng bộ hóa với các bản sao |
+| recovery_toofull | khôi phục thất bại vì OSD quá đầy |
+| recovery_wait | đợi khôi phục |
+| recovery_unfound | không thể khôi phục vì không tìm thấy object |
+| forced_recovery | PG được để độ ưu tiên cao nhất để khôi phục |
 | incomplete | PG thiếu 1 phần lịch sử của log, nếu gặp có thể khởi động lại OSD chứa thông tin cần thiết |
 | stale | PG ở trạng thái không biết- monitor không nhận được cập nhật từ khi PG mapping thay đổi |
+| remapped | PG tạm thời map đến OSD khác với CRUSH chỉ định |
+| peered | PG đã peer nhưng không thể active |
+| backfilling | trường hợp đặc biệt của khôi phục, toàn bộ dữ liệu PG được quét và đồng bộ thay vì suy luận từ những gì cần chuyển từ log hoạt động PG gần nhất |
+| backfill_unfound | backfill không thể hoàn thành vì không tìm thấy object |
+| backfill_wait | PG đang đợi backfill |
+| backfill_toofull | OSD quá đầy, backfill từ chối |
+| forced_backfill | PG được để độ ưu tiên cao nhất để backfill |
+| premerge | PG ở trạng thái không hoạt động-IO do sắp hợp nhất PG. Điều đó xảy ra khi pg_num_pending < pg_num và áp dụng cho các PG có pg_num_pending <= ps < pg_num cũng như PG ngang hàng tương ứng mà nó đang hợp nhất |
+| scrubbing | PG đang được kiểm tra không đồng nhất |
+| deep | kết hợp với `scrubbing` báo hiệu là deep scrub |
+| undersized | PG không chọn đủ OSD vì kích thước của nó |
+| snaptrim | PG xóa các snapshot cũ |
+| snaptrim_wait | PG trong hàng chờ dọn snapshot |
+| snaptrim_error | lỗi trong quá trình dọn snapshot |
+
+
