@@ -330,4 +330,29 @@ Sử dụng thuật toán CRUSH, Ceph tính toán Placement Group (PG) nào nên
 | snaptrim_wait | PG trong hàng chờ dọn snapshot |
 | snaptrim_error | lỗi trong quá trình dọn snapshot |
 
+7. CRUSH Map
 
+- CRUSH algorithm tính toán vị trí storage để quyết định cách để lưu trữ và truy xuất dữ liệu.
+- CRUSH cho phép Ceph Clients giao tiếp trực tiếp với OSDs. Bằng cách sử dụng phương pháp lưu trữ và truy xuất dữ liệu xác định bằng thuật toán, Ceph tránh được single point of failure, tắc nghẽn hiệu suất và giới hạn vật lý để mở rộng.
+- CRUSH sử dụng map của cluster để map dữ liệu đến OSDs, phân phối dữ liệu trên cluster theo cấu hình chính sách sao chép và failure domain. 
+- CRUSH map chứa danh sách OSDs và phân cấp "buckets" (host, rack) và quy tắc quản lý cách CRUSH sao chép trong cluster pool.
+- Bằng cách phản ánh tổ chức vật lý của quá trình cài đặt, CRUSH có thể lập mô hình (từ đó giải quyết) khả năng xảy ra lỗi.
+- Cấu trúc phân cấp của CRUSH:
+  + chassis
+  + racks
+  + physical proximity
+  + shared power source
+  + shared networking
+  + failure domains
+
+--> Bằng cách mã hóa thông tin này vào bản đồ CRUSH, các chính sách đặt dữ liệu của CRUSH sẽ phân phối các bản sao của object qua các miền lỗi khác nhau trong khi vẫn duy trì sự phân phối mong muốn.
+
+- Khi 1 OSD mới được triển khai, nó được tự thêm vào CRUSH map trong `host bucket` có tên node OSD chạy trên đó.
+
+--> Kết hợp với cấu hình domain failure đảm bảo bản sao hoặc phân đoạn erasure-code phân phối giữa các host và 1 host lỗi hoặc các lỗi khác không ảnh hưởng tính khả dụng.ạ
+
+- Vị trí của OSD trong hệ thống phân cấp của CRUSH map được gọi là `CRUSH location`. Nó có dạng danh sách key/value `root=default row=a rack=a2 chassis=a2a host=a2a1`
+
+- Mỗi node (thiết bị - OSD có lưu dữ liệu hoặc bucket) trong cấu trúc phân cấp có `weight` chỉ ra tỷ lệ tương đối của tổng dữ liệu cần được lưu trữ bởi thiết bị hoặc cây phân cấp. `weight` được cài đặt ở leaves biểu thị kích thước của thiết bị. Các `weight` tự động cộng dồn từ dưới lên trên: `weight` của root = tổng `weight` thiết bị bên dưới. `weight` thường hiển thị TiB.
+
+![cây phân cấp](pictures/tree.png)
