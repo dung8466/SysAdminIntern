@@ -182,6 +182,8 @@ Ceph lưu dữ liệu dưới dạng object.
 
 Sử dụng thuật toán CRUSH, Ceph tính toán Placement Group (PG) nào nên chứa đối tượng, OSD nào nên chứa PG.
 
+![lưu object](pictures/store.png)
+
 1. Cấu trúc của Ceph:
 
 - Librados:
@@ -353,6 +355,46 @@ Sử dụng thuật toán CRUSH, Ceph tính toán Placement Group (PG) nào nên
 
 - Vị trí của OSD trong hệ thống phân cấp của CRUSH map được gọi là `CRUSH location`. Nó có dạng danh sách key/value `root=default row=a rack=a2 chassis=a2a host=a2a1`
 
+![cây phân cấp](pictures/tree.png)
+
 - Mỗi node (thiết bị - OSD có lưu dữ liệu hoặc bucket) trong cấu trúc phân cấp có `weight` chỉ ra tỷ lệ tương đối của tổng dữ liệu cần được lưu trữ bởi thiết bị hoặc cây phân cấp. `weight` được cài đặt ở leaves biểu thị kích thước của thiết bị. Các `weight` tự động cộng dồn từ dưới lên trên: `weight` của root = tổng `weight` thiết bị bên dưới. `weight` thường hiển thị TiB.
 
-![cây phân cấp](pictures/tree.png)
+- weight set: có thể thay thế weight trong việc tính toán đặt dữ liệu.
+  + `compat weight`: là 1 cặp weight cho mỗi thiết bị và mỗi node trong cluster.
+    - không thể khắc phục tất cả các bất thường (PG trong pool khác nhau có size, mức tải khác nhau nhưng xử lý như nhau bởi balancer).
+    - ưu điểm tương thích ngược với các phiên bản Ceph.
+  + `per-pool weight`: linh hoạt hơn vì nó cho phép tối ưu hóa việc đặt dữ liệu cho mỗi pool
+    - có thể được điều chỉnh cho từng vị trí của việc đặt dữ liệu cho phép trình tối ưu hóa điều chỉnh độ lệch nhỏ của dữ liệu đối với các thiết bị có trọng số nhỏ so với các thiết bị ngang hàng của chúng (hiệu ứng thường chỉ rõ ràng trong các cụm rất lớn nhưng có thể gây ra vấn đề về cân bằng).
+
+- Nếu cả `compat weight` và `per-pool weight` được cài đặt thì vị trí dữ liệu của 1 pool sẽ sử dụng `per-pool weight`.
+
+- Ví dụ:
+
+```
+Compat Weight Set
+
+Giả sử bạn có một cụm Ceph với các OSD sau và muốn sử dụng bộ trọng số compat để cân bằng:
+
+    OSD1: Trọng số gốc 1 TiB
+    OSD2: Trọng số gốc 2 TiB
+    OSD3: Trọng số gốc 3 TiB
+
+Bộ trọng số compat có thể điều chỉnh như sau để cải thiện cân bằng dữ liệu:
+
+    OSD1: Trọng số compat 1.2 TiB
+    OSD2: Trọng số compat 2.1 TiB
+    OSD3: Trọng số compat 2.7 TiB
+
+Per-Pool Weight Set
+
+Trong trường hợp bạn có nhiều pool dữ liệu với các yêu cầu khác nhau, bộ trọng số per-pool có thể được sử dụng để tối ưu hóa từng pool:
+
+    Pool1:
+        OSD1: Trọng số 1.5 TiB
+        OSD2: Trọng số 2.0 TiB
+        OSD3: Trọng số 2.5 TiB
+    Pool2:
+        OSD1: Trọng số 1.0 TiB
+        OSD2: Trọng số 1.5 TiB
+        OSD3: Trọng số 3.0 TiB
+```
