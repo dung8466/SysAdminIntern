@@ -351,7 +351,13 @@ Sử dụng thuật toán CRUSH, Ceph tính toán Placement Group (PG) nào nên
 
 - Khi 1 OSD mới được triển khai, nó được tự thêm vào CRUSH map trong `host bucket` có tên node OSD chạy trên đó.
 
---> Kết hợp với cấu hình domain failure đảm bảo bản sao hoặc phân đoạn erasure-code phân phối giữa các host và 1 host lỗi hoặc các lỗi khác không ảnh hưởng tính khả dụng.ạ
+--> Kết hợp với cấu hình domain failure đảm bảo bản sao hoặc phân đoạn erasure-code phân phối giữa các host và 1 host lỗi hoặc các lỗi khác không ảnh hưởng tính khả dụng.
+
+- Thay đổi CRUSH map:
+  + Lấy thông tin CRUSH map: `ceph osd getcrushmap -o {compiled-crushmap-filename}`
+  + Decompile CRUSH map: `crushtool -d {compiled-crushmap-filename} -o {decompiled-crushmap-filename}`
+  + Compile CRUSH map: `crushtool -c {decompiled-crushmap-filename} -o {compiled-crushmap-filename}`
+  + Cài đặt CRUSH map sử dụng file compile: `ceph osd setcrushmap -i {compiled-crushmap-filename}`
 
 - Vị trí của OSD trong hệ thống phân cấp của CRUSH map được gọi là `CRUSH location`. Nó có dạng danh sách key/value `root=default row=a rack=a2 chassis=a2a host=a2a1`
 
