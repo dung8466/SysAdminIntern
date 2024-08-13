@@ -404,3 +404,63 @@ Trong trường hợp bạn có nhiều pool dữ liệu với các yêu cầu k
         OSD2: Trọng số 1.5 TiB
         OSD3: Trọng số 3.0 TiB
 ```
+
+
+### Cài đặt Ceph Cluster
+
+- Tại node 1:
+  + `ssh-keygen`
+  + `ssh-copy-id node02` && `ssh-copy-id node03`
+  + `for NODE in node01 node02 node03 do ssh $NODE "apt update; apt -y install ceph" done`
+  + `uuidgen`
+  + Cấu hình `/etc/ceph/ceph.conf`:
+
+```
+[global]
+# specify cluster network for monitoring
+cluster network = <dải mạng>
+# specify public network
+public network = <dải mạng>
+# specify UUID genarated above
+fsid = <kết quả uuidgen>
+# specify IP address of Monitor Daemon
+mon host = node01,node02,node03
+# specify Hostname of Monitor Daemon
+mon initial members = <tên 3 node>
+osd pool default crush rule = -1
+
+# mon.(Node name)
+[mon.node01]
+# specify Hostname of Monitor Daemon
+host = node01
+# specify IP address of Monitor Daemon
+mon addr = <ip>
+# allow to delete pools
+mon allow pool delete = true
+
+# mon.(Node name)
+[mon.node02]
+# specify Hostname of Monitor Daemon
+host = node02
+# specify IP address of Monitor Daemon
+mon addr = <ip>
+# allow to delete pools
+mon allow pool delete = true
+
+# mon.(Node name)
+[mon.node03]
+# specify Hostname of Monitor Daemon
+host = node03
+# specify IP address of Monitor Daemon
+mon addr = <ip>
+# allow to delete pools
+mon allow pool delete = true
+```
+
+
+  + Tạo key cho cluster mon: `ceph-authtool --create-keyring /etc/ceph/ceph.mon.keyring --gen-key -n mon. --cap mon 'allow *'`
+  + Tạo key cho cluster admin: `ceph-authtool --create-keyring /etc/ceph/ceph.client.admin.keyring --gen-key -n client.admin --cap mon 'allow *' --cap osd 'allow *' --cap mds 'allow *' --cap mgr 'allow *'`
+  + Tạo key boootstrap: `ceph-authtool --create-keyring /var/lib/ceph/bootstrap-osd/ceph.keyring --gen-key -n client.bootstrap-osd --cap mon 'profile bootstrap-osd' --cap mgr 'allow r'`
+  + Import các key vừa tạo: `ceph-authtool /etc/ceph/ceph.mon.keyring --import-keyring /etc/ceph/ceph.client.admin.keyring` && `ceph-authtool /etc/ceph/ceph.mon.keyring --import-keyring /var/lib/ceph/bootstrap-osd/ceph.keyring `
+  + Tạo mon map trên node01: `monmaptool --create --add node01 <ip> --fsid <kết quả uuidgen> /etc/ceph/monmap`
+  + Thêm 2 mon vào map vừa tạo: `monmaptool --add node02 <ip> --fsid <kết quả uuidgen> /etc/ceph/monmap` && `monmaptool --add node03 <ip> --fsid <kết quả uuidgen> /etc/ceph/monmap`
