@@ -413,7 +413,7 @@ Trong trường hợp bạn có nhiều pool dữ liệu với các yêu cầu k
   + `ssh-copy-id node02` && `ssh-copy-id node03`
   + `for NODE in node01 node02 node03 do ssh $NODE "apt update; apt -y install ceph" done`
   + `uuidgen`
-  + Cấu hình `/etc/ceph/ceph.conf`:
+- Cấu hình `/etc/ceph/ceph.conf` tại 3 node:
 
 ```
 [global]
@@ -457,10 +457,41 @@ mon addr = <ip>
 mon allow pool delete = true
 ```
 
-
+- Tại node 1:
   + Tạo key cho cluster mon: `ceph-authtool --create-keyring /etc/ceph/ceph.mon.keyring --gen-key -n mon. --cap mon 'allow *'`
   + Tạo key cho cluster admin: `ceph-authtool --create-keyring /etc/ceph/ceph.client.admin.keyring --gen-key -n client.admin --cap mon 'allow *' --cap osd 'allow *' --cap mds 'allow *' --cap mgr 'allow *'`
   + Tạo key boootstrap: `ceph-authtool --create-keyring /var/lib/ceph/bootstrap-osd/ceph.keyring --gen-key -n client.bootstrap-osd --cap mon 'profile bootstrap-osd' --cap mgr 'allow r'`
   + Import các key vừa tạo: `ceph-authtool /etc/ceph/ceph.mon.keyring --import-keyring /etc/ceph/ceph.client.admin.keyring` && `ceph-authtool /etc/ceph/ceph.mon.keyring --import-keyring /var/lib/ceph/bootstrap-osd/ceph.keyring `
   + Tạo mon map trên node01: `monmaptool --create --add node01 <ip> --fsid <kết quả uuidgen> /etc/ceph/monmap`
   + Thêm 2 mon vào map vừa tạo: `monmaptool --add node02 <ip> --fsid <kết quả uuidgen> /etc/ceph/monmap` && `monmaptool --add node03 <ip> --fsid <kết quả uuidgen> /etc/ceph/monmap`
+- Tạo thư mục cho mon daemon trên cả 3 node: `mkdir /var/lib/ceph/mon/ceph-node0x`
+- Copy mon key, monmap tạo trên node01 vào 2 node còn lại: `scp /etc/ceph/ceph.mon.keyring root@node0x:/etc/ceph/ceph.mon.keyring` && `scp /etc/ceph/monmap root@node02:/etc/ceph/monmap`
+- Liên kết key và monmap với mon daemon: `ceph-mon --cluster ceph --mkfs -i node0x --monmap /etc/ceph/monmap --keyring /etc/ceph/ceph.mon.keyring`
+- Đổi quyền cho thư mục: `chown ceph. /etc/ceph/ceph.*` && `chown -R ceph. /var/lib/ceph/mon/ceph-node0x /var/lib/ceph/bootstrap-osd`
+- Enable ceph mon: `systemctl enable --now ceph-mon@node0x`
+- Enable các module: `ceph mgr enable ...` && `ceph mon enable ...`
+- Tạo thư mục cho Manager Deamon: `mkdir /var/lib/ceph/mgr/ceph-node0x`
+- Tạo key auth: `ceph auth get-or-create mgr.node0x mon 'allow profile mgr' osd 'allow *' mds 'allow *'`
+- Thêm key vừa tạo: `ceph auth get-or-create mgr.node0x | tee /etc/ceph/ceph.mgr.admin.keyring` && `cp /etc/ceph/ceph.mgr.admin.keyring /var/lib/ceph/mgr/ceph-node0x/keyring`
+- Đổi quyền thư mục mgr key: `chown ceph. /etc/ceph/ceph.mgr.admin.keyring ` && `chown -R ceph. /var/lib/ceph/mgr/ceph-node0x`
+- Restart ceph mon: `systemctl enable --now ceph-mgr@node0x`
+- Kiểm tra ceph: `ceph -s`
+
+```
+cluster:
+    id:     <id>
+    health: HEALTH_WARN
+            mons are allowing insecure global_id reclaim
+            OSD count 0 < osd_pool_default_size 3
+
+  services:
+    mon: 3 daemons, quorum node02,node01,node03 (age 51m)
+    mgr: node01(active, since 18m), standbys: node03, node02
+    osd: 0 osds: 0 up, 0 in
+
+  data:
+    pools:   0 pools, 0 pgs
+    objects: 0 objects, 0 B
+    usage:   0 B used, 0 B / 0 B avail
+    pgs:
+```
