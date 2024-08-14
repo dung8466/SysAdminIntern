@@ -278,6 +278,8 @@ Sử dụng thuật toán CRUSH, Ceph tính toán Placement Group (PG) nào nên
 - Mỗi map chứa lịch sử thay đổi trạng thái của nó.
 - Ceph Monitors có bản copy master của Cluster Map - bao gồm cluster members, trạng thái của cluster, thay đổi của cluster, thông tin tổng quan về health của Ceph Storage Cluster.
 
+![crush map](pictures/crushmap.png)
+
 5. Pool:
 
 - Là các phân vùng logic để lưu trữ object.
