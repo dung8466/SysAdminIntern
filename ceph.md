@@ -560,3 +560,31 @@ ID  CLASS  WEIGHT   TYPE NAME                   STATUS  REWEIGHT  PRI-AFF
 - Theo dõi trạng thái của cluster: `ceph -w`
 - Dừng ceph tại node xóa: `systemctl disable --now ceph-osd@nodex.service`
 - Xóa OSD: `ceph osd purge <id> --yes-i-really-mean-it `
+
+
+##### Sử dụng Block Device
+
+- Tạo default RBD pool với 128 PG: `ceph osd pool create rbd 128`
+- Enable PG auto scale cho pool: `ceph osd pool set rbd pg_autoscale_mode on`
+- Initialize the pool: `rbd pool init rbd`
+- Kiểm tra trạng thái autoscale pool: `ceph osd pool autoscale-status`
+
+```
+POOL                     SIZE  TARGET SIZE  RATE  RAW CAPACITY   RATIO  TARGET RATIO  EFFECTIVE RATIO  BIAS  PG_NUM  NEW PG_NUM  AUTOSCALE
+device_health_metrics      0                 3.0        61428M  0.0000                                  1.0       1              on
+rbd                       19                 3.0        61428M  0.0000                                  1.0      32              on
+```
+
+- Tạo block device 10G: `rbd create --size 10G --pool rbd rbd01`
+- Kiểm tra block device: `rbd ls -l`
+- Map block device: `rbd map rbd01`
+- Xác nhận: `rbd showmapped`
+- Format thiết bị: `mkfs.xfs /dev/rbd0`
+- Mount partion: `mount /dev/rbd0 /tmp/temp`
+- Kiểm tra partion vừa mount: `df -hT`
+
+###### Xóa Block Device:
+
+- Unmount partion của block device: `rbd unmap /dev/rbd/rbd/rbd01`
+- Xóa block device: `rbd rm rbd01 -p rbd`
+- Xóa pool rbd: `ceph osd pool delete rbd rbd --yes-i-really-really-mean-it`
