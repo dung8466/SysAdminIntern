@@ -526,3 +526,8 @@ ID  CLASS  WEIGHT   TYPE NAME                   STATUS  REWEIGHT  PRI-AFF
 -7         0.01949      host ops-dungnt-node03
  2    hdd  0.01949          osd.2                   up   1.00000  1.00000
 ```
+
+- Enable dashboard:
+  + `ceph dashboard create-self-signed-cert`
+  + `ceph dashboard ac-user-create <user> -i <password_file> administrator`
+  + `ceph mgr services`
