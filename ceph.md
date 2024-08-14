@@ -531,3 +531,5 @@ ID  CLASS  WEIGHT   TYPE NAME                   STATUS  REWEIGHT  PRI-AFF
   + `ceph dashboard create-self-signed-cert`
   + `ceph dashboard ac-user-create <user> -i <password_file> administrator`
   + `ceph mgr services`
+
+![ceph dashboard](pictures/ceph-dashboard.png)
