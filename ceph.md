@@ -493,5 +493,36 @@ cluster:
     pools:   0 pools, 0 pgs
     objects: 0 objects, 0 B
     usage:   0 B used, 0 B / 0 B avail
-    pgs:
+    pgs:v
+```
+
+- Format ổ ceph: `parted --script /dev/vdb 'mklabel gpt'` && `parted --script /dev/sdb "mkpart primary 0% 100%"`
+- Tạo ceph volume: `ceph-volume lvm create --data /dev/vdb1`
+- Kiểm tra ceph:
+
+```
+cluster:
+    id:     <id>
+    health: HEALTH_WARN
+            mons are allowing insecure global_id reclaim
+
+  services:
+    mon: 3 daemons, quorum node02,node01,node03 (age 20h)
+    mgr: node01(active, since 19h), standbys: node03, node02
+    osd: 3 osds: 3 up (since 14m), 3 in (since 14m)
+
+  data:
+    pools:   1 pools, 1 pgs
+    objects: 0 objects, 0 B
+    usage:   3.0 GiB used, 57 GiB / 60 GiB avail
+    pgs:     1 active+clean
+
+ID  CLASS  WEIGHT   TYPE NAME                   STATUS  REWEIGHT  PRI-AFF
+-1         0.05846  root default
+-3         0.01949      host ops-dungnt-node01
+ 0    hdd  0.01949          osd.0                   up   1.00000  1.00000
+-5         0.01949      host ops-dungnt-node02
+ 1    hdd  0.01949          osd.1                   up   1.00000  1.00000
+-7         0.01949      host ops-dungnt-node03
+ 2    hdd  0.01949          osd.2                   up   1.00000  1.00000
 ```
