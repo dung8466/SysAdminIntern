@@ -538,3 +538,23 @@ ID  CLASS  WEIGHT   TYPE NAME                   STATUS  REWEIGHT  PRI-AFF
   + `ceph config set mon auth_allow_insecure_global_id_reclaim false`
 
 ![ceph dashboard](pictures/ceph-dashboard.png)
+
+
+##### Thêm OSD vào cluster
+
+- Copy ceph config và key:
+  + `scp /etc/ceph/ceph.conf node0x:/etc/ceph/ceph.conf`
+  + `scp /etc/ceph/ceph.client.admin.keyring node0x:/etc/ceph`
+  + `scp /var/lib/ceph/bootstrap-osd/ceph.keyring node0x:/var/lib/ceph/bootstrap-osd`
+- Cấu hình OSD tại node mới:
+  + `chown ceph. /etc/ceph/ceph.* /var/lib/ceph/bootstrap-osd/*`
+  + `parted --script /dev/vdb 'mklabel gpt'`
+  + `parted --script /dev/vdb "mkpart primary 0% 100%"`
+  + `ceph-volume lvm create --data /dev/vdb1"`
+
+##### Xóa OSD khỏi cluster
+
+- Đánh dấu OSD cần xóa: `ceph osd out <id>`
+- Theo dõi trạng thái của cluster: `ceph -w`
+- Dừng ceph tại node xóa: `systemctl disable --now ceph-osd@nodex.service`
+- Xóa OSD: `ceph osd purge <id> --yes-i-really-mean-it `
