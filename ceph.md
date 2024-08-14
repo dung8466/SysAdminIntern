@@ -332,6 +332,10 @@ Sử dụng thuật toán CRUSH, Ceph tính toán Placement Group (PG) nào nên
 | snaptrim_wait | PG trong hàng chờ dọn snapshot |
 | snaptrim_error | lỗi trong quá trình dọn snapshot |
 
+Thường sẽ có 2 trạng thái kết hợp để phản ánh trạng thái của cluster. 
+
+Ví dụ khi 1 OSD bị lỗi: `active+degraded` (số lượng trạng thái không đủ) --> Cluster cố khôi phục `active+recovery` --> khôi phục thành công `active+clean`.
+
 7. CRUSH Map
 
 - CRUSH algorithm tính toán vị trí storage để quyết định cách để lưu trữ và truy xuất dữ liệu.
