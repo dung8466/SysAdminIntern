@@ -605,3 +605,44 @@ rbd                       19                 3.0        61428M  0.0000          
 - Unmount partion của block device: `rbd unmap /dev/rbd/rbd/rbd01`
 - Xóa block device: `rbd rm rbd01 -p rbd`
 - Xóa pool rbd: `ceph osd pool delete rbd rbd --yes-i-really-really-mean-it`
+
+
+###### Giả lập 1 node (mon, mgr, osd) down
+
+- Set flag `noout`: `ceph osd set noout`
+- Stop ceph service tại 1 node: `systemctl stop ceph-osd@<osd-id>`
+- Kiểm tra trạng thái của osd, ceph: `ceph osd tree` && `ceph -s`
+
+```
+ID  CLASS  WEIGHT   TYPE NAME                   STATUS  REWEIGHT  PRI-AFF
+-1         0.05846  root default
+-3         0.01949      host ops-dungnt-node01
+ 0    hdd  0.01949          osd.0                   up   1.00000  1.00000
+-5         0.01949      host ops-dungnt-node02
+ 1    hdd  0.01949          osd.1                 down   1.00000  1.00000
+-7         0.01949      host ops-dungnt-node03
+ 2    hdd  0.01949          osd.2                   up   1.00000  1.00000
+
+cluster:
+    id:     773c6f4e-e3d3-47d4-9e17-c3f42c84cfca
+    health: HEALTH_WARN
+            noout flag(s) set
+            1 osds down
+            1 host (1 osds) down
+            Degraded data redundancy: 24/72 objects degraded (33.333%), 17 pgs degraded, 33 pgs undersized
+
+  services:
+    mon: 3 daemons, quorum node02,node01,node03 (age 42h)
+    mgr: node01(active, since 18h), standbys: node02, node03
+    osd: 3 osds: 2 up (since 3m), 3 in (since 22h)
+         flags noout
+
+  data:
+    pools:   2 pools, 33 pgs
+    objects: 24 objects, 15 MiB
+    usage:   3.2 GiB used, 57 GiB / 60 GiB avail
+    pgs:     24/72 objects degraded (33.333%)
+             17 active+undersized+degraded
+             16 active+undersized
+```
+
