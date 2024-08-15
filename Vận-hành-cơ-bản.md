@@ -553,3 +553,15 @@ Nếu server sử dụng volume để boot, volume sẽ được tái sử dụn
 + Tại node cũ, kiểm tra instance còn chạy không. Tắt instance còn chạy.
 
         virsh destroy instance-0000b504
+
+#### Task 16: Import image bên ngoài vào 1 server:
+
++ Tắt VM
+
++ Xóa ổ dưới ceph: `rbd rm <pool>/volume-<cinder-id> -c /etc/ceph/ceph.conf -n client.autobackup`
+
++ Chạy lệnh import: `qemu-img convert -f <loai file image> -O raw <file image> rbd:<pool>/volume-<cinder-id>:conf=/etc/ceph/ceph2.conf`
+
++ Khởi động lại serverserver
+
+
