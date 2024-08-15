@@ -643,3 +643,39 @@ cluster:
              16 active+undersized
 ```
 
+- Tạo image lưu dữ liệu cho 2 node còn lại: `rbd create test --size 10000 --pool rbd`
+- Kiểm tra dữ liệu trên:
+
+```
+ID  HOST                USED  AVAIL  WR OPS  WR DATA  RD OPS  RD DATA  STATE
+ 0  ops-dungnt-node01  1097M  18.9G      0        0       0        0   exists,up
+ 1  ops-dungnt-node02     0      0       0        0       0        0   autoout,exists
+ 2  ops-dungnt-node03  1097M  18.9G      0        0       0        0   exists,up
+```
+
+- Up lại node vừa down: `systemctl start ceph-osd@<osd-id>`
+
+```
+ID  HOST                USED  AVAIL  WR OPS  WR DATA  RD OPS  RD DATA  STATE
+ 0  ops-dungnt-node01  1097M  18.9G      0        0       0        0   exists,up
+ 1  ops-dungnt-node02  1097M  18.9G      0        0       0        0   exists,up
+ 2  ops-dungnt-node03  1097M  18.9G      0        0       0        0   exists,up
+
+cluster:
+    id:     <id>
+    health: HEALTH_OK
+
+  services:
+    mon: 3 daemons, quorum node02,node01,node03 (age 43h)
+    mgr: node01(active, since 18h), standbys: node02, node03
+    osd: 3 osds: 3 up (since 9s), 3 in (since 9s)
+
+  data:
+    pools:   2 pools, 33 pgs
+    objects: 30 objects, 15 MiB
+    usage:   3.2 GiB used, 57 GiB / 60 GiB avail
+    pgs:     33 active+clean
+
+  io:
+    recovery: 94 B/s, 2 keys/s, 0 objects/s
+```
