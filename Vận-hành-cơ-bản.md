@@ -641,3 +641,37 @@ Server XXXX (IP:y.y.y.y) bị hết RAM, đang đọc ghi nhiều vào disk, anh
 + Kiểm tra xem VM đang ở compute nào, xóa con không cần hoặc thêm con cần: `openstack --os-placement-api-version 1.12 resource provider allocation unset --provider <provider id> <VM id>`
 
 `openstack --os-placement-api-version 1.12 resource provider allocation set <VM id>  --project-id <project id>  --user-id <user id> --allocation rp=<provider id>,VCPU=16 --allocation rp=<provider id>,MEMORY_MB=65536`
+
+
+#### Task 23: Interface name3
+
++ Vào server xóa file /etc/udev/rules.d/70-persistent-net.rules
++ `ip link set rename3 name ethx`
++ `update-initramfs -u`
++ Reboot server
+
+#### Task 24: fsck disk
+
+B1. Stop server
+
+B2. Map ổ cứng 
+
+cd /opt/cephtools/ 
+
+chạy script
+
+map_disk.sh
+
+B3. Tiến hành chạy lệnh ntfsfix:
+
++ Với windown 
+
+# ntfsfix < phân vùng cần fix>
+
++ Với linux
+
+# e2fsck < phân vùng >
+
+B5. Start server
+
+
