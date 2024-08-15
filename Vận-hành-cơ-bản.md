@@ -564,4 +564,26 @@ Nếu server sử dụng volume để boot, volume sẽ được tái sử dụn
 
 + Khởi động lại serverserver
 
+#### Task 17: Move amphora:
 
+Ví dụ: chuyển amphora-1234
+
++ Kiểm tra amphora: `openstack loadbalancer amphora show 1234`
+
++ Lấy loadbalancer-id để lấy toàn bộ backend: `openstack loadbalancer amphora list --loadbalancer 1234`
+
++ Nếu VM là Master dùng nmap kiểm tra các dịch vụ đang chạy: `nmap <ip vm>`
+
++ SSH vào VM đứng tại node controller: `sudo ssh -i /etc/octavia/.ssh/id_rsa ubuntu@<lb_network_ip>`
+
++ Kiểm tra xem VM có VIP không `ip netns exec amphora-haproxy ip a`
+
++ Nếu có VIP stop octavia-keepalived.service để chuyển VIP sang node khác: `systemctl stop octavia-keepalived.service`
+
++ Nmap kiểm tra dịch vụ đã up hết chưa: `nmap <ip>`
+
++ Đứng từ node admin: `openstack loadbalancer amphora failover <id>`
+
+#### Task 18: Chặn traffic quốc tế:
+
++ Tại compute node: `bash /opt/scripts/block_quocte_to_svr_all_port.sh  <port-id>`
