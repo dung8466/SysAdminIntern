@@ -620,3 +620,13 @@ Ví dụ: chuyển amphora-1234
 + Không kiểm tra xem queue nào: `rabbitmqctl list_queues name messages | sort -k2 -n -r | head -n 10`
 
 --> báo người cầmcầm
+
+
+#### Task 21: Limit iops
+
++ Vào admin tại /opt/cephtools/: `python set_volume_iops.py [id instance] [device] [iops limit]`
+
++ Vào compute chứa VM: `sudo virsh blkdeviotune  [id instance] [device]  --total_iops_sec [iops limit]`
+
++ Thông báo cho dự án (thông báo vào group telegram của dự án)/Khách hàng (thông báo vào group Opsteam - Tech Support) là server đã dùng full RAM
+Server XXXX (IP:y.y.y.y) bị hết RAM, đang đọc ghi nhiều vào disk, anh/chị kiểm tra xử lý
