@@ -249,7 +249,24 @@ Sử dụng thuật toán CRUSH, Ceph tính toán Placement Group (PG) nào nên
     - Cần thiết nếu sử dụng CephFS.
     - Cho phép CephFS chạy các lệnh như ls, find,... mà không đặt gánh nặng lên Ceph Cluster.
 
-4. Cluster Map:
+4. Cờ trạng thái Cluster:
+
+- Dùng để kiểm soát hành vi của cluster khi đang thực hiện bảo trì hoặc khi bạn cần ngăn chặn các hoạt động tự động nhất định trong cluster.
+
+| Flags | Chức năng |
+| --- | --- |
+| noout | Khi cờ này được bật, Ceph sẽ không di chuyển dữ liệu ra khỏi các OSD bị đánh dấu là "down" hoặc "out" |
+| norebalance | Ngăn không cho Ceph thực hiện quá trình cân bằng lại dữ liệu giữa các OSDs khi thêm,xóa,... OSDs |
+| norecovery | Ngăn không cho Ceph thực hiện quá trình khôi phục dữ liệu khi OSDs quay trở lại sau khi đã bị down hoặc mất kết nối |
+| nobackfill | Ngăn không cho Ceph đẩy dữ liệu đến các OSD mới hoặc các OSD đã quay trở lại sau khi chúng đã bị mất dữ liệu |
+| nodown | Ngăn Ceph đánh dấu OSD là "down" khi không nhận được thông tin từ OSD đó |
+| noin | Ngăn Ceph tự động đưa một OSD trở lại trạng thái "in" khi OSD đó quay lại trạng thái "up" sau khi đã bị down |
+| pause | Tạm dừng toàn bộ hoạt động của cụm Ceph |
+| full | Ngăn việc ghi dữ liệu mới khi dung lượng OSD đã đạt đến giới hạn |
+
+- Kiểm tra trạng thái cờ của cluster: `ceph osd dump | grep flags`
+
+5. Cluster Map:
 
 - Để Ceph Cluster hoạt động bình thường, Ceph Clients và OSDs phải biết được thông tin tình trạng cluster. Thông tin đó được lưu trũ trong Cluster Map.
 
@@ -280,7 +297,7 @@ Sử dụng thuật toán CRUSH, Ceph tính toán Placement Group (PG) nào nên
 
 ![crush map](pictures/crushmap.png)
 
-5. Pool:
+6. Pool:
 
 - Là các phân vùng logic để lưu trữ object.
 
@@ -291,7 +308,7 @@ Sử dụng thuật toán CRUSH, Ceph tính toán Placement Group (PG) nào nên
   + Crush rules: Khi dữ liệu lưu trong 1 pool, vị trí của object và bản sao của nó trong cluster được xác định bởi CRUSH rules.
   + Snapshots: Tạo snapshot của 1 pool.
 
-6. PG:
+7. PG:
 
 - Giúp phân phối và quản lý dữ liệu trên OSD 1 cách hiệu quả.
 - Dữ liệu được ánh xạ vào PG, các PG được ánh xạ vào OSD. --> Gộp được các object, giảm metadata mỗi object cần theo dõi và lượng quy trình cần chạy.
@@ -338,7 +355,7 @@ Thường sẽ có 2 trạng thái kết hợp để phản ánh trạng thái c
 
 Ví dụ khi 1 OSD bị lỗi: `active+degraded` (số lượng trạng thái không đủ) --> Cluster cố khôi phục `active+recovery` --> khôi phục thành công `active+clean`.
 
-7. CRUSH Map
+8. CRUSH Map
 
 - CRUSH algorithm tính toán vị trí storage để quyết định cách để lưu trữ và truy xuất dữ liệu.
 - CRUSH cho phép Ceph Clients giao tiếp trực tiếp với OSDs. Bằng cách sử dụng phương pháp lưu trữ và truy xuất dữ liệu xác định bằng thuật toán, Ceph tránh được single point of failure, tắc nghẽn hiệu suất và giới hạn vật lý để mở rộng.
