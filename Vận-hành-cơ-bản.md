@@ -587,3 +587,36 @@ Ví dụ: chuyển amphora-1234
 #### Task 18: Chặn traffic quốc tế:
 
 + Tại compute node: `bash /opt/scripts/block_quocte_to_svr_all_port.sh  <port-id>`
+
+
+#### Task 19: Tạo NAT cho VPC
+
++ Tạo router ở project của KH: `openstack router create --ha --enable --project <project id KH> --availability-zone-hint <zone> <email KH>_GW`
+
+--> router id: `762b6797-ec1a-4e77-b7d6-ea7d21e10526`
+
++ Set QoS Policy 500Mpbs ("3b70c2d2-5a1f-44e9-9d2f-12aaa2369228"): `openstack router set --qos-policy <qos id> <router id>`
+
++ Add network WAN và cấu hình external-gateway dùng SNAT: `openstack router set --external-gateway <wan port id> --enable-snat <router id>`
+
++ Add thêm gateway IP cho subnet VPC ví dụ ở đấy là subnet "46c16db3-cba8-4306-9b84-6cbe7bd0c3ee": `openstack subnet set --gateway 10.1.1.1 <subnet id>`
+
++ Nếu đã set allocation-pool full ví dụ 10.1.1.0/24 mà allocation-pool start=10.1.1.5,end=10.1.1.254: `openstack subnet set --no-allocation-pool <subnet id>`
+
++ Sau đó set lại allocation-pool rồi add lại gateway cho subnet: ` openstack subnet set --allocation-pool start=10.1.1.5,end=10.1.1.254 <subnet id>`
+
++ Sau khi set gateway cho subnet thì port với IP cho gateway sẽ chưa được tạo ra. Kiểm tra xem nếu port DHCP của network trùng IP vs IP Gateway thì xóa port DHCP đi để lấy IP address cho gateway.
+
++ Add subnet vào router: `openstack router add subnet <router id> <subnet id>`
+
++ Add hoặc remove route vào router: `openstack router set --route destination=172.31.3.0/24 ,gateway=10.1.1.10 <router id>`
+
+#### Task 20: Xem rabbitmq bị tắc
+
++ Kiểm tra dump_queue_v3_cuckoo: `rabbitmqctl list_queues | grep cuckoo`
+
++ Nếu đúng: `docker restart thor-cuckoo-event_thor-event-handlers-cuckoo_1`
+
++ Không kiểm tra xem queue nào: `rabbitmqctl list_queues name messages | sort -k2 -n -r | head -n 10`
+
+--> báo người cầmcầm
