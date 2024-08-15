@@ -607,9 +607,8 @@ rbd                       19                 3.0        61428M  0.0000          
 - Xóa pool rbd: `ceph osd pool delete rbd rbd --yes-i-really-really-mean-it`
 
 
-###### Giả lập 1 node (mon, mgr, osd) down
+###### Giả lập 1 node osd down
 
-- Set flag `noout`: `ceph osd set noout`
 - Stop ceph service tại 1 node: `systemctl stop ceph-osd@<osd-id>`
 - Kiểm tra trạng thái của osd, ceph: `ceph osd tree` && `ceph -s`
 
