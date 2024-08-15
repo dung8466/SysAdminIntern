@@ -625,16 +625,14 @@ ID  CLASS  WEIGHT   TYPE NAME                   STATUS  REWEIGHT  PRI-AFF
 cluster:
     id:     773c6f4e-e3d3-47d4-9e17-c3f42c84cfca
     health: HEALTH_WARN
-            noout flag(s) set
             1 osds down
             1 host (1 osds) down
             Degraded data redundancy: 24/72 objects degraded (33.333%), 17 pgs degraded, 33 pgs undersized
 
   services:
-    mon: 3 daemons, quorum node02,node01,node03 (age 42h)
+    mon: 3 daemons, quorum node02,node01,node03 (age 43h)
     mgr: node01(active, since 18h), standbys: node02, node03
-    osd: 3 osds: 2 up (since 3m), 3 in (since 22h)
-         flags noout
+    osd: 3 osds: 2 up (since 11m), 3 in (since 23h)
 
   data:
     pools:   2 pools, 33 pgs
