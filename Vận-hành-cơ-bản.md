@@ -421,6 +421,8 @@
 
         openstack console url show 549c4cae-270d-46d5-917b-d10a3a9384a2
 
+* Nếu volume đặt tên sai - có ký tự đặc biệt: `python3 /opt/cephtools/rename_ceph_image_with_special_characters.py -c /etc/ceph/ceph.conf -u client.admin -k /etc/ceph/ceph.client.admin.keyring -p <pool> -o SSD1/volume-<id có ký tự đặc biệt> -n volume-<id mới>`
+
 #### Task 12: Cold/Live migrate server sang node khác
 
 + Kiểm tra server đang ở node nào
