@@ -52,6 +52,8 @@
 
 #### Task 2: reset passwd
 
++ Map device `/opt/cephtools/map_disk.sh <volume id>`
+
 + Volume device `/dev/nbd0`
 
 + Mount volume vào `/data`: `sudo mount /dev/nbd0p1 /data`
@@ -116,9 +118,9 @@
 
 #### Task 4: Tạo snapshot và restore
 
-+ Tạo snapshot: `rbd snap create SSD3/volume-fc8655e3-85e9-4099-b441-abc45822f77b@ops-dungnt-snapshot-test`
++ Tạo snapshot: `rbd snap create SSD3/volume-fc8655e3-85e9-4099-b441-abc45822f77b@ops-dungnt-snapshot-test -c /etc/ceph/ceph.conf -n client.autobackup`
 
-+ Kiểm tra snapshot vừa tạo: `rbd snap ls SSD3/volume-fc8655e3-85e9-4099-b441-abc45822f77b`
++ Kiểm tra snapshot vừa tạo: `rbd snap ls SSD3/volume-fc8655e3-85e9-4099-b441-abc45822f77b -c /etc/ceph/ceph.conf -n client.autobackup`
 
         SNAPID   NAME                      SIZE    PROTECTED  TIMESTAMP
         1509249  ops-dungnt-snapshot-test  30 GiB             Thu May  9 14:25:41 2024
@@ -127,7 +129,7 @@
 
 + Tắt server: `openstack server stop ff3930c2-b0f0-4b2e-8b1f-cae260930a72`
 
-+ Restore sử dụng snapshot đã tạo: `rbd snap rollback SSD3/volume-fc8655e3-85e9-4099-b441-abc45822f77b@ops-dungnt-snapshot-test`
++ Restore sử dụng snapshot đã tạo: `rbd snap rollback SSD3/volume-fc8655e3-85e9-4099-b441-abc45822f77b@ops-dungnt-snapshot-test -c /etc/ceph/ceph.conf -n client.autobackup`
 
 + Khởi động lại server: `openstack server start ff3930c2-b0f0-4b2e-8b1f-cae260930a72` và kiểm tra
 
@@ -212,6 +214,22 @@
 + Khởi động lại server 3 và kiểm tra
 
         openstack server start 5a17a11c-4a38-4dc3-aa8e-615842af4bad && openstack console url show 5a17a11c-4a38-4dc3-aa8e-615842af4bad
+
+#### Task Extra: Restore snapshot của 1 volume sang volume khác
+
++ Tạo volume mới cùng kích thước, cùng loại với volume có snapshot (ví dụ id: A)
+
++ Stop server mới
+
++ Đổi tên volume của server mới: `rbd rename SSD1/volume-<id volume cần restore vào>  SSD1/volume-<id volume cần restore vào>-RES01 -n client.autobackup -c /etc/ceph/ceph.conf`
+
++ Restore snapshot vào volume mới tạo: `rbd clone SSD1/volume-<id volume có snapshot>@<tên snapshot> SSD1/volume-A -n client.autobackup -c /etc/ceph/ceph.conf`
+
++ Export và Import: `rbd -c /etc/ceph/ceph.conf -n client.autobackup export SSD1/volume-A - | rbd -c /etc/ceph2/ceph.conf -k /etc/ceph2/ceph.keyring -n client.autobackup import - SSD2/volume-<id volume cần restore vào>`
+
++ Start server và kiểm tra vnc
+
++ Sau khi ok, xóa volume trung gian đã tạo: `rbd rm SSD1/volume-AA -n client.autobackup -c /etc/ceph/ceph.conf`
 
 #### Task 10: Liệt kê tài nguyên server và instance
 
