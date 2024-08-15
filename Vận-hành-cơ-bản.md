@@ -630,3 +630,14 @@ Ví dụ: chuyển amphora-1234
 
 + Thông báo cho dự án (thông báo vào group telegram của dự án)/Khách hàng (thông báo vào group Opsteam - Tech Support) là server đã dùng full RAM
 Server XXXX (IP:y.y.y.y) bị hết RAM, đang đọc ghi nhiều vào disk, anh/chị kiểm tra xử lý
+
+
+#### Task 22: Allcation mismatch
+
++ Show resource provider: `openstack --os-placement-api-version 1.12 resource provider allocation show <VM id>`
+
++ `openstack resource provider show <provider id>`
+
++ Kiểm tra xem VM đang ở compute nào, xóa con không cần hoặc thêm con cần: `openstack --os-placement-api-version 1.12 resource provider allocation unset --provider <provider id> <VM id>`
+
+`openstack --os-placement-api-version 1.12 resource provider allocation set <VM id>  --project-id <project id>  --user-id <user id> --allocation rp=<provider id>,VCPU=16 --allocation rp=<provider id>,MEMORY_MB=65536`
