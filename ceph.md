@@ -301,6 +301,17 @@ Sử dụng thuật toán CRUSH, Ceph tính toán Placement Group (PG) nào nên
 
 - Là các phân vùng logic để lưu trữ object.
 
+- Có type:
+  + replicated:
+    - Lưu trữ nhiều bản sao của mỗi object trên các OSD khác nhau. Số lượng bản sao được định nghĩa bởi cấu hình của pool.
+    - Tốn nhiều bộ nhớ.
+    - Hỗ trợ tất cả các tính năng của Ceph.
+  + erasure:
+    - phân phối dữ liệu trên nhiều OSD theo cách cho phép tái tạo dữ liệu từ một tập hợp các chunk.
+    - Tốn ít bộ nhớ hơn replicated pool.
+    - Hiệu suất đọc ghi kém hơn do phải tính toán việc mã hóa và giải mã dữ liệu.
+    - Một số tính năng của Ceph có thể không được hỗ trợ như snapshot, quota,...
+
 - Cung cấp:
   + Khả năng chịu lỗi: bằng cách cho phép thiết lập số lượng OSD có thể hỏng mà không làm mất dữ liệu.
       - Nếu sử dụng replicated pool thì số OSD có thể fail mà không mất dữ liệu bằng với số bản sao.
