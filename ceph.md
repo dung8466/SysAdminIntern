@@ -655,7 +655,7 @@ cluster:
 ```
 
 - Tạo image lưu dữ liệu cho 2 node còn lại: `rbd create test --size 10000 --pool rbd`
-- Kiểm tra dữ liệu trên: `ceph ost status`
+- Kiểm tra dữ liệu trên: `ceph osdd status`
 
 ```
 ID  HOST                USED  AVAIL  WR OPS  WR DATA  RD OPS  RD DATA  STATE
