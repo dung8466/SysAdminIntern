@@ -690,3 +690,67 @@ cluster:
   io:
     recovery: 94 B/s, 2 keys/s, 0 objects/s
 ```
+
+###### Di chuyển OSD trong CRUSH map
+
+- Lấy crush map hiện tại: `ceph osd getcrushmap -o crushmap`
+
+- Giải mã crush map: `crushtool -d crushmap -o crushmap.txt`
+
+```
+# buckets
+host ops-dungnt-node01 {
+        id -3           # do not change unnecessarily
+        id -4 class hdd         # do not change unnecessarily
+        # weight 0.019
+        alg straw2
+        hash 0  # rjenkins1
+        item osd.0 weight 0.019
+}
+host ops-dungnt-node02 {
+        id -5           # do not change unnecessarily
+        id -6 class hdd         # do not change unnecessarily
+        # weight 0.019
+        alg straw2
+        hash 0  # rjenkins1
+        item osd.1 weight 0.019
+}
+host ops-dungnt-node03 {
+        id -7           # do not change unnecessarily
+        id -8 class hdd         # do not change unnecessarily
+        # weight 0.019
+        alg straw2
+        hash 0  # rjenkins1
+        item osd.2 weight 0.019
+}
+```
+
+- Thay đổi weight trong 1 node:
+
+```
+host ops-dungnt-node03 {
+        id -7           # do not change unnecessarily
+        id -8 class hdd         # do not change unnecessarily
+        # weight 0.019
+        alg straw2
+        hash 0  # rjenkins1
+        item osd.2 weight 0.03
+}
+```
+
+- Mã hóa lại crush map: `crushtool -c crushmap.txt -o new-crushmap`
+
+- Tải crush map mới lên cluster: `ceph osd setcrushmap -i new-crushmap`
+
+- Kiểm tra lại cluster: `ceph osd tree`
+
+```
+ID  CLASS  WEIGHT   TYPE NAME                   STATUS  REWEIGHT  PRI-AFF
+-1         0.05699  root default
+-3         0.01900      host ops-dungnt-node01
+ 0    hdd  0.01900          osd.0                   up   1.00000  1.00000
+-5         0.01900      host ops-dungnt-node02
+ 1    hdd  0.01900          osd.1                   up   1.00000  1.00000
+-7         0.01900      host ops-dungnt-node03
+ 2    hdd  0.03000          osd.2                   up   1.00000  1.00000
+```
