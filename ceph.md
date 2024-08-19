@@ -754,3 +754,5 @@ ID  CLASS  WEIGHT   TYPE NAME                   STATUS  REWEIGHT  PRI-AFF
 -7         0.01900      host ops-dungnt-node03
  2    hdd  0.03000          osd.2                   up   1.00000  1.00000
 ```
+
+--> Ceph sẽ lưu trữ nhiều dữ liệu hơn trên osd.2
