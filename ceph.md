@@ -843,6 +843,8 @@ ID  HOST                USED  AVAIL  WR OPS  WR DATA  RD OPS  RD DATA  STATE
  2  ops-dungnt-node03  1360M  18.6G      0        0       0        0   exists,updown
 ```
 
+--> mon down vẫn ghi dữ liệu đượcđược
+
 ![mon down](pictures/mon_down.png)
 
 --> mon 2 down: Tự động blance
