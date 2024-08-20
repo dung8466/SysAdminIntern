@@ -618,7 +618,7 @@ rbd                       19                 3.0        61428M  0.0000          
 - Xóa pool rbd: `ceph osd pool delete rbd rbd --yes-i-really-really-mean-it`
 
 
-###### Giả lập 1 node osd down
+###### Giả lập 1 node down
 
 - Stop ceph service tại 1 node: `systemctl stop ceph-osd@<osd-id>`
 - Kiểm tra trạng thái của osd, ceph: `ceph osd tree` && `ceph -s`
@@ -689,6 +689,48 @@ cluster:
 
   io:
     recovery: 94 B/s, 2 keys/s, 0 objects/s
+```
+
+
+###### Giả lập 2 node down
+
+- Stop ceph service tại 2 node: `systemctl stop ceph-osd@<ceph-id>`
+
+- Kiểm tra trạng thái của osd, ceph: `ceph osd tree` && `ceph -s`
+
+```
+ID  CLASS  WEIGHT   TYPE NAME                   STATUS  REWEIGHT  PRI-AFF
+-1         0.05699  root default
+-3         0.01900      host ops-dungnt-node01
+ 0    hdd  0.01900          osd.0                 down   1.00000  1.00000
+-5         0.01900      host ops-dungnt-node02
+ 1    hdd  0.02499          osd.1                 down   1.00000  1.00000
+-7         0.01900      host ops-dungnt-node03
+ 2    hdd  0.03000          osd.2                   up   1.00000  1.00000
+
+cluster:
+    id:     773c6f4e-e3d3-47d4-9e17-c3f42c84cfca
+    health: HEALTH_WARN
+            2 osds down
+            2 hosts (2 osds) down
+            Reduced data availability: 1 pg inactive, 6 pgs stale
+            Degraded data redundancy: 118/236 objects degraded (50.000%), 31 pgs degraded, 33 pgs undersized
+
+  services:
+    mon: 3 daemons, quorum node02,node01,node03 (age 16m)
+    mgr: node01(active, since 5d), standbys: node02, node03
+    osd: 3 osds: 1 up (since 101s), 3 in (since 4d)
+
+  data:
+    pools:   2 pools, 33 pgs
+    objects: 118 objects, 266 MiB
+    usage:   3.7 GiB used, 56 GiB / 60 GiB avail
+    pgs:     3.030% pgs not active
+             118/236 objects degraded (50.000%)
+             25 active+undersized+degraded
+             6  stale+active+undersized+degraded
+             1  undersized+peered
+             1  active+undersized
 ```
 
 ###### Di chuyển OSD trong CRUSH map
