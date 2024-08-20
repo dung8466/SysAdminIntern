@@ -783,6 +783,8 @@ cluster:
 
 ```
 
+--> Dữ liệu hồi phụcphục
+
 ###### Di chuyển OSD trong CRUSH map
 
 - Lấy crush map hiện tại: `ceph osd getcrushmap -o crushmap`
