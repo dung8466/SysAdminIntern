@@ -1,5 +1,3 @@
-liệu# CEPH
-
 ## RAID
 
 1. Khái niệm:
@@ -184,7 +182,7 @@ Sử dụng thuật toán CRUSH, Ceph tính toán Placement Group (PG) nào nên
 
 ![lưu object](pictures/store.png)
 
-1. Cấu trúc của Ceph:
+### Cấu trúc của Ceph:
 
 - Librados:
   + Cung cấp giao diện API để các ứng dụng có thể thực hiện các hoạt động lưu trữ như đọc, ghi và xóa đối tượng.
@@ -212,7 +210,7 @@ Sử dụng thuật toán CRUSH, Ceph tính toán Placement Group (PG) nào nên
 
 ![ceph architecture](pictures/ceph-kt.png)
 
-2. Lưu dữ liệu
+### Lưu dữ liệu
 
 - Ceph Cluster nhận dữ liệu từ Ceph Client - dữ liệu có thể đến từ RBD, CephFS, Ceph Object Storage hoặc tự triển khai bằng librados.
 - Dữ liệu này được lưu dưới dạng RADOS object.
@@ -224,7 +222,7 @@ Sử dụng thuật toán CRUSH, Ceph tính toán Placement Group (PG) nào nên
 
 ![metadata](pictures/obj.png)
 
-3. Thành phần của Ceph Cluster:
+### Thành phần của Ceph Cluster:
 
 - Để Ceph Cluster có thể hoạt động cần tối thiểu 1 Ceph Monitor, 1 Ceph Manager và cần ít nhất số lượng OSD bằng số lượng bản sao obj lưu trong cluster.
 
@@ -249,7 +247,7 @@ Sử dụng thuật toán CRUSH, Ceph tính toán Placement Group (PG) nào nên
     - Cần thiết nếu sử dụng CephFS.
     - Cho phép CephFS chạy các lệnh như ls, find,... mà không đặt gánh nặng lên Ceph Cluster.
 
-4. Cờ trạng thái Cluster:
+ ### Cờ trạng thái Cluster:
 
 - Dùng để kiểm soát hành vi của cluster khi đang thực hiện bảo trì hoặc khi bạn cần ngăn chặn các hoạt động tự động nhất định trong cluster.
 
@@ -266,7 +264,7 @@ Sử dụng thuật toán CRUSH, Ceph tính toán Placement Group (PG) nào nên
 
 - Kiểm tra trạng thái cờ của cluster: `ceph osd dump | grep flags`
 
-5. Cluster Map:
+### Cluster Map:
 
 - Để Ceph Cluster hoạt động bình thường, Ceph Clients và OSDs phải biết được thông tin tình trạng cluster. Thông tin đó được lưu trũ trong Cluster Map.
 
@@ -297,7 +295,7 @@ Sử dụng thuật toán CRUSH, Ceph tính toán Placement Group (PG) nào nên
 
 ![crush map](pictures/crushmap.png)
 
-6. Pool:
+### Pool:
 
 - Là các phân vùng logic để lưu trữ object.
 
@@ -319,7 +317,7 @@ Sử dụng thuật toán CRUSH, Ceph tính toán Placement Group (PG) nào nên
   + Crush rules: Khi dữ liệu lưu trong 1 pool, vị trí của object và bản sao của nó trong cluster được xác định bởi CRUSH rules.
   + Snapshots: Tạo snapshot của 1 pool.
 
-7. PG:
+### PG:
 
 - Giúp phân phối và quản lý dữ liệu trên OSD 1 cách hiệu quả.
 - Dữ liệu được ánh xạ vào PG, các PG được ánh xạ vào OSD. --> Gộp được các object, giảm metadata mỗi object cần theo dõi và lượng quy trình cần chạy.
@@ -366,7 +364,7 @@ Thường sẽ có 2 trạng thái kết hợp để phản ánh trạng thái c
 
 Ví dụ khi 1 OSD bị lỗi: `active+degraded` (số lượng trạng thái không đủ) --> Cluster cố khôi phục `active+recovery` --> khôi phục thành công `active+clean`.
 
-8. CRUSH Map
+### CRUSH Map
 
 - CRUSH algorithm tính toán vị trí storage để quyết định cách để lưu trữ và truy xuất dữ liệu.
 - CRUSH cho phép Ceph Clients giao tiếp trực tiếp với OSDs. Bằng cách sử dụng phương pháp lưu trữ và truy xuất dữ liệu xác định bằng thuật toán, Ceph tránh được single point of failure, tắc nghẽn hiệu suất và giới hạn vật lý để mở rộng.
@@ -570,7 +568,7 @@ ID  CLASS  WEIGHT   TYPE NAME                   STATUS  REWEIGHT  PRI-AFF
 ![ceph dashboard](pictures/ceph-dashboard.png)
 
 
-##### Thêm OSD vào cluster
+#### Thêm OSD vào cluster
 
 - Copy ceph config và key:
   + `scp /etc/ceph/ceph.conf node0x:/etc/ceph/ceph.conf`
@@ -582,7 +580,7 @@ ID  CLASS  WEIGHT   TYPE NAME                   STATUS  REWEIGHT  PRI-AFF
   + `parted --script /dev/vdb "mkpart primary 0% 100%"`
   + `ceph-volume lvm create --data /dev/vdb1"`
 
-##### Xóa OSD khỏi cluster
+#### Xóa OSD khỏi cluster
 
 - Đánh dấu OSD cần xóa: `ceph osd out <id>`
 - Theo dõi trạng thái của cluster: `ceph -w`
@@ -590,7 +588,7 @@ ID  CLASS  WEIGHT   TYPE NAME                   STATUS  REWEIGHT  PRI-AFF
 - Xóa OSD: `ceph osd purge <id> --yes-i-really-mean-it `
 
 
-##### Sử dụng Block Device
+#### Sử dụng Block Device
 
 - Tạo default RBD pool với 128 PG: `ceph osd pool create rbd 128`
 - Enable PG auto scale cho pool: `ceph osd pool set rbd pg_autoscale_mode on`
@@ -611,14 +609,14 @@ rbd                       19                 3.0        61428M  0.0000          
 - Mount partion: `mount /dev/rbd0 /tmp/temp`
 - Kiểm tra partion vừa mount: `df -hT`
 
-###### Xóa Block Device:
+#### Xóa Block Device:
 
 - Unmount partion của block device: `rbd unmap /dev/rbd/rbd/rbd01`
 - Xóa block device: `rbd rm rbd01 -p rbd`
 - Xóa pool rbd: `ceph osd pool delete rbd rbd --yes-i-really-really-mean-it`
 
 
-###### Giả lập 1 node down
+### Giả lập 1 node down
 
 - Stop ceph service tại 1 node: `systemctl stop ceph-osd@<osd-id>`
 - Kiểm tra trạng thái của osd, ceph: `ceph osd tree` && `ceph -s`
@@ -692,7 +690,7 @@ cluster:
 ```
 
 
-###### Giả lập 2 node down
+### Giả lập 2 node down
 
 - Stop ceph service tại 2 node: `systemctl stop ceph-osd@<ceph-id>`
 
@@ -785,7 +783,7 @@ cluster:
 
 --> Dữ liệu hồi phục
 
-###### Giả lập mon down
+### Giả lập mon down
 
 - Down mon service: `systemctl stop ceph-mon@node0x.service`
 
@@ -851,7 +849,7 @@ ID  HOST                USED  AVAIL  WR OPS  WR DATA  RD OPS  RD DATA  STATE
 
 - Up lại mon: `systemctl start ceph-mon@node0x.service`
 
-###### Di chuyển OSD trong CRUSH map
+### Di chuyển OSD trong CRUSH map
 
 - Lấy crush map hiện tại: `ceph osd getcrushmap -o crushmap`
 
