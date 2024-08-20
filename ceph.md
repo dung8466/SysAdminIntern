@@ -616,7 +616,7 @@ rbd                       19                 3.0        61428M  0.0000          
 - Xóa pool rbd: `ceph osd pool delete rbd rbd --yes-i-really-really-mean-it`
 
 
-### Giả lập 1 node down
+### Giả lập 1 node osdosd down
 
 - Stop ceph service tại 1 node: `systemctl stop ceph-osd@<osd-id>`
 - Kiểm tra trạng thái của osd, ceph: `ceph osd tree` && `ceph -s`
@@ -690,7 +690,7 @@ cluster:
 ```
 
 
-### Giả lập 2 node down
+### Giả lập 2 node osd down
 
 - Stop ceph service tại 2 node: `systemctl stop ceph-osd@<ceph-id>`
 
@@ -934,3 +934,23 @@ ID  HOST                USED  AVAIL  WR OPS  WR DATA  RD OPS  RD DATA  STATE
  1  ops-dungnt-node02  1096M  18.9G      0        0       0        0   exists,up
  2  ops-dungnt-node03  1101M  18.9G      0        0       0        0   exists,up
 ```
+
+### Update Ceph Cluster
+
+- Update từng thành phần:
+  + Manager
+  + Mon
+  + OSD
+  + Ceph Object Gateway nodes
+  + Tất cả Ceph client nodes khác
+
+- Update Mon: Phải có số lẻ Mon node
+  + Dừng mon service: `systemctl stop ceph-mon@node0x.service`
+  + Update phiên bản sử dụng apt,yum,... và xóa bản cũ không cần thiết
+  + Khởi động lại mon service: `systemctl start ceph-mon@node0x.service`
+- Update OSD:
+  + Đánh dấu OSD `noout` và `noscrub`, `nodeep-scrub` để vào tránh kiểm tra dữ liệu trong quá trình nâng cấp: `ceph osd set noout` && `ceph osd set noscrub` && `ceph osd set nodeep-scrub`
+  + Dừng osd service: `systemctl stop ceph-osd@<ceph-id>`
+  + Update phiên bản sử dụng apt,yum,... và xóa bản cũ không cần thiết
+  + Khởi động lại OSD service: `systemctl start ceph-osd@<ceph-id>`
+  + Nếu tất cả OSD đã update, xóa flags đã đánh dấu trước đó: `ceph osd unset noout` && `ceph osd unset noscrub` && `ceph osd unset nodeep-scrub`
