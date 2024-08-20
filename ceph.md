@@ -1,4 +1,4 @@
-# CEPH
+liệu# CEPH
 
 ## RAID
 
@@ -655,7 +655,7 @@ cluster:
 ```
 
 - Tạo image lưu dữ liệu cho 2 node còn lại: `rbd create test --size 10000 --pool rbd`
-- Kiểm tra dữ liệu trên: `ceph osdd status`
+- Kiểm tra dữ liệu trên: `ceph osd status`
 
 ```
 ID  HOST                USED  AVAIL  WR OPS  WR DATA  RD OPS  RD DATA  STATE
@@ -702,35 +702,85 @@ cluster:
 ID  CLASS  WEIGHT   TYPE NAME                   STATUS  REWEIGHT  PRI-AFF
 -1         0.05699  root default
 -3         0.01900      host ops-dungnt-node01
- 0    hdd  0.01900          osd.0                 down   1.00000  1.00000
+ 0    hdd  0.01900          osd.0                   up   1.00000  1.00000
 -5         0.01900      host ops-dungnt-node02
- 1    hdd  0.02499          osd.1                 down   1.00000  1.00000
+ 1    hdd  0.01900          osd.1                 down   1.00000  1.00000
 -7         0.01900      host ops-dungnt-node03
- 2    hdd  0.03000          osd.2                   up   1.00000  1.00000
+ 2    hdd  0.01900          osd.2                 down   1.00000  1.00000
 
 cluster:
     id:     773c6f4e-e3d3-47d4-9e17-c3f42c84cfca
     health: HEALTH_WARN
             2 osds down
             2 hosts (2 osds) down
-            Reduced data availability: 1 pg inactive, 6 pgs stale
-            Degraded data redundancy: 118/236 objects degraded (50.000%), 31 pgs degraded, 33 pgs undersized
+            Reduced data availability: 33 pgs inactive
+            Degraded data redundancy: 236/354 objects degraded (66.667%), 31 pgs degraded, 33 pgs undersized
 
   services:
-    mon: 3 daemons, quorum node02,node01,node03 (age 16m)
+    mon: 3 daemons, quorum node02,node01,node03 (age 31m)
     mgr: node01(active, since 5d), standbys: node02, node03
-    osd: 3 osds: 1 up (since 101s), 3 in (since 4d)
+    osd: 3 osds: 1 up (since 2m), 3 in (since 4d)
 
   data:
     pools:   2 pools, 33 pgs
     objects: 118 objects, 266 MiB
-    usage:   3.7 GiB used, 56 GiB / 60 GiB avail
-    pgs:     3.030% pgs not active
-             118/236 objects degraded (50.000%)
-             25 active+undersized+degraded
-             6  stale+active+undersized+degraded
-             1  undersized+peered
-             1  active+undersized
+    usage:   3.9 GiB used, 56 GiB / 60 GiB avail
+    pgs:     100.000% pgs not active
+             236/354 objects degraded (66.667%)
+             31 undersized+degraded+peered
+             2  undersized+peered
+```
+
+--> Các quá trình lấy dữ liệu khác chậm, không thể ghi dữ liệu mới
+
+--> Chuyển size cluster về 1: `ceph osd pool set rbd size 1`, out các node down nếu chưa out --> Hoạt động được
+
+- Tạo dữ liệu `
+
+```
+rbd create test3 --size 10000 --pool rbd
+rbd map test3 --pool rbd
+mkfs.ext4 /dev/rbd/rbd/test3
+mkdir /mnt/test3
+mount /dev/rbd/rbd/test3 /mnt/test3
+dd if=/dev/zero of=/mnt/test3/myfile bs=1G count=1
+```
+
+- Kiểm tra dữ liệu: `ceph osd status`
+
+```
+ID  HOST                USED  AVAIL  WR OPS  WR DATA  RD OPS  RD DATA  STATE
+ 0  ops-dungnt-node01  1504M  18.5G      0        0       0        0   exists,up
+ 1  ops-dungnt-node02     0      0       0        0       0        0   autoout,exists
+ 2  ops-dungnt-node03     0      0       0        0       0        0   exists
+```
+
+- Up lại các node down: `systemctl start ceph-osd@<osd-id>`, thêm lại các node đánh dấu out `ceph osd in <ceph-id>`
+
+- Kiểm tra lại các node: `ceph -s` && `ceph osd tree`
+
+```
+ID  HOST                USED  AVAIL  WR OPS  WR DATA  RD OPS  RD DATA  STATE
+ 0  ops-dungnt-node01  1221M  18.8G      0        0       0        0   exists,up
+ 1  ops-dungnt-node02  1212M  18.8G      0        0       0        0   exists,up
+ 2  ops-dungnt-node03  1265M  18.7G      0        0       0        0   exists,up
+
+cluster:
+    id:     773c6f4e-e3d3-47d4-9e17-c3f42c84cfca
+    health: HEALTH_WARN
+            1 pool(s) have no replicas configured
+
+  services:
+    mon: 3 daemons, quorum node02,node01,node03 (age 4m)
+    mgr: node01(active, since 5d), standbys: node02, node03
+    osd: 3 osds: 3 up (since 104s), 3 in (since 75s)
+
+  data:
+    pools:   2 pools, 33 pgs
+    objects: 178 objects, 435 MiB
+    usage:   3.6 GiB used, 56 GiB / 60 GiB avail
+    pgs:     33 active+clean
+
 ```
 
 ###### Di chuyển OSD trong CRUSH map
