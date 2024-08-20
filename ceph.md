@@ -783,7 +783,65 @@ cluster:
 
 ```
 
---> Dữ liệu hồi phụcphục
+--> Dữ liệu hồi phục
+
+###### Giả lập mon down
+
+- Down mon service: `systemctl stop ceph-mon@node0x.service`
+
+- Kiểm tra trạng thái mon: `ceph mon stat`
+  + Nếu 1 mon down: vẫn kiểm tra được trạng thái --> xét TH vẫn theo dõi được
+  + Nếu 2 mon down: không kiểm tra được
+
+- Kiểm tra cluster: `ceph osd tree` && `ceph -s`
+
+```
+ID  CLASS  WEIGHT   TYPE NAME                   STATUS  REWEIGHT  PRI-AFF
+-1         0.05699  root default
+-3         0.01900      host ops-dungnt-node01
+ 0    hdd  0.01900          osd.0                   up   1.00000  1.00000
+-5         0.01900      host ops-dungnt-node02
+ 1    hdd  0.01900          osd.1                   up   1.00000  1.00000
+-7         0.01900      host ops-dungnt-node03
+ 2    hdd  0.01900          osd.2                   up   1.00000  1.00000
+
+cluster:
+    id:     773c6f4e-e3d3-47d4-9e17-c3f42c84cfca
+    health: HEALTH_WARN
+            1/3 mons down, quorum node01,node03
+            1 pool(s) have no replicas configured
+
+  services:
+    mon: 3 daemons, quorum node01,node03 (age 83s), out of quorum: node02
+    mgr: node01(active, since 5d), standbys: node03, node02
+    osd: 3 osds: 3 up (since 16m), 3 in (since 15m)
+
+  data:
+    pools:   2 pools, 33 pgs
+    objects: 178 objects, 435 MiB
+    usage:   3.6 GiB used, 56 GiB / 60 GiB avail
+    pgs:     33 active+clean
+```
+
+- Ghi thử dữ liệu:
+
+```
+rbd create test5 --size 10000 --pool rbd
+rbd map test5 --pool rbd
+mkfs.ext4 /dev/rbd/rbd/test5
+mkdir /mnt/test5
+mount /dev/rbd/rbd/test5 /mnt/test5
+dd if=/dev/zero of=/mnt/test5/myfile bs=1G count=1
+```
+
+- Kiểm tra dư liệu: `ceph osd status`
+
+```
+ID  HOST                USED  AVAIL  WR OPS  WR DATA  RD OPS  RD DATA  STATE
+ 0  ops-dungnt-node01  1249M  18.7G      0        0       0        0   exists,up
+ 1  ops-dungnt-node02  1292M  18.7G      0        0       0        0   exists,up
+ 2  ops-dungnt-node03  1360M  18.6G      0        0       0        0   exists,updown
+```
 
 ###### Di chuyển OSD trong CRUSH map
 
