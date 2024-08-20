@@ -838,9 +838,9 @@ dd if=/dev/zero of=/mnt/test5/myfile bs=1G count=1
 
 ```
 ID  HOST                USED  AVAIL  WR OPS  WR DATA  RD OPS  RD DATA  STATE
- 0  ops-dungnt-node01  1249M  18.7G      0        0       0        0   exists,up
- 1  ops-dungnt-node02  1292M  18.7G      0        0       0        0   exists,up
- 2  ops-dungnt-node03  1360M  18.6G      0        0       0        0   exists,updown
+ 0  ops-dungnt-node01  1110M  18.9G      0     2457       0        0   exists,up
+ 1  ops-dungnt-node02  1110M  18.9G      0        0       0        0   exists,up
+ 2  ops-dungnt-node03  1110M  18.9G      0        0       0        0   exists,up
 ```
 
 --> mon down vẫn ghi dữ liệu đượcđược
