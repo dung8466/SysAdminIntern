@@ -765,3 +765,5 @@ ID  CLASS  WEIGHT   TYPE NAME                   STATUS  REWEIGHT  PRI-AFF
 ```
 
 --> Ceph sẽ lưu trữ nhiều dữ liệu hơn trên osd.2
+
+![new ceph map](pictures/new_weight.png)
