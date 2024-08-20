@@ -728,6 +728,15 @@ host ops-dungnt-node03 {
 - Thay đổi weight trong 1 node:
 
 ```
+host ops-dungnt-node02 {
+        id -5           # do not change unnecessarily
+        id -6 class hdd         # do not change unnecessarily
+        # weight 0.019
+        alg straw2
+        hash 0  # rjenkins1
+        item osd.1 weight 0.025
+}
+
 host ops-dungnt-node03 {
         id -7           # do not change unnecessarily
         id -8 class hdd         # do not change unnecessarily
@@ -750,7 +759,7 @@ ID  CLASS  WEIGHT   TYPE NAME                   STATUS  REWEIGHT  PRI-AFF
 -3         0.01900      host ops-dungnt-node01
  0    hdd  0.01900          osd.0                   up   1.00000  1.00000
 -5         0.01900      host ops-dungnt-node02
- 1    hdd  0.01900          osd.1                   up   1.00000  1.00000
+ 1    hdd  0.02499          osd.1                   up   1.00000  1.00000
 -7         0.01900      host ops-dungnt-node03
  2    hdd  0.03000          osd.2                   up   1.00000  1.00000
 ```
