@@ -767,3 +767,12 @@ ID  CLASS  WEIGHT   TYPE NAME                   STATUS  REWEIGHT  PRI-AFF
 --> Ceph sẽ lưu trữ nhiều dữ liệu hơn trên osd.2
 
 ![new ceph map](pictures/new_weight.png)
+
+- Tạo dữ liệu mới và kiểm tra: `ceph osd status`
+
+```
+ID  HOST                USED  AVAIL  WR OPS  WR DATA  RD OPS  RD DATA  STATE
+ 0  ops-dungnt-node01  1094M  18.9G      0        0       0        0   exists,up
+ 1  ops-dungnt-node02  1096M  18.9G      0        0       0        0   exists,up
+ 2  ops-dungnt-node03  1101M  18.9G      0        0       0        0   exists,up
+```
