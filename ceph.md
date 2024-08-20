@@ -944,6 +944,12 @@ ID  HOST                USED  AVAIL  WR OPS  WR DATA  RD OPS  RD DATA  STATE
   + Ceph Object Gateway nodes
   + Tất cả Ceph client nodes khác
 
+#### Update bằng tay 
+
+- Update Mgr: 
+  + Dừng mgr service: `systemctl stop ceph-mgr@node0x.service`
+  + Update phiên bản sử dụng apt,yum,... và xóa bản cũ không cần thiết
+  + Khởi động lại mon service: `systemctl start ceph-mgr@node0x.service`
 - Update Mon: Phải có số lẻ Mon node
   + Dừng mon service: `systemctl stop ceph-mon@node0x.service`
   + Update phiên bản sử dụng apt,yum,... và xóa bản cũ không cần thiết
@@ -954,3 +960,6 @@ ID  HOST                USED  AVAIL  WR OPS  WR DATA  RD OPS  RD DATA  STATE
   + Update phiên bản sử dụng apt,yum,... và xóa bản cũ không cần thiết
   + Khởi động lại OSD service: `systemctl start ceph-osd@<ceph-id>`
   + Nếu tất cả OSD đã update, xóa flags đã đánh dấu trước đó: `ceph osd unset noout` && `ceph osd unset noscrub` && `ceph osd unset nodeep-scrub`
+
+#### Update bằng cephadm
+
