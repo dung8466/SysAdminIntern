@@ -440,6 +440,9 @@ Trong trường hợp bạn có nhiều pool dữ liệu với các yêu cầu k
 
 ### Cài đặt Ceph Cluster
 
+
+1. Cài tay
+
 - Tại node 1:
   + `ssh-keygen`
   + `ssh-copy-id node02` && `ssh-copy-id node03`
@@ -567,7 +570,6 @@ ID  CLASS  WEIGHT   TYPE NAME                   STATUS  REWEIGHT  PRI-AFF
 
 ![ceph dashboard](pictures/ceph-dashboard.png)
 
-
 #### Thêm OSD vào cluster
 
 - Copy ceph config và key:
@@ -587,6 +589,38 @@ ID  CLASS  WEIGHT   TYPE NAME                   STATUS  REWEIGHT  PRI-AFF
 - Dừng ceph tại node xóa: `systemctl disable --now ceph-osd@nodex.service`
 - Xóa OSD: `ceph osd purge <id> --yes-i-really-mean-it `
 
+2. Cài bằng cephadm
+
+- Cài đặt cephadm: `apt install -y cephadm`
+
+- Tại node 1, boootstrap cluster (tạo monitor,mgr daemon, tạo ssh key,...): `cephadm bootstrap --mon-ip *<mon-ip>*`
+
+- Cài đặt ceph-common để có các câu lệnh ceph,rbd,...: `cephadm install ceph-common`
+
+- Kiểm tra: `ceph -v`
+
+- Thêm OSD khả dụng vào cluster: `ceph orch apply osd --all-available-devices`
+
+- Hoặc thêm từng OSD vào với disk xác định: `ceph orch daemon add osd *<host>*:*<device-path>*`
+
+- Xóa OSD khỏi cluster: `ceph orch osd rm <osd_id(s)> [--replace] [--force]`
+
+#### Thêm các node khác vào cluster
+
+- Thêm ssh key vào các node khác: `ssh-copy-id -f -i /etc/ceph/ceph.pub root@*<new-host>*`
+- Thêm node vào cluster: `ceph orch host add *<newhost>* *<ip>* --labels _admin`
+
+#### Xóa node khỏi cluster
+
+- Xóa các daemon khỏi cluster: `ceph orch host drain *<host>*`
+
+- Kiểm tra daemon: `ceph orch ps <host>`
+
+- Xóa OSD khỏi cluster: `ceph orch osd rm <osd_id(s)> [--replace] [--force]`
+
+- Kiểm tra quá trình xóa OSD khỏi cluster: `ceph orch osd rm status`
+
+- Xóa node khỏi cluster: `ceph orch host rm <host>`
 
 #### Sử dụng Block Device
 
@@ -963,3 +997,6 @@ ID  HOST                USED  AVAIL  WR OPS  WR DATA  RD OPS  RD DATA  STATE
 
 #### Update bằng cephadm
 
+- Kiểm tra health và version:
+  + Kiểm tra health: `ceph health`
+  + Kiểm tra phiên bản của ceph và daemon: `ceph version` && `ceph versions`
