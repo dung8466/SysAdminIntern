@@ -1000,3 +1000,7 @@ ID  HOST                USED  AVAIL  WR OPS  WR DATA  RD OPS  RD DATA  STATE
 - Kiểm tra health và version:
   + Kiểm tra health: `ceph health`
   + Kiểm tra phiên bản của ceph và daemon: `ceph version` && `ceph versions`
+
+- Update docker: `ceph orch upgrade start --image quay.io/ceph/ceph:<version>`
+
+- Kiểm tra trạng thái update: `ceph orch upgrade status` && `ceph -s`
