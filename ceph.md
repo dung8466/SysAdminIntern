@@ -601,6 +601,12 @@ ID  CLASS  WEIGHT   TYPE NAME                   STATUS  REWEIGHT  PRI-AFF
 
 - Thêm label _admin cho node 1 để chuyển conf, key sang các node khác có label _admin: `ceph orch host label add <ip> _admin`
 
+- Thêm các mon daemon vào node khác: `ceph orch daemon add mon *<host1:ip-or-network1>`
+
+- Cho phép tự động đặt daemon: `ceph orch apply mon --placement="newhost1,newhost2,newhost3" --dry-run`
+
+- Áp dụng bằng cách bỏ đi `--dry-run`: `ceph orch apply mon --placement="newhost1,newhost2,newhost3"`
+
 - Thêm OSD khả dụng vào cluster: `ceph orch apply osd --all-available-devices`
 
 - Hoặc thêm từng OSD vào với disk xác định: `ceph orch daemon add osd *<host>*:*<device-path>*`
@@ -1003,6 +1009,12 @@ ID  HOST                USED  AVAIL  WR OPS  WR DATA  RD OPS  RD DATA  STATE
   + Kiểm tra health: `ceph health`
   + Kiểm tra phiên bản của ceph và daemon: `ceph version` && `ceph versions`
 
-- Update docker: `ceph orch upgrade start --image quay.io/ceph/ceph:<version>`
+- Update docker: `ceph orch upgrade start --image quay.io/ceph/ceph:<version>` 
+
+--> Update mgr --> mon --> crash --> osd --> node-exporter --> prometheus --> alertmanager --> grafana
 
 - Kiểm tra trạng thái update: `ceph orch upgrade status` && `ceph -s`
+
+
+### Bluestone
+
