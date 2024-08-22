@@ -599,6 +599,8 @@ ID  CLASS  WEIGHT   TYPE NAME                   STATUS  REWEIGHT  PRI-AFF
 
 - Kiểm tra: `ceph -v`
 
+- Thêm label _admin cho node 1 để chuyển conf, key sang các node khác có label _admin: `ceph orch host label add <ip> _admin`
+
 - Thêm OSD khả dụng vào cluster: `ceph orch apply osd --all-available-devices`
 
 - Hoặc thêm từng OSD vào với disk xác định: `ceph orch daemon add osd *<host>*:*<device-path>*`
@@ -650,7 +652,7 @@ rbd                       19                 3.0        61428M  0.0000          
 - Xóa pool rbd: `ceph osd pool delete rbd rbd --yes-i-really-really-mean-it`
 
 
-### Giả lập 1 node osdosd down
+### Giả lập 1 node osd down
 
 - Stop ceph service tại 1 node: `systemctl stop ceph-osd@<osd-id>`
 - Kiểm tra trạng thái của osd, ceph: `ceph osd tree` && `ceph -s`
