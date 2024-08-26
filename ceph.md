@@ -1016,5 +1016,16 @@ ID  HOST                USED  AVAIL  WR OPS  WR DATA  RD OPS  RD DATA  STATE
 - Kiểm tra trạng thái update: `ceph orch upgrade status` && `ceph -s`
 
 
-### Bluestone
+### Bluestore
 
+- BlueStore ghi dữ liệu trực tiếp lên ổ đĩa thô mà không cần hệ thống tập tin trung gian như trong FileStore.
+
+- Metadata và các thông tin quản lý khác được lưu trữ trong một cơ sở dữ liệu RocksDB.
+
+- BlueStore hỗ trợ kiểm tra và chỉnh sửa lỗi tự động (CRC checksums) cho mỗi đối tượng lưu trữ, đảm bảo tính toàn vẹn dữ liệu.
+
+- BlueStore có hỗ trợ nén dữ liệu, giúp tiết kiệm dung lượng lưu trữ.
+
+- BlueStore cung cấp hiệu suất cao hơn, đặc biệt là trong các tác vụ ghi và đọc ngẫu nhiên, so với FileStore.
+
+- BlueStore được thiết kế để tận dụng tối đa hiệu suất của các thiết bị lưu trữ tốc độ cao như SSD và NVMe.
