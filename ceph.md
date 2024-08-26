@@ -585,6 +585,7 @@ ID  CLASS  WEIGHT   TYPE NAME                   STATUS  REWEIGHT  PRI-AFF
 #### Xóa OSD khỏi cluster
 
 - Đánh dấu OSD cần xóa: `ceph osd out <id>`
+- `ceph osd crush remove osd.<id> && ceph auth del osd.<id> && ceph osd rm osd.<id>`
 - Theo dõi trạng thái của cluster: `ceph -w`
 - Dừng ceph tại node xóa: `systemctl disable --now ceph-osd@nodex.service`
 - Xóa OSD: `ceph osd purge <id> --yes-i-really-mean-it `
