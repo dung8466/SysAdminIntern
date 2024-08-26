@@ -614,6 +614,8 @@ ID  CLASS  WEIGHT   TYPE NAME                   STATUS  REWEIGHT  PRI-AFF
 
 - Xóa OSD khỏi cluster: `ceph orch osd rm <osd_id(s)> [--replace] [--force]`
 
+- Thêm OSD đã có trước đó lại vào cluster: `ceph orch daemon redeploy osd.<id>`
+
 #### Thêm các node khác vào cluster
 
 - Thêm ssh key vào các node khác: `ssh-copy-id -f -i /etc/ceph/ceph.pub root@*<new-host>*`
