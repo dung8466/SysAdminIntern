@@ -1020,6 +1020,8 @@ ID  HOST                USED  AVAIL  WR OPS  WR DATA  RD OPS  RD DATA  STATE
 
 - BlueStore ghi dữ liệu trực tiếp lên ổ đĩa thô mà không cần hệ thống tập tin trung gian như trong FileStore.
 
+- BlueStore không tạo, mount filesystem trên thiết bị.
+
 - Metadata và các thông tin quản lý khác được lưu trữ trong một cơ sở dữ liệu RocksDB.
 
 - BlueStore hỗ trợ kiểm tra và chỉnh sửa lỗi tự động (CRC checksums) cho mỗi đối tượng lưu trữ, đảm bảo tính toàn vẹn dữ liệu.
