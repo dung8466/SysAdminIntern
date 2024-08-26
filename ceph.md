@@ -1019,6 +1019,39 @@ ID  HOST                USED  AVAIL  WR OPS  WR DATA  RD OPS  RD DATA  STATE
 - Kiểm tra trạng thái update: `ceph orch upgrade status` && `ceph -s`
 
 
+#### Enable module
+
+1. Prometheus
+
+- Có thể tạo prometheus.yml:
+
+```
+service_type: prometheus
+placement:
+  count: 1
+spec:
+  retention_time: "1y"
+  retention_size: "1GB"
+```
+
+- Dùng default: `ceph orch apply prometheus --placement="<ceph node>"` hoặc `ceph orch apply -i prometheus.yml --dry-run && ceph orch apply -i prometheus.yml && ceph orch redeploy prometheus`
+
+- `ceph orch ls` --> ip: `<ceph ip>:9095`
+
+2. Grafana
+
+- Tạo grafana.yml:
+
+```
+service_type: grafana
+spec:
+  initial_admin_password: admin
+```
+
+- `ceph orch apply -i grafana.yml --dry-run && ceph orch apply -i grafana.yml && ceph orch redeploy grafana`
+
+- `ceph orch ls` --> ip: `<ceph ip>:3000` với tk admin - pass vừa tạo
+
 ### Bluestore
 
 - BlueStore ghi dữ liệu trực tiếp lên ổ đĩa thô mà không cần hệ thống tập tin trung gian như trong FileStore.
