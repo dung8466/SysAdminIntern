@@ -119,6 +119,19 @@ explicit-exit-notify 1
   - Cho phép ip forward: `echo 'net.ipv4.ip_forward=1' >> /etc/sysctl.conf && sysctl -p`
   - Cho phép lưu lượng của client đến LAN: `iptables -t nat -A POSTROUTING -s 10.20.6.0/24 -o eth0 -j MASQUERADE`
 
+  - Route của site khi bật OpenVPN:
+
+```
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+0.0.0.0         103.107.181.1   0.0.0.0         UG    101    0        0 eth1
+10.8.0.0        10.8.0.2        255.255.255.0   UG    0      0        0 tun0
+10.8.0.2        0.0.0.0         255.255.255.255 UH    0      0        0 tun0
+10.20.6.0       0.0.0.0         255.255.255.0   U     100    0        0 eth0
+103.107.181.0   0.0.0.0         255.255.255.0   U     101    0        0 eth1
+169.254.169.254 10.20.6.1       255.255.255.255 UGH   100    0        0 eth0
+169.254.169.254 103.107.181.120 255.255.255.255 UGH   101    0        0 eth1
+```
+
 + Tại Client:
   - Cấu hình config:
 
@@ -152,3 +165,15 @@ verb 3
 ```
   
   - Kết nối với VPN qua daemon: `openvpn --config client.ovpn --daemon`
+
+  - Route của client khi kết nối thành công:
+
+```
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+0.0.0.0         45.124.93.1     0.0.0.0         UG    100    0        0 eth0
+10.8.0.1        10.8.0.5        255.255.255.255 UGH   0      0        0 tun0
+10.8.0.5        0.0.0.0         255.255.255.255 UH    0      0        0 tun0
+10.20.6.0       10.8.0.5        255.255.255.0   UG    0      0        0 tun0
+45.124.93.0     0.0.0.0         255.255.255.0   U     100    0        0 eth0
+169.254.169.254 45.124.93.5     255.255.255.255 UGH   100    0        0 eth0
+```
