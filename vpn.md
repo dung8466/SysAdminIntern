@@ -68,9 +68,14 @@ SSTP chỉ hoạt động tốt nếu có đủ băng thông trên liên kết m
 
 3. Cách VPN hoạt động
 
-Hoạt động bằng cách tạo ra một kết nối an toàn và mã hóa giữa thiết bị của người dùng và máy chủ VPN thông qua một đường hầm bảo mật.
++ Kết nối Tunneling: VPN tạo ra một "tunnel" (bọc dữ liệu trong một gói tin khác) giữa thiết bị của người dùng và máy chủ VPN.
+
++ Mã hóa dữ liệu: Dữ liệu được mã hóa trước khi gửi qua Internet.
+
++ Thay đổi Địa chỉ IP: Khi kết nối qua VPN, địa chỉ IP của người dùng sẽ được thay đổi thành địa chỉ IP của máy chủ VPN.
 
 
+4. Phân biệt VPN
 
 + VPN client-to-site: cho phép người dùng có thể kết nối đến 1 mạng riêng ở xa thông qua 1 VPN server
 
@@ -82,7 +87,7 @@ Hoạt động bằng cách tạo ra một kết nối an toàn và mã hóa gi�
 
 ![vpc](pictures/vpc-vpn.png)
 
-4. Cấu hình VPN Client-to-Site
+5. Cấu hình VPN Client-to-Site
 
 + Tại Site:
 
