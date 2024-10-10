@@ -81,3 +81,69 @@ Hoạt động bằng cách tạo ra một kết nối an toàn và mã hóa gi�
 ![site to site](pictures/site2site-help.png)
 
 ![vpc](pictures/vpc-vpn.png)
+
+4. Cấu hình VPN Client-to-Site
+
++ Tại Site:
+
+  - Cấu hình openvpn config 
+
+```
+port 1194
+proto udp
+dev tun
+ca ca.crt
+cert issued/server1.crt
+key private/server1.key  # This file should be kept secret
+dh dh.pem
+server 10.8.0.0 255.255.255.0 #subnet cho VPN
+ifconfig-pool-persist ipp.txt
+push "route 10.20.6.0 255.255.255.0"
+keepalive 10 120
+tls-auth ta.key 0 # This file is secret
+cipher AES-256-CBC
+persist-key
+persist-tun
+status /var/log/openvpn-status.log
+log         /var/log/openvpn.log
+log-append  /var/log/openvpn.log
+verb 3
+explicit-exit-notify 1
+```
+
+  - Cho phép ip forward: `echo 'net.ipv4.ip_forward=1' >> /etc/sysctl.conf && sysctl -p`
+  - Cho phép lưu lượng của client đến LAN: `iptables -t nat -A POSTROUTING -s 10.20.6.0/24 -o eth0 -j MASQUERADE`
+
++ Tại Client:
+  - Cấu hình config:
+
+```
+client
+dev tun
+proto udp
+remote 103.107.181.141 1194  # Địa chỉ IP của máy chủ OpenVPN và cổng
+
+route 10.20.6.0 255.255.255.0
+
+tls-auth ta.key 1
+data-ciphers AES-256-GCM:AES-256-CBC
+cipher AES-256-CBC
+
+resolv-retry infinite
+remote-cert-tls server
+nobind
+persist-key
+persist-tun
+verb 3
+
+<ca>
+</ca>
+<cert>
+</cert>
+<key>
+</key>
+<tls-auth>
+</tls-auth>
+```
+  
+  - Kết nối với VPN qua daemon: `openvpn --config client.ovpn --daemon`
