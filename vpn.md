@@ -177,3 +177,36 @@ Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
 45.124.93.0     0.0.0.0         255.255.255.0   U     100    0        0 eth0
 169.254.169.254 45.124.93.5     255.255.255.255 UGH   100    0        0 eth0
 ```
+  - Theo dõi client kết nối tại site `/var/log/openvpn.log` hoặc `/var/log/openvpn-status.log`:
+
+```
+HEADER,CLIENT_LIST,Common Name,Real Address,Virtual Address,Virtual IPv6 Address,Bytes Received,Bytes Sent,Connected Since,Connected Since (time_t),Username,Client ID,Peer ID,Data Channel Cipher
+CLIENT_LIST,client1,45.124.93.154:46893,10.8.0.6,,272040,275076,2024-10-10 16:58:50,1728554330,UNDEF,0,0,AES-256-GCM
+
+hoặc
+
+45.124.93.154:46893 Outgoing Control Channel Authentication: Using 160 bit message hash 'SHA1' for HMAC authentication
+45.124.93.154:46893 Incoming Control Channel Authentication: Using 160 bit message hash 'SHA1' for HMAC authentication
+45.124.93.154:46893 TLS: Initial packet from [AF_INET]45.124.93.154:46893, sid=7f428ab2 72f19d6d
+45.124.93.154:46893 VERIFY OK: depth=1, CN=Server-CA
+45.124.93.154:46893 VERIFY OK: depth=0, CN=client1
+45.124.93.154:46893 peer info: IV_VER=2.5.11
+45.124.93.154:46893 peer info: IV_PLAT=linux
+45.124.93.154:46893 peer info: IV_PROTO=6
+45.124.93.154:46893 peer info: IV_CIPHERS=AES-256-GCM:AES-256-CBC
+45.124.93.154:46893 peer info: IV_LZ4=1
+45.124.93.154:46893 peer info: IV_LZ4v2=1
+45.124.93.154:46893 peer info: IV_LZO=1
+45.124.93.154:46893 peer info: IV_COMP_STUB=1
+45.124.93.154:46893 peer info: IV_COMP_STUBv2=1
+45.124.93.154:46893 peer info: IV_TCPNL=1
+45.124.93.154:46893 Control Channel: TLSv1.3, cipher TLSv1.3 TLS_AES_256_GCM_SHA384, peer certificate: 2048 bit RSA, signature: RSA-SHA256
+45.124.93.154:46893 [client1] Peer Connection Initiated with [AF_INET]45.124.93.154:46893
+client1/45.124.93.154:46893 MULTI_sva: pool returned IPv4=10.8.0.6, IPv6=(Not enabled)
+client1/45.124.93.154:46893 MULTI: Learn: 10.8.0.6 -> client1/45.124.93.154:46893
+client1/45.124.93.154:46893 MULTI: primary virtual IP for client1/45.124.93.154:46893: 10.8.0.6
+client1/45.124.93.154:46893 Data Channel: using negotiated cipher 'AES-256-GCM'
+client1/45.124.93.154:46893 Outgoing Data Channel: Cipher 'AES-256-GCM' initialized with 256 bit key
+client1/45.124.93.154:46893 Incoming Data Channel: Cipher 'AES-256-GCM' initialized with 256 bit key
+client1/45.124.93.154:46893 SENT CONTROL [client1]: 'PUSH_REPLY,route 10.20.6.0 255.255.255.0,route 10.8.0.1,topology net30,ping 10,ping-restart 120,ifconfig 10.8.0.6 10.8.0.5,peer-id 0,cipher AES-256-GCM' (status=1)
+```
