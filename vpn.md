@@ -214,7 +214,13 @@ client1/45.124.93.154:46893 SENT CONTROL [client1]: 'PUSH_REPLY,route 10.20.6.0 
   - Để log file có timestamp, cấu hình unit file tại `/etc/systemd/system/multi-user.target.wants/openvpn-server@server.service` loại bỏ `--suppress-timestamps`.
     + `systemctl daemon-reload`
 
-6. Cơ chế xác thực:
+6. Theo dõi kết nối client
+
+- Thêm `management localhost 6666` vào `/etc/openvpn/server/server.conf`.
+
+- Telnet vào `telnet localhost 6666` và kiểm tra `status`.
+
+7. Cơ chế xác thực:
 
 - PAM (Pluggable Authentication Modules): cấu hình sử dụng `/etc/passwd` và `/etc/shadow` để xác thực người dùng:
   + Cấu hình pam tại `/etc/pam.d/openvpn`:
