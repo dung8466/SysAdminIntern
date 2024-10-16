@@ -210,3 +210,61 @@ client1/45.124.93.154:46893 Outgoing Data Channel: Cipher 'AES-256-GCM' initiali
 client1/45.124.93.154:46893 Incoming Data Channel: Cipher 'AES-256-GCM' initialized with 256 bit key
 client1/45.124.93.154:46893 SENT CONTROL [client1]: 'PUSH_REPLY,route 10.20.6.0 255.255.255.0,route 10.8.0.1,topology net30,ping 10,ping-restart 120,ifconfig 10.8.0.6 10.8.0.5,peer-id 0,cipher AES-256-GCM' (status=1)
 ```
+
+  - Để log file có timestamp, cấu hình unit file tại `/etc/systemd/system/multi-user.target.wants/openvpn-server@server.service` loại bỏ `--suppress-timestamps`.
+    + `systemctl daemon-reload`
+
+6. Cơ chế xác thực:
+
+- PAM (Pluggable Authentication Modules): cấu hình sử dụng `/etc/passwd` và `/etc/shadow` để xác thực người dùng:
+  + Cấu hình pam tại `/etc/pam.d/openvpn`:
+
+```
+auth required pam_unix.so
+account required pam_unix.so
+```
+
+  + Cấu hình tại site:
+
+```
+plugin /usr/lib64/openvpn/plugins/openvpn-plugin-auth-pam.so login
+username-as-common-name
+```
+
+  + Cấu hình tại client:
+
+```
+auth-user-pass <file> #có thể thêm file lưu tài khoản hoặc nhập lúc kết nối
+```
+
+- auth-user-pass-verify: sử dụng script tùy ý để xác thực user:
+  + Cấu hình tại site:
+
+```
+auth-user-pass-verify /etc/openvpn/server/auth-script.sh <via-file | via-env>
+username-as-common-name
+```
+
+  + Cấu hình `auth-script.sh` do mình xác định, ví dụ:
+
+```
+#!/bin/bash
+USERNAME=$1
+PASSWORD=$2
+PASS_FILE="/etc/openvpn/server/user_pass.txt"
+
+# Kiểm tra username và password có trong file không
+if grep -q "^$USERNAME:$PASSWORD$" $PASS_FILE; then
+  exit 0  # Thành công
+else
+  exit 1  # Thất bại
+fi
+```
+
+  + Cấu hình tại client:
+
+```
+auth-user-pass <file> #có thể thêm file lưu tài khoản hoặc nhập lúc kết nối
+```
+
+    
