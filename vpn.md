@@ -237,6 +237,8 @@ plugin /usr/lib64/openvpn/plugins/openvpn-plugin-auth-pam.so login
 username-as-common-name
 ```
 
+  + Có thể thêm `verify-client-cert none` để chỉ cần sử dụng ca,tls-auth
+
   + Cấu hình tại client:
 
 ```
@@ -250,6 +252,8 @@ auth-user-pass <file> #có thể thêm file lưu tài khoản hoặc nhập lúc
 auth-user-pass-verify /etc/openvpn/server/auth-script.sh <via-file | via-env>
 username-as-common-name
 ```
+
+  + Có thể thêm `verify-client-cert none` để chỉ cần sử dụng ca,tls-auth
 
   + Cấu hình `auth-script.sh` do mình xác định, ví dụ:
 
