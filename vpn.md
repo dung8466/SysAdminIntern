@@ -259,9 +259,11 @@ username-as-common-name
 
 ```
 #!/bin/bash
-USERNAME=$1
-PASSWORD=$2
 PASS_FILE="/etc/openvpn/server/user_pass.txt"
+
+# Đọc thông tin từ tệp tạm thời mà OpenVPN tạo ra
+USERNAME=$(head -n 1 "$1")
+PASSWORD=$(tail -n 1 "$1")
 
 # Kiểm tra username và password có trong file không
 if grep -q "^$USERNAME:$PASSWORD$" $PASS_FILE; then
