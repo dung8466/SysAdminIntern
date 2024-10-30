@@ -91,7 +91,8 @@ SSTP chỉ hoạt động tốt nếu có đủ băng thông trên liên kết m
 
 + Tại Site:
 
-  - Cấu hình openvpn config 
+  - Cấu hình openvpn config
+  
 
 ```
 port 1194
@@ -116,10 +117,10 @@ verb 3
 explicit-exit-notify 1
 ```
 
-  - Cho phép ip forward: `echo 'net.ipv4.ip_forward=1' >> /etc/sysctl.conf && sysctl -p`
-  - Cho phép lưu lượng của client đến LAN: `iptables -t nat -A POSTROUTING -s 10.20.6.0/24 -o eth0 -j MASQUERADE`
+  -  Cho phép ip forward: `echo 'net.ipv4.ip_forward=1' >> /etc/sysctl.conf && sysctl -p`
+  -  Cho phép lưu lượng của client đến LAN: `iptables -t nat -A POSTROUTING -s 10.20.6.0/24 -o eth0 -j MASQUERADE`
+  -  Route của site khi bật OpenVPN:
 
-  - Route của site khi bật OpenVPN:
 
 ```
 Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
