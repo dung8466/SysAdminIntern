@@ -56,4 +56,6 @@ Active osd lên
 
     for i in `cat osd-id`; do a=`cat /var/lib/ceph/osd/ceph-$i/fsid`; ceph-volume lvm activate $i $a; sleep 60;  done
 
+Chuyển backfill các osd về 1
 
+    ceph tell osd.* injectargs '--osd-max-backfills 1'
