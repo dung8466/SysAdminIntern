@@ -15,4 +15,6 @@ Xác định osd đang nằm trên disk nào
 
     ceph-volume lvm list
 
-Kết hợp với /opt/diskinfo để tìm disk
+Kết hợp với /opt/diskinfo để tìm disk.
+
+Có thể sử dụng `iostat /dev/sd<x>` để kiểm tra đọc/ghi của disk.
