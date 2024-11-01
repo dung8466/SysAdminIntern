@@ -17,3 +17,5 @@ Thêm disk HDD,SSD vào raid 0
 Add disk SSD theo raid 1 (ld sau khi tạo sẽ không có caching)
 
     ssacli ctrl slot=2 create type=ld drives=<vị trí disk>,<vị trí disk>,.. raid=1
+
+Thông tin thêm: [HP Smart Storage Admin CLI](https://gist.github.com/mrpeardotnet/a9ce41da99936c0175600f484fa20d03)
