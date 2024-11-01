@@ -1,3 +1,7 @@
+Kiểm tra có bao nhiêu controller
+
+    ssacli ctrl all show
+
 Kiểm tra disk và virtual disk:
 
     ssacli ctrl slot=<controller slot> pd all show
