@@ -26,6 +26,8 @@ Chuẩn bị disk
 
     #for i in {c..p}; do ceph-volume lvm prepare --crush-device-class <hdd | ssd> --data /dev/sd$i; sleep 3; done
 
+    Nếu là NVME: ceph-volume lvm batch --osds-per-device 2 --crush-device-class=nvme /dev/$i --yes
+
 Tìm root, host, weight, id của osd
 
     ceph osd df tree
