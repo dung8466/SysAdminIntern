@@ -19,6 +19,8 @@
 
         #for i in `cat <file>`;do systemctl mask ceph-osd@$i;done
 
+- Tắt cảnh báo nodenode
+
 - Reboot server
 
 - Start từng OSD (Chờ PG về trạng thái active hết rồi mới start osd tiếp theo)
