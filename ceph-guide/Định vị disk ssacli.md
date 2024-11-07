@@ -1,18 +1,18 @@
-Kiểm tra có bao nhiêu controller
+- Kiểm tra có bao nhiêu controller
 
-    ssacli ctrl all show
+        ssacli ctrl all show
 
-Kiểm tra disk và virtual disk:
+- Kiểm tra disk và virtual disk:
 
-    ssacli ctrl slot=<controller slot> pd all show
-    ssacli ctrl slot=<controller slot> ld all show
+        ssacli ctrl slot=<controller slot> pd all show
+        ssacli ctrl slot=<controller slot> ld all show
 
-Disk bị đánh trạng thái failed là disk lỗi:
+- Disk bị đánh trạng thái failed là disk lỗi:
 
-    Array F
+        Array F
 
-      logicaldrive 6 (7.28 TB, RAID 0, Failed)
+          logicaldrive 6 (7.28 TB, RAID 0, Failed)
 
-Bật/tắt led locate disk:
+- Bật/tắt led locate disk:
 
-    ssacli ctrl slot=<controller slot> pd <port number>:<box number>:<slot> modify led=on/offoff
+        ssacli ctrl slot=<controller slot> pd <port number>:<box number>:<slot> modify led=on/offoff
