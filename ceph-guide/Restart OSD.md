@@ -5,6 +5,8 @@ Set flags cho cluster
     ceph osd set nodeep-scrub
     ceph osd set nosnaptrim
 
+Tắt cảnh báo osd_down tại mon 1 và 2
+
 Lấy osd id bỏ vào 1 file
 
     ceph osd df tree | grep <tên node> -A 44 | awk '{print $1}'
