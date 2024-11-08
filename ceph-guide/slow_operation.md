@@ -16,4 +16,5 @@
 
 - Start lại các OSD
 
-      #for i in `cat <tên file>`;do systemctl unmask ceph-osd@$i;systemctl start ceph-osd@$i;sleep 30;donedone
+      #for i in `cat <tên file>`;do systemctl unmask ceph-osd@$i;systemctl start ceph-osd@$i;sleep 30;done
+      ceph tell osd.* injectargs '--osd-max-backfills 1'
