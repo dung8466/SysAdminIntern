@@ -1070,4 +1070,6 @@ spec:
 
 ### Rados
 
+Bench từng OSD
 
+    ceph tell osd.OSD_ID bench [TOTAL_BYTES] [BYTES_PER_WRITE] [OBJ_SIZE] [NUM_OBJS]
