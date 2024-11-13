@@ -1073,3 +1073,21 @@ spec:
 Bench từng OSD
 
     ceph tell osd.OSD_ID bench [TOTAL_BYTES] [BYTES_PER_WRITE] [OBJ_SIZE] [NUM_OBJS]
+    
+    ví dụ
+    ceph tell osd.2 bench 12288000 4096 4194304 100
+    kết quả
+    {
+    "bytes_written": 12288000,
+    "blocksize": 4096,
+    "elapsed_sec": 9.3231129670000001,
+    "bytes_per_sec": 1318014.7064070215,
+    "iops": 321.78093418140173
+    }
+
+
+#### Radosrgw
+
+- Là http REST gateway cho rados object store
+
+#### Multi-SiteSite
