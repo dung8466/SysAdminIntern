@@ -1067,3 +1067,7 @@ spec:
 - BlueStore cung cấp hiệu suất cao hơn, đặc biệt là trong các tác vụ ghi và đọc ngẫu nhiên, so với FileStore.
 
 - BlueStore được thiết kế để tận dụng tối đa hiệu suất của các thiết bị lưu trữ tốc độ cao như SSD và NVMe.
+
+### Rados
+
+
