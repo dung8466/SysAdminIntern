@@ -1088,6 +1088,56 @@ Bench từng OSD
 
 #### Radosrgw
 
-- Là http REST gateway cho rados object store
+- Là http REST gateway cho rados object store, tương thích với S3 Amazon và Swift Openstack.
 
+- Cho phép người dùng thao tác với hệ thống lưu trữ RADOS.
+
+#### Bucket
+
+- Là 1 container dùng để tổ chức, lưu trữ các object.
+
+- Có tính năng quản lý truy cập và định danh.
+
+- Xem các bucket và chi tiết các bucket
+
+        radosgw-admin bucket list
+        radosgw-admin bucket stats --bucket <bucket-name>
+
+#### Object
+
+- Mỗi object bao gồm dữ liệu của tệp và các metadata liên quan.
+
+- Mỗi object được lưu trữ trong một bucket và có một tên duy nhất (key) để xác định và truy xuất.
+
+#### ACL (Access Control List)
+
+- ACL là cơ chế kiểm soát truy cập, cho phép cấu hình quyền truy cập đến các bucket và object.
+
+- Bao gồm quyền đọc, ghi và quản lý.
+
+- Xem ACL và Policy
+
+        s3cmd info s3://my-new-bucket
+        s3://my-new-bucket/ (bucket):
+           Location:  default
+           Payer:     BucketOwner
+           Ownership: none
+           Versioning:none
+           Expiration rule: none
+           Block Public Access: none
+           Policy:    none
+           CORS:      none
+           ACL:       Radosgw: FULL_CONTROL
+
+#### Policy
+
+- Policy trong RGW là tập hợp các quy tắc và điều kiện để kiểm soát truy cập phức tạp hơn so với ACL, viết bằng json.
+
+- Policy thường cho phép cấu hình chi tiết về hành vi truy cập, bao gồm điều kiện thời gian, giới hạn hành động và áp dụng cho nhiều người dùng hoặc nhóm.
+
+- Kiểm soát các quyền truy cập theo nhiều điều kiện khác nhau, giúp quản lý bảo mật dữ liệu một cách linh hoạt và chi tiết.
+
+- Thêm policy cho bucket
+
+        s3cmd setpolicy <policy.json> s3://<bucket>
 #### Multi-SiteSite
