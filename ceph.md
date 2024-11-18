@@ -1191,6 +1191,4 @@ Bench từng OSD
 
 ![realm](pictures/realms.png)
 
-Tham khảo thêm [ceph multizone](https://docs.ceph.com/en/latest/radosgw/multisite/_)
-
-#### Multi-Site
+Tham khảo thêm [ceph multizone](https://docs.ceph.com/en/latest/radosgw/multisite/)
