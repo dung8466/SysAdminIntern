@@ -1103,6 +1103,12 @@ Bench từng OSD
         radosgw-admin bucket list
         radosgw-admin bucket stats --bucket <bucket-name>
 
+#### Bucket Index
+
+- RGW lưu danh sách object trong 1 bucket index
+
+- Mỗi index lưu metadata (size, etag, mtime,...) để API liệt kê objectobject
+
 #### Object
 
 - Mỗi object bao gồm dữ liệu của tệp và các metadata liên quan.
@@ -1140,4 +1146,18 @@ Bench từng OSD
 - Thêm policy cho bucket
 
         s3cmd setpolicy <policy.json> s3://<bucket>
-#### Multi-SiteSite
+
+#### Sharding
+
+- 
+- Xem số lượng shard trong cluster hiện tại
+
+        radosgw-admin bucket stats --bucket=<bucket>
+        #"num_shards": 11 số lượng shardshard
+        #"max_marker": "0#,1#,2#,3#,4#,5#,6#,7#,8#,9#,10#" số lượng resharding
+
+#### Caching
+
+#### Zone
+
+#### Multi-Site
