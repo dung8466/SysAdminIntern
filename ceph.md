@@ -1178,13 +1178,19 @@ Bench từng OSD
 - Zone là thành phần nhỏ nhất, đại diện 1 tập hợp các dịch vụ Ceph Rados GW đang chạy trên 1 cluster.
   + Xem zone `radosgw-admin zone list`
 
-- Zonegroup là tập hợp các zone, tập hợp và quản lý zone theo logic (vị trí,mục đích sử dụng,...)
+- Zonegroup là tập hợp các zone, tập hợp và quản lý zone theo logic (vị trí,mục đích sử dụng,...). Zone trong zonegroup replicate tất cả dữ liệu giống nhau.
   + Xem zonegroup `radosgw-admin zonegroup list`
+  + Tạo zonegroup ``
+  + Tạo master zone `radosgw-admin zone create --rgw-zonegroup={zone-group-name} --rgw-zone={zone-name} --master --default --endpoints={http://fqdn}[,{http://fqdn}]`
 
-- Realm là tầng quản lý cao nhất trong hệ thống Ceph RGW, tập hợp zonegroup.
+- Realm là tầng quản lý cao nhất trong hệ thống Ceph RGW, tập hợp zonegroup, phải có ít nhất 1 zonegroup là master.
   + Xem realm `radosgw-admin realm list`
-  + Tạo realm `radosgw-admin realm create --rgw-realm <realm name>
+  + Tạo realm `radosgw-admin realm create --rgw-realm <realm name> [--default]`
+  + Lấy thông tin realm `radosgw-admin realm get --rgw-realm <realm name>`
+  + Tạo zonegroup master `radosgw-admin zonegroup create --rgw-zonegroup={name} --endpoints={url} [--rgw-realm={realm-name}|--realm-id={realm-id}] --master --default`
 
 ![realm](pictures/realms.png)
+
+Tham khảo thêm ![ceph multizone](https://docs.ceph.com/en/latest/radosgw/multisite/)
 
 #### Multi-Site
