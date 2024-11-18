@@ -1,4 +1,4 @@
-## RAID
+realms## RAID
 
 1. Khái niệm:
 
@@ -1173,6 +1173,14 @@ Bench từng OSD
 
 #### Caching
 
-#### Zone
+#### Zone, Zonegroup, RealmRealm
+
+- Zone là thành phần nhỏ nhất, đại diện 1 tập hợp các dịch vụ Ceph Rados GW đang chạy trên 1 cluster.
+
+- Zonegroup là tập hợp các zone, tập hợp và quản lý zone theo logic (vị trí,mục đích sử dụng,...)
+
+- Realm là tầng quản lý cao nhất trong hệ thống Ceph RGW, tập hợp zonegroup.
+
+![realm](pictures/realms.pngpng)
 
 #### Multi-Site
