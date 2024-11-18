@@ -1092,6 +1092,11 @@ Bench từng OSD
 
 - Cho phép người dùng thao tác với hệ thống lưu trữ RADOS.
 
+- Dữ liệu trong RGW được chia làm 3 loại: metadata, bucket index, data.
+  + Metadata: user, bucket, bucket.instance
+  + Bucket index: key(object name)-value(metadata cơ bản),thông tin khác(log,...)
+  + Data: lưu trong 1 hoặc nhiều RADOS object mỗi rgw object.
+
 #### Bucket
 
 - Là 1 container dùng để tổ chức, lưu trữ các object.
@@ -1107,7 +1112,7 @@ Bench từng OSD
 
 - RGW lưu danh sách object trong 1 bucket index
 
-- Mỗi index lưu metadata (size, etag, mtime,...) để API liệt kê objectobject
+- Mỗi index entry lưu metadata (size, etag, mtime,...) để API liệt kê object.
 
 #### Object
 
@@ -1137,23 +1142,33 @@ Bench từng OSD
 
 #### Policy
 
-- Policy trong RGW là tập hợp các quy tắc và điều kiện để kiểm soát truy cập phức tạp hơn so với ACL, viết bằng json.
+- Chưa hỗ trợ cài đặt policies users, groups hoặc roles.
 
-- Policy thường cho phép cấu hình chi tiết về hành vi truy cập, bao gồm điều kiện thời gian, giới hạn hành động và áp dụng cho nhiều người dùng hoặc nhóm.
+- Sử dụng RGW tenant identifier thay thế cho Amazon account ID.
 
-- Kiểm soát các quyền truy cập theo nhiều điều kiện khác nhau, giúp quản lý bảo mật dữ liệu một cách linh hoạt và chi tiết.
+- Chủ tài khoản sẽ cấp quyền truy cập trực tiếp cho người dùng và cấp quyền tài khoản toàn bộ quyền đến bucket, cho phép toàn bộ người dùng trong tài khoản truy cập.
 
-- Thêm policy cho bucket
+- Được quản lý qua S3cmd, sử dụng file jsonjson
+
+- Thay đổi policy cho bucket
 
         s3cmd setpolicy <policy.json> s3://<bucket>
+        s3cmd delpolicy s3://<bucket>
 
 #### Sharding
 
-- 
+- Một bucket index có thể chia thành nhiều rados object.
+
+- Trong RADOS, ghi vào 1 object không thể chạy song song. Bằng cách chia index thành nhiều object thì có thể ghi song song.
+
+- Số lượng shard mặc định là 11.
+
+- Mỗi shard lưu nhiều metadata, nếu số lượng lớn sẽ ảnh hưởng đến hiệu suất. Giải quyết bằng cách tăng shard dùng bởi index, giảm số lượng entry trong mỗi shard.
+
 - Xem số lượng shard trong cluster hiện tại
 
         radosgw-admin bucket stats --bucket=<bucket>
-        #"num_shards": 11 số lượng shardshard
+        #"num_shards": 11 số lượng shards
         #"max_marker": "0#,1#,2#,3#,4#,5#,6#,7#,8#,9#,10#" số lượng resharding
 
 #### Caching
