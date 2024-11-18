@@ -1176,10 +1176,13 @@ Bench từng OSD
 #### Zone, Zonegroup, RealmRealm
 
 - Zone là thành phần nhỏ nhất, đại diện 1 tập hợp các dịch vụ Ceph Rados GW đang chạy trên 1 cluster.
+  + Xem zone `radosgw-admin zone list`
 
 - Zonegroup là tập hợp các zone, tập hợp và quản lý zone theo logic (vị trí,mục đích sử dụng,...)
+  + Xem zonegroup `radosgw-admin zonegroup list`
 
 - Realm là tầng quản lý cao nhất trong hệ thống Ceph RGW, tập hợp zonegroup.
+  + Xem realm `radosgw-admin realm list`
 
 ![realm](pictures/realms.png)
 
