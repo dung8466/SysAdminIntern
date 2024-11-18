@@ -1181,6 +1181,6 @@ Bench từng OSD
 
 - Realm là tầng quản lý cao nhất trong hệ thống Ceph RGW, tập hợp zonegroup.
 
-![realm](pictures/realms.pngpng)
+![realm](pictures/realms.png)
 
 #### Multi-Site
