@@ -1072,7 +1072,7 @@ spec:
   + WAL (write-ahead log): nếu chỉ có 1 dung lượng storage nhỏ thì khuyên dùng, đảm bảo dữ liệu trong quá trình ghi.
   + DB: khuyên dùng khi có nhiều dung lượng, lưu metadata + ưu điểm của WAL
 
-![bluestore](pictures/bluestore.pngpng)
+![bluestore](pictures/bluestore.png)
 
 ### Rados
 
