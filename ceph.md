@@ -1218,6 +1218,6 @@ Bench từng OSD
   + Lấy thông tin realm `radosgw-admin realm get --rgw-realm <realm name>`
   + Tạo zonegroup master `radosgw-admin zonegroup create --rgw-zonegroup={name} --endpoints={url} [--rgw-realm={realm-name}|--realm-id={realm-id}] --master --default`
 
-![realm](pictures/realms.png)
+![realm](pictures/realm.png)
 
 Tham khảo thêm [ceph multizone](https://docs.ceph.com/en/latest/radosgw/multisite/)
