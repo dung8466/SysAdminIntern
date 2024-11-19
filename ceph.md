@@ -1202,7 +1202,7 @@ Bench từng OSD
 
 #### Caching
 
-#### Zone, Zonegroup, RealmRealm
+#### Zone, Zonegroup, Realm
 
 - Zone là thành phần nhỏ nhất, đại diện 1 tập hợp các dịch vụ Ceph Rados GW đang chạy trên 1 cluster.
   + Xem zone `radosgw-admin zone list`
