@@ -1155,6 +1155,27 @@ Bench từng OSD
         s3cmd setpolicy <policy.json> s3://<bucket>
         s3cmd delpolicy s3://<bucket>
 
+        ví dụ
+        {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Effect": "Allow",
+                    "Principal": { "AWS": "dung" },
+                    "Action": [
+                        "s3:ListBucket",
+                        "s3:GetObject",
+                        "s3:PutObject",
+                        "s3:DeleteObject"
+                    ],
+                    "Resource": [
+                        "arn:aws:s3:::my-new-bucket",
+                        "arn:aws:s3:::my-new-bucket/*"
+                    ]
+                }
+            ]
+        }
+
 #### Sharding
 
 - Một bucket index có thể chia thành nhiều rados object.
