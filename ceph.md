@@ -1220,4 +1220,4 @@ Bench từng OSD
 
 ![realm](pictures/realm.png)
 
-Tham khảo thêm [ceph multizone](https://docs.ceph.com/en/latest/radosgw/multisite/)
+Tham khảo thêm [ceph multizone](https://docs.ceph.com/en/latest/radosgw/multisite/), [RedhatRedhat](https://www.slideshare.net/alohamora/ceph-object-storage-performance-secrets-and-ceph-data-lake-solution-81010759)
