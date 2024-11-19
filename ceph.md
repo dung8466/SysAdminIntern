@@ -1124,7 +1124,9 @@ Bench từng OSD
 
 - ACL là cơ chế kiểm soát truy cập, cho phép cấu hình quyền truy cập đến các bucket và object.
 
-- Bao gồm quyền đọc, ghi và quản lý.
+- Bao gồm quyền READ, WRITE, READ_ACP, WRITE_ACP, FULL_CONTROL.
+
+- S3 operation sẽ map với ACL, ví dụ READ=s3:GetObject,s3:GetObjectTorrent,....
 
 - Xem ACL và Policy
 
@@ -1148,7 +1150,7 @@ Bench từng OSD
 
 - Chủ tài khoản sẽ cấp quyền truy cập trực tiếp cho người dùng và cấp quyền tài khoản toàn bộ quyền đến bucket, cho phép toàn bộ người dùng trong tài khoản truy cập.
 
-- Được quản lý qua S3cmd, sử dụng file jsonjson
+- Được quản lý qua S3cmd, sử dụng file json
 
 - Thay đổi policy cho bucket
 
@@ -1201,8 +1203,8 @@ Bench từng OSD
 
 - Zonegroup là tập hợp các zone, tập hợp và quản lý zone theo logic (vị trí,mục đích sử dụng,...). Zone trong zonegroup replicate tất cả dữ liệu giống nhau.
   + Xem zonegroup `radosgw-admin zonegroup list`
-  + Tạo zonegroup ``
   + Tạo master zone `radosgw-admin zone create --rgw-zonegroup={zone-group-name} --rgw-zone={zone-name} --master --default --endpoints={http://fqdn}[,{http://fqdn}]`
+  + Tạo zonegroup `radosgw-admin zone create --rgw-zonegroup={zone-group-name} --rgw-zone={zone-name} --access-key={system-key} --secret={secret} --endpoints=http://{fqdn}:80 [--read-only]`
 
 - Realm là tầng quản lý cao nhất trong hệ thống Ceph RGW, tập hợp zonegroup, phải có ít nhất 1 zonegroup là master.
   + Xem realm `radosgw-admin realm list`
