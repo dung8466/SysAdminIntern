@@ -1111,8 +1111,15 @@ Bench từng OSD
 
 - Xem các bucket và chi tiết các bucket
 
-        radosgw-admin bucket list
+        radosgw-admin bucket list 
         radosgw-admin bucket stats --bucket <bucket-name>
+
+- Liệt kê các object trong bucket
+
+        radosgw-admin bucket list --bucket={bucket name}
+        hoặc
+        s3cmd put {file} s3://my-new-bucket/
+
 
 #### Bucket Index
 
@@ -1125,6 +1132,10 @@ Bench từng OSD
 - Mỗi object bao gồm dữ liệu của tệp và các metadata liên quan.
 
 - Mỗi object được lưu trữ trong một bucket và có một tên duy nhất (key) để xác định và truy xuất.
+
+- Tải 1 object lên bucket
+
+        
 
 #### ACL (Access Control List)
 
