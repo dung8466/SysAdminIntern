@@ -1165,6 +1165,8 @@ Bench từng OSD
            CORS:      none
            ACL:       Radosgw: FULL_CONTROL
 
+- Nên dùng S3 bucket policy khi có thể.
+
 #### Policy
 
 - Chưa hỗ trợ cài đặt policies users, groups hoặc roles.
