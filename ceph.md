@@ -1127,6 +1127,10 @@ Bench từng OSD
 
 - Mỗi index entry lưu metadata (size, etag, mtime,...) để API liệt kê object.
 
+- Xem bucket index chứa những object nào
+
+        radosgw-admin bucket list --bucket={bucket} --shard-id={shard id}
+
 #### Object
 
 - Mỗi object bao gồm dữ liệu của tệp và các metadata liên quan.
