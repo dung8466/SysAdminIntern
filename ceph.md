@@ -1129,6 +1129,8 @@ Bench từng OSD
 
 - Mỗi index entry lưu metadata (size, etag, mtime,...) để API liệt kê object.
 
+- Mặc định sẽ là toàn bộ bucket index lưu trong 1 RADOS object 1 bucket. Nhưng có thể chia nhỏ (shard) thành nhiều RADOS object.
+
 - Xem bucket index chứa những object nào
 
         radosgw-admin bucket list --bucket={bucket} --shard-id={shard id}
