@@ -1133,9 +1133,11 @@ Bench từng OSD
 
 - Mỗi object được lưu trữ trong một bucket và có một tên duy nhất (key) để xác định và truy xuất.
 
+- Object Locking (Khóa Object): Để tránh việc ghi đè dữ liệu khi nhiều client ghi vào cùng một object cùng lúc, RGW có thể sử dụng cơ chế khóa object (object locking)
+
 - Tải 1 object lên bucket
 
-        
+        s3cmd put {file} {bucket}
 
 #### ACL (Access Control List)
 
