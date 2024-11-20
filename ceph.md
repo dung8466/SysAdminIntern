@@ -1100,6 +1100,9 @@ Bench từng OSD
 
 - Dữ liệu trong RGW được chia làm 3 loại: metadata, bucket index, data.
   + Metadata: user (thông tin người dùng), bucket (map giữa bucket name và id), bucket.instance (thông tin của bucket)
+    - Xem metadata của bucket `radosgw-admin metadata get bucket:BUCKET_NAME`
+    - `radosgw-admin metadata get bucket.instance:BUCKET:BUCKET_ID`
+    - `radosgw-admin metadata get user:USER`
   + Bucket index: key(object name)-value(metadata cơ bản),thông tin khác(log,...)
   + Data: lưu trong 1 hoặc nhiều RADOS object mỗi rgw object.
 
