@@ -1246,7 +1246,7 @@ Bench từng OSD
 
 ![realm](pictures/realm.png)
 
-Tham khảo thêm [ceph multizone](https://docs.ceph.com/en/latest/radosgw/multisite/), [RedhatRedhat](https://www.slideshare.net/alohamora/ceph-object-storage-performance-secrets-and-ceph-data-lake-solution-81010759)
+Tham khảo thêm [ceph multizone](https://docs.ceph.com/en/latest/radosgw/multisite/), [Redhat](https://www.slideshare.net/alohamora/ceph-object-storage-performance-secrets-and-ceph-data-lake-solution-81010759)
 
 Tổng hợp các câu lệnh [radosgw-admin](https://github.com/ceph/ceph/blob/main/doc/man/8/radosgw-admin.rst)
 
