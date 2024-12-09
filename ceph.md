@@ -1226,6 +1226,17 @@ Bench từng OSD
         #"num_shards": 11 số lượng shards
         #"max_marker": "0#,1#,2#,3#,4#,5#,6#,7#,8#,9#,10#" số lượng resharding
 
+- Xem số lượng shard trong pool
+
+        rados -p default.rgw.buckets.index ls
+
+- Xem object trong shard
+
+        rados -p <pool> listomapkeys <shard>
+
+        ví dụ
+        rados -p default.rgw.buckets.index listomapkeys .dir.3edaf198-d508-4c13-ac76-db6ba7e0aa28.45980.2.3.6
+
 #### Caching
 
 #### Zone, Zonegroup, Realm
