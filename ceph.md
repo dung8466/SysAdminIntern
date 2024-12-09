@@ -1262,3 +1262,5 @@ Tham khảo thêm [ceph multizone](https://docs.ceph.com/en/latest/radosgw/multi
 Tổng hợp các câu lệnh [radosgw-admin](https://github.com/ceph/ceph/blob/main/doc/man/8/radosgw-admin.rst)
 
 [rados data layout](https://docs.ceph.com/en/reef/radosgw/layout/)
+
+![optimize ceph](pictures/optimize.png)
