@@ -20,6 +20,8 @@ Với HAProxy, điều này được thực hiện bằng cách cung cấp hai c
   + standbys dùng port 5001
   + Để HAProxy biết node nào là primary, node nào là standbys, HAProxy sẽ gửi yêu cầu HTTP đến 8008 của 1 node, Patroni sẽ trả lời.
 
+![patroni port](pictures/patroni_port_5000_5001.png)
+
 Giả định workload:
 + Chuyển leader sang node khác:
 
