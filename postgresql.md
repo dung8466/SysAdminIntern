@@ -22,7 +22,8 @@ Với HAProxy, điều này được thực hiện bằng cách cung cấp hai c
 
 Giả định workload:
 + Chuyển leader sang node khác:
-
+![switch leader](pictures/patroni_switch_leader.png)
 + Rút 2 node standbys: Mất connection 1 thời gian, hoạt động lại
   - Có lỗi không có thư mục `/var/run/postgresql/` --> không thể chạy patroni, postmaster cũng không chạy --> nguyên nhân đổi mk user postgres, không có quyền tạo pid tại /var/run/
   - Fix lỗi --> dữ liệu sync
+![remove 2 node](pictures/patroni_remove_2node.png)
