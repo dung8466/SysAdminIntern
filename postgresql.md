@@ -22,6 +22,15 @@ Với HAProxy, điều này được thực hiện bằng cách cung cấp hai c
 
 ![patroni port](pictures/patroni_port_5000_5001.png)
 
+Backup, Restore
+
++ Sử dụng pgBackRest cho phép tạo backup, restore từ node standbys
++ Hỗ trợ:
+  - full backup - bản sao của toàn bộ data.
+  - differential backup - Toàn bộ dữ liệu thay đổi kể từ lần full backup trước.
+  - incremental backup - chỉ backup file thay đổi từ lần full backup hoặc differential backup. Cần restore từng incremental backup theo thứ tự backup.
+
+
 Giả định workload:
 + Chuyển leader sang node khác:
 
