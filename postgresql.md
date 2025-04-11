@@ -30,7 +30,10 @@ Backup, Restore
   - full backup - bản sao của toàn bộ data.
   - differential backup - Toàn bộ dữ liệu thay đổi kể từ lần full backup trước.
   - incremental backup - chỉ backup file thay đổi từ lần full backup hoặc differential backup. Cần restore từng incremental backup theo thứ tự backup.
-
++ Xem các bản backup hiện có: `pgbackrest --stanza=cluster_1 info`
++ Backup full: `sudo -iu postgres pgbackrest --stanza=cluster_1 --type=full backup`
++ Thông thường, muốn backup pg thì cần dừng pg, restore backup rồi mới bật lại
+ 
 
 Giả định workload:
 + Chuyển leader sang node khác:
@@ -42,3 +45,5 @@ Giả định workload:
   - Fix lỗi --> dữ liệu sync
 
 ![remove 2 node](pictures/patroni_remove_2node.png)
+
+
