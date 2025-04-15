@@ -33,7 +33,9 @@ Backup, Restore
 + Xem các bản backup hiện có: `pgbackrest --stanza=cluster_1 info`
 + Backup full: `sudo -iu postgres pgbackrest --stanza=cluster_1 --type=full backup`
 + Thông thường, muốn backup pg thì cần dừng pg, restore backup rồi mới bật lại
- 
+
++ Initialize the Stanza: `sudo -u postgres pgbackrest --stanza=cluster_1 --pg1-path=/var/lib/postgresql/12/main/ --log-level-console=info stanza-create`
++ Tạo backup full: `sudo -u postgres pgbackrest --stanza=cluster_1 --pg1-path=/var/lib/postgresql/12/main/ --log-level-console=info backup`
 
 Giả định workload:
 + Chuyển leader sang node khác:
@@ -46,4 +48,11 @@ Giả định workload:
 
 ![remove 2 node](pictures/patroni_remove_2node.png)
 
+Tạo group cho user postgresql truy cập vào file ssl key:
 
+```
+root@ops-dungnt-pg-master:~# sudo groupadd pgssl
+root@ops-dungnt-pg-master:~# sudo chgrp pgssl /etc/ssl/certs/pg_ha/ops-dungnt-pg-master.key
+root@ops-dungnt-pg-master:~# sudo chmod 640 /etc/ssl/certs/pg_ha/ops-dungnt-pg-master.key
+root@ops-dungnt-pg-master:~# sudo usermod -aG pgssl postgres
+```
