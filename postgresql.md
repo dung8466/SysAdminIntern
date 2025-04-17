@@ -38,6 +38,9 @@ Backup, Restore
 + Tạo backup full: `sudo -u postgres pgbackrest --stanza=cluster_1 --pg1-path=/var/lib/postgresql/12/main/ --log-level-console=info backup`
 
 Giả định workload:
+
++ Edit patroni config: `EDITOR=vi patronictl -c /etc/patroni/patroni.yml edit-config`
+
 + Chuyển leader sang node khác:
 
 ![switch leader](pictures/patroni_switch_leader.png)
