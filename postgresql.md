@@ -21,6 +21,8 @@ Với HAProxy, điều này được thực hiện bằng cách cung cấp hai c
   + Để HAProxy biết node nào là primary, node nào là standbys, HAProxy sẽ gửi yêu cầu HTTP đến 8008 của 1 node, Patroni sẽ trả lời.
   + Chỉ có thể ghi vào primary, các table trong standbys sẽ chuyển sang read-only
 
+  + Kiểm tra HAProxy: `psql -U postgres -h <HA ip> -p 5000 -c <command>`
+
 ![patroni port](pictures/patroni_port_5000_5001.png)
 
 Backup, Restore
