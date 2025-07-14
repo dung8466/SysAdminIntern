@@ -1257,6 +1257,11 @@ Bench từng OSD
 
 ![realm](pictures/realm.png)
 
+- Restart ceph-radosgw
+```
+for i in `systemctl | grep ceph-radosgw@ | grep running | awk '{print $1}'`;do sudo systemctl restart $i;sleep 20;done
+```
+
 Tham khảo thêm [ceph multizone](https://docs.ceph.com/en/latest/radosgw/multisite/), [Redhat](https://www.slideshare.net/alohamora/ceph-object-storage-performance-secrets-and-ceph-data-lake-solution-81010759)
 
 [rgw cache](https://docs.ceph.com/en/reef/radosgw/rgw-cache/#rgw-data-caching-and-cdn)
