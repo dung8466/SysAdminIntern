@@ -39,3 +39,28 @@ ip          heap.percent ram.percent cpu load_1m load_5m load_15m node.role mast
 10.5.88.173           38          93   6    0.19    0.29     0.19 m         *      ops-dungnt-elk-master3
 
 ```
+
+### Kafka
+
+- Liệt kê topic
+  
+  `/opt/kafka/bin/kafka-topics.sh --list --bootstrap-server localhost:9092`
+  
+
+- Tạo topic
+  
+  `/opt/kafka/bin/kafka-topics.sh --create --topic apache --bootstrap-server localhost:9092`
+  
+
+- Chi tiết topic
+  
+  `/opt/kafka/bin/kafka-topics.sh --describe --topic apache --bootstrap-server localhost:9092`
+  
+
+- Xoá topic
+  
+  `/opt/kafka/bin/kafka-topics.sh --delete --topic apache --bootstrap-server localhost:9092`
+  
+- Xem chi tiết topic chạy
+  
+  `/opt/kafka/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic apache --from-beginning`
