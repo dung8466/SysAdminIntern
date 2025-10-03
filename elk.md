@@ -40,6 +40,12 @@ ip          heap.percent ram.percent cpu load_1m load_5m load_15m node.role mast
 
 ```
 
+- Kiểm tra cluster health:
+
+```
+curl --cacert /etc/elasticsearch/certs/http_ca.crt -u elastic:$ELASTIC_PASSWORD https://localhost:9200/_cluster/health?pretty
+```
+
 ### Kafka
 
 - Liệt kê topic
