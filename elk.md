@@ -252,3 +252,8 @@ curl --cacert /etc/elasticsearch/certs/http_ca.crt -u elastic:$ELASTIC_PASSWORD 
   ```
   curl --cacert /etc/elasticsearch/certs/http_ca.crt -u elastic:$ELASTIC_PASSWORD https://localhost:9200/_cluster/allocation/explain?pretty
   ```
+
+  Filebeat config call domian instead of ip kafka,
+  Gọi vào Kafka cluster thì chỉ cần 1 ip hoặc domain thay vì nhiều ip
+  Delete index,data log
+  Làm sao để biết index để search nhanh
